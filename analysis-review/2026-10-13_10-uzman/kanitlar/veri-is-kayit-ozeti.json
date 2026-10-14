@@ -1,0 +1,91 @@
+{
+  "train_job_count": 230,
+  "real_job_count": 131,
+  "demo_job_count": 99,
+  "real_job_mask_counts": {
+    "": 119,
+    "masks": 12
+  },
+  "real_dataset_roots": [
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset1",
+      "exists_on_review": false,
+      "job_count": 53
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2",
+      "exists_on_review": false,
+      "job_count": 33
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet",
+      "exists_on_review": false,
+      "job_count": 2
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512",
+      "exists_on_review": false,
+      "job_count": 2
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512Smal",
+      "exists_on_review": false,
+      "job_count": 6
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2/boge",
+      "exists_on_review": false,
+      "job_count": 12
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset2/dode",
+      "exists_on_review": false,
+      "job_count": 7
+    },
+    {
+      "path": "C:/Users/kivanc.ekici/Desktop/dataset3",
+      "exists_on_review": false,
+      "job_count": 16
+    }
+  ],
+  "camera_smoke_test_image_count": 1,
+  "metric_csv_yaml_entries_in_supplied_inventory": [],
+  "latest_jobs": [
+    {
+      "job": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\jobs\\train-20260811-150736-795.json",
+      "demo": false,
+      "dataset_root": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512Smal",
+      "mask_dir": "",
+      "models": [
+        "PatchCore"
+      ]
+    },
+    {
+      "job": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\jobs\\train-20260811-151053-198.json",
+      "demo": false,
+      "dataset_root": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512Smal",
+      "mask_dir": "",
+      "models": [
+        "PatchCore"
+      ]
+    },
+    {
+      "job": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\jobs\\train-20260811-160418-462.json",
+      "demo": false,
+      "dataset_root": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512Smal",
+      "mask_dir": "",
+      "models": [
+        "PatchCore"
+      ]
+    },
+    {
+      "job": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\jobs\\train-20260811-163457-810.json",
+      "demo": false,
+      "dataset_root": "C:/Users/kivanc.ekici/Desktop/dataset2/NewSet512Smal",
+      "mask_dir": "",
+      "models": [
+        "PatchCore"
+      ]
+    }
+  ]
+}

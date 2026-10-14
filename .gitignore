@@ -1,0 +1,57 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Native build products and personal IDE settings
+/build/
+/build-*/
+/cmake-build-*/
+/dist/
+.qtcreator/
+.vs/
+.idea/
+.vscode/
+*.pro.user*
+*.sln.docstates
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+
+# Camera data, downloaded weights, model exports and generated run outputs
+# Keep small committed fixtures in tests/ and analysis-review/ visible.
+.data/
+/datasets/
+/models/
+/checkpoints/
+/outputs/
+/results/
+/lightning_logs/
+
+# Local credentials and machine-specific overrides
+.env
+.env.*
+!.env.example
+!.env.sample
+.aws/
+.ssh/
+credentials*.json
+secrets*.json
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Private migration inventories and temporary verification output
+/.migration-work/
+Thumbs.db
+.DS_Store

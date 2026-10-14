@@ -1,0 +1,11 @@
+{
+  "probe": "demo_environment_check",
+  "passed": true,
+  "anomalib_torch_import_attempts": [],
+  "worker_event": {
+    "event": "environment",
+    "ok": true,
+    "demo": true,
+    "message": "Demo worker ready. Configure an Anomalib Python environment for real jobs."
+  }
+}

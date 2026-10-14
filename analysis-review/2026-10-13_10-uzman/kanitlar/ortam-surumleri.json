@@ -1,0 +1,19 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "packages": {
+    "anomalib": "2.6.0",
+    "torch": "2.13.0+cu130",
+    "torchvision": "0.28.0+cu130",
+    "lightning": "2.6.5",
+    "timm": "1.0.28",
+    "openvino": "2026.2.1",
+    "onnx": "1.22.0",
+    "onnxruntime": null,
+    "onnxruntime-gpu": "1.28.0",
+    "numpy": "2.4.6",
+    "Pillow": "12.3.0",
+    "opencv-python": null,
+    "pytest": null,
+    "scikit-learn": "1.9.0"
+  }
+}

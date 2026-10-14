@@ -1,0 +1,64 @@
+Probe scope: AST-isolated installed API branches; no full Anomalib model construction, no weights loaded, no data training.
+PaDiM worker accepted: {'backbone': 'resnet18', 'layers': ['layer1'], 'n_features': None}
+PaDiM installed validation branch: ValueError For backbone resnet18, 0 < n_features <= 64, found 100
+Teacher metadata only: pretrained_teacher_small.pth conv4.weight
+  625: X        BINUNICODE 'conv4.weight'
+  642: q        BINPUT     59
+  644: h        BINGET     3
+  646: (        MARK
+  647: (            MARK
+  648: h                BINGET     4
+  650: h                BINGET     5
+  652: X                BINUNICODE '6'
+  658: q                BINPUT     60
+  660: X                BINUNICODE 'cuda:0'
+  671: q                BINPUT     61
+  673: J                BININT     1572864
+  678: t                TUPLE      (MARK at 647)
+  679: q            BINPUT     62
+  681: Q            BINPERSID
+  682: K            BININT1    0
+  684: (            MARK
+  685: M                BININT2    384
+  688: M                BININT2    256
+  691: K                BININT1    4
+  693: K                BININT1    4
+  695: t                TUPLE      (MARK at 684)
+  696: q            BINPUT     63
+  698: (            MARK
+  699: M                BININT2    4096
+  702: K                BININT1    16
+Teacher metadata only: pretrained_teacher_medium.pth conv6.weight
+  985: X        BINUNICODE 'conv6.weight'
+ 1002: q        BINPUT     95
+ 1004: h        BINGET     3
+ 1006: (        MARK
+ 1007: (            MARK
+ 1008: h                BINGET     4
+ 1010: h                BINGET     5
+ 1012: X                BINUNICODE '10'
+ 1019: q                BINPUT     96
+ 1021: X                BINUNICODE 'cuda:0'
+ 1032: q                BINPUT     97
+ 1034: J                BININT     147456
+ 1039: t                TUPLE      (MARK at 1007)
+ 1040: q            BINPUT     98
+ 1042: Q            BINPERSID
+ 1043: K            BININT1    0
+ 1045: (            MARK
+ 1046: M                BININT2    384
+ 1049: M                BININT2    384
+ 1052: K                BININT1    1
+ 1054: K                BININT1    1
+ 1056: t                TUPLE      (MARK at 1045)
+ 1057: q            BINPUT     99
+ 1059: (            MARK
+ 1060: M                BININT2    384
+ 1063: K                BININT1    1
+EfficientAD worker accepted teacher_out_channels: 383
+Trainer cache requested max_epochs=5 devices=2 -> effective: {'max_epochs': 1, 'devices': 1}
+Coreset installed constructor guard: ValueError coreset_size must be a positive integer, got 0. Check sampling_ratio (0.001) and embedding size (128).
+EfficientAD scheduler configured: keys= ['lr_scheduler', 'optimizer'] step_size= 475
+Synthetic 5 epoch scheduler ticks: last_epoch= 5 lr= [0.0001]
+Installed Lightning LRSchedulerConfig default interval: epoch
+All probes complete; real fit/test/export/inference not run.

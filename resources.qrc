@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="worker/anomalib_worker.py">worker/anomalib_worker.py</file>
+        <file alias="assets/housing-seal-input.png">assets/housing-seal-input.png</file>
+        <file alias="assets/housing-seal-mask.png">assets/housing-seal-mask.png</file>
+        <file alias="assets/housing-seal-heatmap.png">assets/housing-seal-heatmap.png</file>
+        <file alias="assets/housing-seal-predicted-mask.png">assets/housing-seal-predicted-mask.png</file>
+    </qresource>
+</RCC>

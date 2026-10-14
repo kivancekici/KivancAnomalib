@@ -1,0 +1,29 @@
+{
+  "kind": "mock_fault_injection_no_model_or_hardware",
+  "probe_root": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\kanitlar\\rol08-sentetik-62720fed",
+  "replacement_failure": {
+    "error": "synthetic rename denied",
+    "previous_destination_exists": false,
+    "staging_exists": true
+  },
+  "promotion_before_validation": {
+    "error": "Imported Synthetic review asset is corrupt: synthetic corrupt format",
+    "old_marker_exists": false,
+    "new_invalid_candidate_promoted": true
+  },
+  "missing_output_root": {
+    "accepted": true,
+    "resolved_argument": ".",
+    "artifact_write_mocked": true
+  },
+  "malformed_command_recovery": {
+    "exit_code": 0,
+    "event_order": [
+      "session_ready",
+      "error",
+      "error",
+      "session_stopped"
+    ],
+    "unknown_request_correlated": "unknown-1"
+  }
+}

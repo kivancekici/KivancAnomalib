@@ -1,0 +1,59 @@
+{
+  "report": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\ANA_RAPOR.md",
+  "bytes": 62285,
+  "findings": 43,
+  "sequential_01_to_43": true,
+  "missing_required_fields": {},
+  "expert_notes": 10,
+  "original_expert_findings": 53,
+  "mapped_expert_findings": 53,
+  "unmapped_findings": [],
+  "unknown_mapping_ids": [],
+  "duplicate_mapping_ids": [],
+  "local_links_checked": 35,
+  "missing_local_links": [],
+  "utf8_replacement_char_found": false,
+  "note_records": [
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\01-mimari.md",
+      "findings": 6
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\02-veri.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\03-egitim.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\04-metrikler.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\05-goruntu.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\06-deployment.md",
+      "findings": 6
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\07-performans.md",
+      "findings": 6
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\08-dayaniklilik.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\09-operator.md",
+      "findings": 5
+    },
+    {
+      "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\10-test-surum.md",
+      "findings": 5
+    }
+  ],
+  "passed": true
+}

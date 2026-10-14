@@ -1,0 +1,38 @@
+{
+  "type": "mock_contract_probe_not_physical_latency_benchmark",
+  "timer_scope": {
+    "virtual_checkpoint_ms": 20.0,
+    "virtual_onnx_ms": 5.0,
+    "note": "Kontrollü sanal saat; fiziksel gecikme değildir. ONNX timer görüntü okumayı dışarıda bırakıyor."
+  },
+  "fallback_label": {
+    "providers_after_mock_run": [
+      "CPUExecutionProvider"
+    ],
+    "worker_device_after_mock_run": "cuda:0",
+    "worker_backend_after_mock_run": "ONNX Runtime · CUDAExecutionProvider"
+  },
+  "replacement_lifetime": {
+    "old_alive_during_candidate_constructor": true,
+    "old_alive_at_cleanup": false
+  },
+  "existing_record_summary": {
+    "real_export_job_count": 35,
+    "non_null_latency_count": 0,
+    "duration_min_seconds": 34.89,
+    "duration_max_seconds": 152155.44,
+    "production_manifests": [
+      {
+        "path": "build\\agent-debug\\debug\\.data\\production_model.json",
+        "checkpoint": "demo/patchcore/model.ckpt",
+        "latency_ms": 38.2
+      },
+      {
+        "path": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\production_model.json",
+        "checkpoint": "demo/patchcore/model.ckpt",
+        "latency_ms": 38.2
+      }
+    ],
+    "caveat": "Export işinin metrics alanına kopyalanan eğitim+test süresi; inference veya export benchmark değildir. Tekrarlayan işler bağımsız eğitim sayılmaz."
+  }
+}

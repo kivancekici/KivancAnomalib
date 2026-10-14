@@ -1,0 +1,14 @@
+{
+  "checkedUtc": "2026-10-13T15:51:56.4609768Z",
+  "sourceFilesChecked": 25,
+  "sourceHashAndMetadataDiffs": [],
+  "dataBuildFilesChecked": 2550,
+  "currentDataBuildFileCount": 2550,
+  "dataBuildMetadataDiffs": [],
+  "newDataBuildFiles": [],
+  "sourceIntegrityPassed": true,
+  "dataBuildMetadataIntegrityPassed": true,
+  "limitation": "Large data/model/build binaries were checked by path, byte length and UTC modification time, not content hash. This check does not cover every file in .venv or untracked workspace files outside the original baseline.",
+  "expertNotesChecked": 10,
+  "expertFindingHeadings": 53
+}

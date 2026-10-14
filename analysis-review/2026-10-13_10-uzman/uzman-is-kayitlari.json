@@ -1,0 +1,102 @@
+[
+  {
+    "task": "/root/uzman_01_mimari",
+    "title": "Mimari ve durum yönetimi",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\01-mimari.md",
+    "bytes": 14567,
+    "sha256": "17148F5F288C16CDB1F1175144EC8C1D244261F4B662FA042CE21E803E3F32E2",
+    "findings": 6
+  },
+  {
+    "task": "/root/uzman_02_veri",
+    "title": "Veri ve değerlendirme ayrımı",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\02-veri.md",
+    "bytes": 15665,
+    "sha256": "22C199502B30198CA0ECB8A803CF71119C456D3EA6D8903D13E3EF1EF557A52D",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_03_egitim",
+    "title": "Eğitim ve model parametreleri",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\03-egitim.md",
+    "bytes": 16845,
+    "sha256": "D604DB08EF7317FAB3921FCCA7B6613E4EBE4B7B98CF796911D5E36B75F87E77",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_04_metrikler",
+    "title": "Metrikler ve karar kalibrasyonu",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\04-metrikler.md",
+    "bytes": 17683,
+    "sha256": "F18FF211F0DA4FFD0B2DE5E69B99DC6AA53A4C755BD6A4CFF1114B9755CE1F54",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_05_goruntu",
+    "title": "Görüntü işleme ve koordinatlar",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\05-goruntu.md",
+    "bytes": 20444,
+    "sha256": "2E18C199F4181F0A64142D57C4F4B114B0E7A15374AA6D90DA47ECAF4D3AD5CB",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_06_deployment",
+    "title": "Export ve deployment",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\06-deployment.md",
+    "bytes": 23173,
+    "sha256": "A39AE131D00B14EDD9874E8757D962B9D8E30AABE4C04BEC17476D2509175218",
+    "findings": 6
+  },
+  {
+    "task": "/root/uzman_07_performans",
+    "title": "Performans ve kapasite",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\07-performans.md",
+    "bytes": 18275,
+    "sha256": "01A5810650447DA9BF86E7B51198196FB01BCEE945C01FAB38EDFA2F472D3977",
+    "findings": 6
+  },
+  {
+    "task": "/root/uzman_08_dayaniklilik",
+    "title": "Dayanıklılık ve süreç ömrü",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\08-dayaniklilik.md",
+    "bytes": 16297,
+    "sha256": "7491E4B6ADB747A4B7FAFE131805BFC34D246E736BC0C8CDEB45BCC93E447390",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_09_operator",
+    "title": "Operatör akışı",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\09-operator.md",
+    "bytes": 16025,
+    "sha256": "0CB9934D1BD0E6E1902296280127CCBEC1FD3112EA393CDEFB8CF833E7E8C866",
+    "findings": 5
+  },
+  {
+    "task": "/root/uzman_10_test_surum",
+    "title": "Testler ve sürümleme",
+    "status": "completed",
+    "completionEvidence": "separate agent final response received by root",
+    "note": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\uzman-notlari\\10-test-surum.md",
+    "bytes": 18890,
+    "sha256": "49C0C2B483BC8613327669C2816B482BF3D5F1AB33C407FD81CC11FEE8BF0CB5",
+    "findings": 5
+  }
+]

@@ -1,0 +1,186 @@
+{
+  "copied_files": 677,
+  "copied_bytes": 1010153241,
+  "all_initial_copy_hashes_matched": true,
+  "final_byte_identical_files": 666,
+  "explicitly_adapted_files": 11,
+  "categories": {
+    "local-only-copied": {
+      "files": 553,
+      "bytes": 1004255371
+    },
+    "git-candidate-copied": {
+      "files": 124,
+      "bytes": 5897870
+    },
+    "partial-download-or-transfer-log": {
+      "files": 2,
+      "bytes": 249630025
+    },
+    "personal-ide-settings": {
+      "files": 1,
+      "bytes": 20483
+    },
+    "installed-python-environment": {
+      "files": 54621,
+      "bytes": 4335381303
+    },
+    "rebuildable-native-output": {
+      "files": 1996,
+      "bytes": 582579241
+    },
+    "junction-or-symlink-not-followed": {
+      "files": 1,
+      "bytes": 0
+    },
+    "python-bytecode-cache": {
+      "files": 2,
+      "bytes": 226443
+    }
+  },
+  "git_candidate_files": 134,
+  "git_candidate_bytes": 6276707,
+  "largest_git_candidate_bytes": 1887128,
+  "secret_pattern_matches": [],
+  "ignore_checks": [
+    {
+      "path": ".venv/Scripts/python.exe",
+      "ignored": true,
+      "rule": ".gitignore:2:.venv/\t.venv/Scripts/python.exe"
+    },
+    {
+      "path": "build/migration-check/debug/KivancAnomaLibTest.exe",
+      "ignored": true,
+      "rule": ".gitignore:13:/build/\tbuild/migration-check/debug/KivancAnomaLibTest.exe"
+    },
+    {
+      "path": ".qtcreator/KivancAnomaLibTest.pro.user",
+      "ignored": true,
+      "rule": ".gitignore:17:.qtcreator/\t.qtcreator/KivancAnomaLibTest.pro.user"
+    },
+    {
+      "path": ".env",
+      "ignored": true,
+      "rule": ".gitignore:41:.env\t.env"
+    },
+    {
+      "path": ".env.local",
+      "ignored": true,
+      "rule": ".gitignore:42:.env.*\t.env.local"
+    },
+    {
+      "path": ".env.example",
+      "ignored": false,
+      "rule": ".gitignore:43:!.env.example\t.env.example"
+    },
+    {
+      "path": ".aws/credentials",
+      "ignored": true,
+      "rule": ".gitignore:45:.aws/\t.aws/credentials"
+    },
+    {
+      "path": ".data/model-assets/assets-lock.json",
+      "ignored": true,
+      "rule": ".gitignore:32:.data/\t.data/model-assets/assets-lock.json"
+    },
+    {
+      "path": ".data/migrated-builds/Desktop_Qt_6_11_1_MSVC2022_64bit_Release/release/onnx-delivery/dataset3-patchcore-v13.onnx",
+      "ignored": true,
+      "rule": ".gitignore:32:.data/\t.data/migrated-builds/Desktop_Qt_6_11_1_MSVC2022_64bit_Release/release/onnx-delivery/dataset3-patchcore-v13.onnx"
+    },
+    {
+      "path": ".migration-work/source-before.json",
+      "ignored": true,
+      "rule": ".gitignore:55:/.migration-work/\t.migration-work/source-before.json"
+    },
+    {
+      "path": "README.md",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "KivancAnomaLibTest.pro",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "requirements.txt",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "requirements-inference.txt",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "tests/demo_job.json",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "tests/test_worker.py",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "worker/anomalib_worker.py",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "assets/housing-seal-input.png",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "qa/implementation-final.png",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "analysis-review/2026-10-13_10-uzman/ANA_RAPOR.md",
+      "ignored": false,
+      "rule": ""
+    },
+    {
+      "path": "analysis-review/2026-10-13_10-uzman/kanitlar/rol08-sentetik-62720fed/import-after-validation/huggingface/hub/models--synthetic--review/model.safetensors",
+      "ignored": false,
+      "rule": ""
+    }
+  ],
+  "python_ast_ok": true,
+  "qrc_references_ok": [
+    "worker/anomalib_worker.py",
+    "assets/housing-seal-input.png",
+    "assets/housing-seal-mask.png",
+    "assets/housing-seal-heatmap.png",
+    "assets/housing-seal-predicted-mask.png"
+  ],
+  "relative_report_links_resolve": 180,
+  "managed_model_assets": [
+    {
+      "asset": "efficientad_teacher",
+      "path": ".data/model-assets/anomalib/pre_trained/efficientad_pretrained_weights",
+      "hash_matches_lock": true
+    },
+    {
+      "asset": "padim_backbone",
+      "path": ".data/model-assets/huggingface/hub/models--timm--resnet18.a1_in1k/snapshots/491b427b45c94c7fb0e78b5474cc919aff584bbf/model.safetensors",
+      "hash_matches_lock": true
+    },
+    {
+      "asset": "patchcore_backbone",
+      "path": ".data/model-assets/huggingface/hub/models--timm--wide_resnet50_2.racm_in1k/snapshots/30f73aceaaa1911830a9795b83ab1908dba18719/model.safetensors",
+      "hash_matches_lock": true
+    }
+  ],
+  "onnx_artifact_bytes": 607008673,
+  "onnx_artifact_matches_manifest_hash": true,
+  "historical_source_checkpoint_exists": false,
+  "unittest_count": 37,
+  "unittest_seconds": 44.576,
+  "unittest_exit_code": 0,
+  "native_debug_build_exit_code": 0,
+  "remote": "https://github.com/kivancekici/KivancAnomalib.git"
+}

@@ -1,0 +1,229 @@
+{
+  "python_executable": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\.venv\\Scripts\\python.exe",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "source_worker_sha256": "bf9fe0b1a3929909c4f7644edead381c04e3ee0292783c1e234b2785bd2ce566",
+  "worker_copies": [
+    {
+      "path": "worker\\anomalib_worker.py",
+      "length": 130118,
+      "sha256": "bf9fe0b1a3929909c4f7644edead381c04e3ee0292783c1e234b2785bd2ce566",
+      "matches_source": true
+    },
+    {
+      "path": "build\\agent-debug\\debug\\.data\\anomalib_worker.py",
+      "length": 35845,
+      "sha256": "7f16b11ea821f46a4e5a5d0338cdb8aeab380a850c73bee88adfd92502cfb26c",
+      "matches_source": false
+    },
+    {
+      "path": "build\\agent-release\\release\\.data\\anomalib_worker.py",
+      "length": 120088,
+      "sha256": "e41b3189ad693bd1add286390ec32ac3973b385203edbc0a3054795622141aa0",
+      "matches_source": false
+    },
+    {
+      "path": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\.data\\anomalib_worker.py",
+      "length": 130118,
+      "sha256": "bf9fe0b1a3929909c4f7644edead381c04e3ee0292783c1e234b2785bd2ce566",
+      "matches_source": true
+    }
+  ],
+  "generated_resources": [
+    {
+      "path": "build\\agent-debug\\debug\\qrc_resources.cpp",
+      "decoded": true,
+      "declared_stored_size": 26109,
+      "decoded_length": 126272,
+      "decoded_worker_sha256": "df1c5875dee992192c1d9d736f8cea50b5c67d4807c6b5d3ed3a8793cf0c0c5c",
+      "matches_source": false,
+      "proof_scope": "generated qrc C++ only; executable not inspected/launched"
+    },
+    {
+      "path": "build\\agent-release\\release\\qrc_resources.cpp",
+      "decoded": true,
+      "declared_stored_size": 24941,
+      "decoded_length": 120088,
+      "decoded_worker_sha256": "e41b3189ad693bd1add286390ec32ac3973b385203edbc0a3054795622141aa0",
+      "matches_source": false,
+      "proof_scope": "generated qrc C++ only; executable not inspected/launched"
+    },
+    {
+      "path": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Debug\\debug\\qrc_resources.cpp",
+      "decoded": true,
+      "declared_stored_size": 4741,
+      "decoded_length": 17372,
+      "decoded_worker_sha256": "ab8f30d75cecc56ecfaedf96b3e181d6b74a7db9337adcff8a37011be45c0616",
+      "matches_source": false,
+      "proof_scope": "generated qrc C++ only; executable not inspected/launched"
+    },
+    {
+      "path": "build\\Desktop_Qt_6_11_1_MSVC2022_64bit_Release\\release\\qrc_resources.cpp",
+      "decoded": true,
+      "declared_stored_size": 27361,
+      "decoded_length": 130118,
+      "decoded_worker_sha256": "bf9fe0b1a3929909c4f7644edead381c04e3ee0292783c1e234b2785bd2ce566",
+      "matches_source": true,
+      "proof_scope": "generated qrc C++ only; executable not inspected/launched"
+    }
+  ],
+  "test_count": 37,
+  "tests": [
+    {
+      "name": "test_inspect_checkpoint_detects_patchcore_without_pickle_execution",
+      "line": 73
+    },
+    {
+      "name": "test_inspect_torch_export_requires_fingerprint_trust",
+      "line": 118
+    },
+    {
+      "name": "test_manifest_resolves_relative_openvino_pair",
+      "line": 127
+    },
+    {
+      "name": "test_patchcore_onnx_raw_map_capability_and_external_sigma",
+      "line": 166
+    },
+    {
+      "name": "test_persistent_session_requires_exact_pt_fingerprint",
+      "line": 257
+    },
+    {
+      "name": "test_export_backends_resize_inputs_to_saved_dimensions",
+      "line": 279
+    },
+    {
+      "name": "test_persistent_session_reuses_loaded_backend_for_predictions",
+      "line": 315
+    },
+    {
+      "name": "test_pth_is_not_treated_as_a_complete_model_export",
+      "line": 367
+    },
+    {
+      "name": "test_persistent_worker_protocol_echoes_request_ids",
+      "line": 374
+    },
+    {
+      "name": "test_demo_training_emits_results_and_winner",
+      "line": 421
+    },
+    {
+      "name": "test_demo_training_honors_requested_epoch_count",
+      "line": 436
+    },
+    {
+      "name": "test_demo_training_preserves_custom_model_parameters",
+      "line": 451
+    },
+    {
+      "name": "test_legacy_demo_job_receives_default_parameter_snapshot",
+      "line": 518
+    },
+    {
+      "name": "test_model_parameter_validation_rejects_unknown_and_invalid_values",
+      "line": 536
+    },
+    {
+      "name": "test_training_parameter_validation_rejects_ranges_and_unknown_keys",
+      "line": 589
+    },
+    {
+      "name": "test_large_demo_epoch_count_uses_bounded_progress_events",
+      "line": 611
+    },
+    {
+      "name": "test_create_model_forwards_normalized_constructor_arguments",
+      "line": 630
+    },
+    {
+      "name": "test_create_model_configures_patchcore_pooling_and_sigma",
+      "line": 657
+    },
+    {
+      "name": "test_create_model_configures_rectangular_preprocessor",
+      "line": 679
+    },
+    {
+      "name": "test_create_model_rejects_unsupported_constructor_fields",
+      "line": 695
+    },
+    {
+      "name": "test_anomalib_version_guard_targets_2_5_and_newer_2_x",
+      "line": 709
+    },
+    {
+      "name": "test_demo_export_writes_manifest",
+      "line": 717
+    },
+    {
+      "name": "test_demo_inference_emits_score_and_visual_artifacts",
+      "line": 766
+    },
+    {
+      "name": "test_demo_training_references_selected_dataset_sample",
+      "line": 813
+    },
+    {
+      "name": "test_inspection_artifacts_are_generated_from_prediction",
+      "line": 843
+    },
+    {
+      "name": "test_real_check_reports_missing_or_ready_environment",
+      "line": 888
+    },
+    {
+      "name": "test_asset_check_emits_complete_status_protocol",
+      "line": 894
+    },
+    {
+      "name": "test_pretrained_false_removes_backbone_preflight_requirement",
+      "line": 923
+    },
+    {
+      "name": "test_blank_cache_preflight_reports_every_selected_model_asset",
+      "line": 942
+    },
+    {
+      "name": "test_efficientad_preflight_distinguishes_data_and_teacher_files",
+      "line": 967
+    },
+    {
+      "name": "test_cached_wide_resnet_is_imported_and_revision_is_locked",
+      "line": 1018
+    },
+    {
+      "name": "test_invalid_managed_safetensors_is_reported_as_corrupt",
+      "line": 1077
+    },
+    {
+      "name": "test_corrupt_download_never_replaces_valid_asset",
+      "line": 1109
+    },
+    {
+      "name": "test_interrupted_download_removes_partial_and_keeps_valid_asset",
+      "line": 1153
+    },
+    {
+      "name": "test_unknown_asset_is_rejected_before_network_access",
+      "line": 1207
+    },
+    {
+      "name": "test_staged_zip_supports_part_suffix_and_rejects_traversal",
+      "line": 1224
+    },
+    {
+      "name": "test_offline_socket_guard_reports_explicit_resource_error",
+      "line": 1249
+    }
+  ],
+  "package_versions": {
+    "pip": "26.2",
+    "anomalib": "2.6.0",
+    "torch": "2.13.0+cu130",
+    "torchvision": "0.28.0+cu130",
+    "lightning": "2.6.5",
+    "timm": "1.0.28",
+    "onnxruntime-gpu": "1.28.0"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "low_calibrated": {
+    "original": [
+      [
+        0.10000000149011612,
+        0.12999999523162842
+      ],
+      [
+        0.17000000178813934,
+        0.20000000298023224
+      ]
+    ],
+    "after_image_minmax": [
+      [
+        0.0,
+        0.2999999225139618
+      ],
+      [
+        0.699999988079071,
+        1.0
+      ]
+    ],
+    "original_mask_at_060": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "actual_mask_at_060": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ]
+  },
+  "high_calibrated": {
+    "original": [
+      [
+        0.800000011920929,
+        0.8299999833106995
+      ],
+      [
+        0.8700000047683716,
+        0.8999999761581421
+      ]
+    ],
+    "after_image_minmax": [
+      [
+        0.0,
+        0.29999983310699463
+      ],
+      [
+        0.7000001668930054,
+        1.0
+      ]
+    ],
+    "original_mask_at_060": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "actual_mask_at_060": [
+      [
+        false,
+        false
+      ],
+      [
+        true,
+        true
+      ]
+    ]
+  },
+  "constant_high": {
+    "original": [
+      [
+        0.8999999761581421,
+        0.8999999761581421
+      ],
+      [
+        0.8999999761581421,
+        0.8999999761581421
+      ]
+    ],
+    "after_image_minmax": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "original_mask_at_060": [
+      [
+        true,
+        true
+      ],
+      [
+        true,
+        true
+      ]
+    ],
+    "actual_mask_at_060": [
+      [
+        false,
+        false
+      ],
+      [
+        false,
+        false
+      ]
+    ]
+  },
+  "missing_pred_score": {
+    "label": "anomalous",
+    "score_repr": "1.0",
+    "score_isfinite": true
+  },
+  "nan_pred_score": {
+    "label": "normal",
+    "score_repr": "nan",
+    "score_isfinite": false
+  },
+  "ignore_native_label_at_055": {
+    "label": "normal",
+    "score_repr": "0.55",
+    "score_isfinite": true
+  },
+  "metric_nan_event": {
+    "metric_repr": "nan",
+    "emitted": "{\"event\": \"result\", \"model\": \"PatchCore\", \"image_auroc\": NaN}",
+    "strict_json_valid": false
+  },
+  "winner_without_metrics": "PatchCore",
+  "winner_with_first_nan": "PatchCore"
+}

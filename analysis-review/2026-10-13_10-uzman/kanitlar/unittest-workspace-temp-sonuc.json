@@ -1,0 +1,7 @@
+{
+  "command": ".venv/Scripts/python.exe -B -X utf8 -m unittest discover -s tests -v",
+  "exitCode": 0,
+  "elapsedSeconds": 70.3468791,
+  "tempRoot": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\kanitlar\\test-temp",
+  "log": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\kanitlar\\unittest-workspace-temp.log"
+}

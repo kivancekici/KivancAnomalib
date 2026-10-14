@@ -1,0 +1,15 @@
+{
+  "source_unchanged": true,
+  "source_inventory_sha256_before": "b84633960f24b99a57536c9c741c0aedd12f8158d3c91d8d06e2f5cec6a5bc46",
+  "source_inventory_sha256_after": "b84633960f24b99a57536c9c741c0aedd12f8158d3c91d8d06e2f5cec6a5bc46",
+  "source_entries": 57300,
+  "source_content_hashed_files": 682,
+  "source_metadata_only_files": 56617,
+  "source_file_bytes": 6177990736,
+  "target_git_content_unchanged": true,
+  "target_git_content_inventory_sha256_before": "7df6b7e87e4435ac77b20286cbcbc6ae2839dabdd34444a4376a19919afd7215",
+  "target_git_content_inventory_sha256_after": "7df6b7e87e4435ac77b20286cbcbc6ae2839dabdd34444a4376a19919afd7215",
+  "target_git_metadata_timestamp_changes": [
+    "FETCH_HEAD"
+  ]
+}

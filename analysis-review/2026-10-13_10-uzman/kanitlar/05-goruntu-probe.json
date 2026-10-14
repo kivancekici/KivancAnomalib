@@ -1,0 +1,189 @@
+{
+  "scope": "CPU synthetic preprocessing only; fake backends; no model weights loaded",
+  "dark_uint8_scale": {
+    "torch_loader_max": 0.003921568859368563,
+    "onnx_wrapper_actual_predict_input_max": 1.0,
+    "openvino_onnx_run_array_input_max": 1.0,
+    "openvino_legacy_pre_process_input_max": 1.0,
+    "ratio": 254.99998474121094
+  },
+  "resize_flags": {
+    "train_antialias": true,
+    "export_antialias": false,
+    "size_height_width": [
+      32,
+      48
+    ]
+  },
+  "resize_numeric_differences": {
+    "random_96x80_to_48x32": {
+      "train_vs_torch_export": {
+        "max_abs_normalized_tensor": 1.56889009475708,
+        "mean_abs_normalized_tensor": 0.3912726938724518
+      },
+      "train_vs_onnx_openvino_pil": {
+        "max_abs_normalized_tensor": 0.015599429607391357,
+        "mean_abs_normalized_tensor": 0.004743504337966442
+      },
+      "torch_export_vs_onnx_openvino_pil": {
+        "max_abs_normalized_tensor": 1.5712535381317139,
+        "mean_abs_normalized_tensor": 0.39137065410614014
+      }
+    },
+    "checker_96x80_to_48x32": {
+      "train_vs_torch_export": {
+        "max_abs_normalized_tensor": 0.028989136219024658,
+        "mean_abs_normalized_tensor": 0.000568772666156292
+      },
+      "train_vs_onnx_openvino_pil": {
+        "max_abs_normalized_tensor": 0.008753761649131775,
+        "mean_abs_normalized_tensor": 0.008477460592985153
+      },
+      "torch_export_vs_onnx_openvino_pil": {
+        "max_abs_normalized_tensor": 0.026260629296302795,
+        "mean_abs_normalized_tensor": 0.008722145110368729
+      }
+    }
+  },
+  "rgb_color_confirmation": {
+    "torch_rgb_values": [
+      [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    ],
+    "onnx_rgb_values": [
+      [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    ],
+    "equal": true
+  },
+  "ground_truth_mask_confirmation": {
+    "resized_shape": [
+      32,
+      48
+    ],
+    "unique_values": [
+      0,
+      1
+    ],
+    "mask_type_preserved": true
+  },
+  "accepted_16bit_tiff_rgb_conversion": {
+    "source_mode": "I;16",
+    "source_pixel_values": [
+      [
+        0,
+        1,
+        255,
+        256,
+        1024,
+        32768,
+        65535
+      ]
+    ],
+    "convert_rgb_values": [
+      [
+        0,
+        1,
+        255,
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "torch_read_image_values": [
+      [
+        0.0,
+        0.003921568859368563,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    ]
+  },
+  "qt_documented_expand_geometry_math_no_gui": {
+    "training_input_640x480_into_330x112": {
+      "scaled_size": [
+        330.0,
+        247.5
+      ],
+      "fraction_source_visible_x": 1.0,
+      "fraction_source_visible_y": 0.45252525252525255,
+      "center_crop_source_y_range": [
+        131.39393939393938,
+        348.6060606060606
+      ]
+    },
+    "training_heatmap_640x480_into_330x96": {
+      "scaled_size": [
+        330.0,
+        247.5
+      ],
+      "fraction_source_visible_x": 1.0,
+      "fraction_source_visible_y": 0.3878787878787879,
+      "center_crop_source_y_range": [
+        146.9090909090909,
+        333.0909090909091
+      ]
+    },
+    "training_threshold_raw_256x256_into_330x74": {
+      "scaled_size": [
+        330.0,
+        330.0
+      ],
+      "fraction_source_visible_x": 1.0,
+      "fraction_source_visible_y": 0.22424242424242424,
+      "center_crop_source_y_range": [
+        99.2969696969697,
+        156.7030303030303
+      ]
+    },
+    "inference_640x480_into_230x230": {
+      "scaled_size": [
+        306.6666666666667,
+        230.0
+      ],
+      "fraction_source_visible_x": 0.75,
+      "fraction_source_visible_y": 1.0,
+      "center_crop_source_y_range": [
+        0.0,
+        480.0
+      ]
+    },
+    "normalized_y_point": 0.625,
+    "same_point_heatmap_viewport_y": 78.9375,
+    "same_point_raw_mask_viewport_y": 78.25
+  }
+}

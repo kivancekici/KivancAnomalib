@@ -1,0 +1,152 @@
+[
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\anomalibprocess.cpp",
+    "bytes": 7875,
+    "modifiedUtc": "2026-07-31T14:14:41.9909449Z",
+    "sha256": "A35E24DC494B359BD9C9F61CDDBFE7D70691A22DA10A5B3F8A6BD6EEE5EF862F"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\anomalibprocess.h",
+    "bytes": 1568,
+    "modifiedUtc": "2026-07-31T14:03:14.6559873Z",
+    "sha256": "DFD0729004084FD2C4705F218DDF4BB2F5AC2F38FB414FB0A4E340691A988A90"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\cameraservice.cpp",
+    "bytes": 4026,
+    "modifiedUtc": "2026-07-30T11:50:13.7160106Z",
+    "sha256": "0B2B93BEDA02CC510CD0960F3109243A0D14E400CC0C92454C816919FBEA5647"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\cameraservice.h",
+    "bytes": 495,
+    "modifiedUtc": "2026-07-30T11:50:12.6263615Z",
+    "sha256": "98BB1D168FCC18D05DED6BCCB419A4790C8B0FAE812345FD80051537D025E5B3"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\design-qa.md",
+    "bytes": 4544,
+    "modifiedUtc": "2026-07-30T12:14:43.9800228Z",
+    "sha256": "D4331930D41CB4CE60F8A9ACD9A753CA9D57CA91293B3B9FFE621B297FAF5616"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\kernel.errors.txt",
+    "bytes": 801,
+    "modifiedUtc": "2026-07-31T14:11:55.2848429Z",
+    "sha256": "6C42D1263277CEE1815C48D48131FDB02CF1B4AA32F89C50E0723148D589BAD0"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\KivancAnomaLibTest.pro",
+    "bytes": 1442,
+    "modifiedUtc": "2026-07-30T11:59:31.8481442Z",
+    "sha256": "786E987E08F0FC4AA0683E80CCAFD1B40A41D778A3D4AC0B4229F39FC395819D"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\main.cpp",
+    "bytes": 459,
+    "modifiedUtc": "2026-07-30T11:57:21.2953054Z",
+    "sha256": "BD669A1795D9BAB609EA1393E346F2713285C53795942FA530280C07D10036CF"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\mainwindow.cpp",
+    "bytes": 169006,
+    "modifiedUtc": "2026-08-07T17:43:56.1470972Z",
+    "sha256": "ECDCE1CF5F885D3BF3167D64D501895628DCA8BA0E7AA18819AD5B04A86C773C"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\mainwindow.h",
+    "bytes": 9205,
+    "modifiedUtc": "2026-08-04T17:46:36.4123111Z",
+    "sha256": "720D7615F37BC5579C5B58D17639D6655F58AF13AC7300B4ED1A9768BCF1D2EC"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\mainwindow.ui",
+    "bytes": 723,
+    "modifiedUtc": "2026-07-30T11:33:09.4075419Z",
+    "sha256": "41B9A05E02E3565821E8B9673D45C74FEA003C575C4A1BAE4FA1DA790D3B2039"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\README.md",
+    "bytes": 9691,
+    "modifiedUtc": "2026-08-07T17:40:46.0507413Z",
+    "sha256": "CCCD86514DCA00AE160820AAACF574606E8E0648A589FA525FF2FEDA8F8E9941"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\requirements-inference.txt",
+    "bytes": 184,
+    "modifiedUtc": "2026-07-31T14:11:25.5123197Z",
+    "sha256": "AECCDB82B2B75A9E7AEA5DAFB95EDBA8F9EAF72D6F64C16F636855D59948BD6B"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\resources.qrc",
+    "bytes": 514,
+    "modifiedUtc": "2026-07-30T11:51:38.4766785Z",
+    "sha256": "8D4FDF59BA27F14B9EB0E0A5BE098D8ACC500605682D6EA12C9E9A49ADA383A6"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\worker\\anomalib_worker.py",
+    "bytes": 130118,
+    "modifiedUtc": "2026-08-10T08:39:30.8009144Z",
+    "sha256": "BF9FE0B1A3929909C4F7644EDEAD381C04E3EE0292783C1E234B2785BD2CE566"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\tests\\demo_job.json",
+    "bytes": 203,
+    "modifiedUtc": "2026-07-30T11:58:28.8393464Z",
+    "sha256": "12D23AAD527E043335D3553168F1898955DC9116BFDB2AD57BC8BC72E2E8BEF7"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\tests\\test_worker.py",
+    "bytes": 51566,
+    "modifiedUtc": "2026-08-07T17:41:39.7196257Z",
+    "sha256": "BBD1E69E610F2DF48DCEC9D64B61AEBE9114B22ED26D020E2B614A0E7F908E17"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\assets\\housing-seal-heatmap.png",
+    "bytes": 120844,
+    "modifiedUtc": "2026-07-30T12:00:38.0711743Z",
+    "sha256": "C2E44A10DDE9463A1C147AF28FC0D30E722B7D3D6EE48B3DC7F21C988B41C0B5"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\assets\\housing-seal-input.png",
+    "bytes": 122884,
+    "modifiedUtc": "2026-07-30T12:00:38.0218323Z",
+    "sha256": "3C17AA75565082FE67FA4E1BA1537BF8CB55491268185E0C6C6AA13A3CD4D25B"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\assets\\housing-seal-mask.png",
+    "bytes": 15153,
+    "modifiedUtc": "2026-07-30T12:00:38.0483225Z",
+    "sha256": "E52ACA98249E360F9717F90B3B0B02A0142287702E1DEEEACC0569B943A0AE89"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\assets\\housing-seal-predicted-mask.png",
+    "bytes": 13248,
+    "modifiedUtc": "2026-07-30T12:00:38.0916596Z",
+    "sha256": "DA5CCF806533E2E85518D55303C296C6DD7067AE0B50501C2D4C2BC0603F986F"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\qa\\comparison-focused.png",
+    "bytes": 825797,
+    "modifiedUtc": "2026-07-30T12:13:08.9712169Z",
+    "sha256": "5D4F133162FFA275356EDA4599178AEA5359B8A88066CE6B570165FD519C2419"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\qa\\comparison-source-implementation.png",
+    "bytes": 1887128,
+    "modifiedUtc": "2026-07-30T12:13:08.8972753Z",
+    "sha256": "8A3F5AE7F77C8A4FD13988DA7561685AE6D24C227113F2733CFA2215CD55ED8A"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\qa\\implementation-final.png",
+    "bytes": 136160,
+    "modifiedUtc": "2026-07-30T12:12:50.3700861Z",
+    "sha256": "B80EBFA987A541C37AA5CF86EC5113989D9E3E84B1AF69E221771508A6A699B6"
+  },
+  {
+    "path": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\qa\\source-normalized.png",
+    "bytes": 1193123,
+    "modifiedUtc": "2026-07-30T12:13:08.7769517Z",
+    "sha256": "B638873174BD962483AC5B61C7DF750BCC86B55AA4B8F9038F7297300D0A7794"
+  }
+]

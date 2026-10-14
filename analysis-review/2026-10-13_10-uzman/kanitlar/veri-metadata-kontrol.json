@@ -1,0 +1,92 @@
+{
+  "anomalib_version": "2.6.0",
+  "method": "Folder setup metadata only; fixture bytes are not images and are never decoded",
+  "default_split_runs": [
+    {
+      "train": [
+        "balanced/normal/n00.png",
+        "balanced/normal/n02.png",
+        "balanced/normal/n03.png",
+        "balanced/normal/n04.png",
+        "balanced/normal/n06.png",
+        "balanced/normal/n07.png",
+        "balanced/normal/n08.png",
+        "balanced/normal/n09.png",
+        "balanced/normal/n11.png",
+        "balanced/normal/n12.png",
+        "balanced/normal/n14.png",
+        "balanced/normal/n15.png",
+        "balanced/normal/n16.png",
+        "balanced/normal/n17.png",
+        "balanced/normal/n18.png",
+        "balanced/normal/n19.png"
+      ],
+      "val": [
+        "balanced/abnormal/a00.png",
+        "balanced/abnormal/a01.png",
+        "balanced/abnormal/a02.png",
+        "balanced/abnormal/a03.png",
+        "balanced/normal/n10.png",
+        "balanced/normal/n13.png"
+      ],
+      "test": [
+        "balanced/abnormal/a04.png",
+        "balanced/abnormal/a05.png",
+        "balanced/abnormal/a06.png",
+        "balanced/abnormal/a07.png",
+        "balanced/normal/n01.png",
+        "balanced/normal/n05.png"
+      ]
+    },
+    {
+      "train": [
+        "balanced/normal/n00.png",
+        "balanced/normal/n01.png",
+        "balanced/normal/n03.png",
+        "balanced/normal/n04.png",
+        "balanced/normal/n05.png",
+        "balanced/normal/n06.png",
+        "balanced/normal/n07.png",
+        "balanced/normal/n09.png",
+        "balanced/normal/n12.png",
+        "balanced/normal/n13.png",
+        "balanced/normal/n14.png",
+        "balanced/normal/n15.png",
+        "balanced/normal/n16.png",
+        "balanced/normal/n17.png",
+        "balanced/normal/n18.png",
+        "balanced/normal/n19.png"
+      ],
+      "val": [
+        "balanced/abnormal/a00.png",
+        "balanced/abnormal/a01.png",
+        "balanced/abnormal/a03.png",
+        "balanced/abnormal/a04.png",
+        "balanced/normal/n08.png",
+        "balanced/normal/n10.png"
+      ],
+      "test": [
+        "balanced/abnormal/a02.png",
+        "balanced/abnormal/a05.png",
+        "balanced/abnormal/a06.png",
+        "balanced/abnormal/a07.png",
+        "balanced/normal/n02.png",
+        "balanced/normal/n11.png"
+      ]
+    }
+  ],
+  "default_split_equal": false,
+  "within_run_intersections": {
+    "train_val": [],
+    "train_test": [],
+    "val_test": []
+  },
+  "seed42_split_equal": true,
+  "tiny_normal_only": {
+    "error": "ValueError: not enough values to unpack (expected 2, got 0)"
+  },
+  "ambiguous_requested_image": "ambiguous_masks/abnormal/b/000.png",
+  "ambiguous_selected_mask": "ambiguous_masks/masks/a/000_mask.png",
+  "worker_extension_count": 1,
+  "folder_extension_count": 2
+}

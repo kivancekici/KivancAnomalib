@@ -1,0 +1,6 @@
+{
+  "command": ".venv/Scripts/python.exe -B -X utf8 -m unittest discover -s tests -v",
+  "exitCode": 1,
+  "elapsedSeconds": 44.7181117,
+  "log": "C:\\Users\\kivanc.ekici\\Documents\\KivancAnomaLibTest\\analysis-review\\2026-10-13_10-uzman\\kanitlar\\unittest.log"
+}

@@ -1,0 +1,1537 @@
+test_anomalib_version_guard_targets_2_5_and_newer_2_x (test_worker.WorkerTests.test_anomalib_version_guard_targets_2_5_and_newer_2_x) ... ok
+test_asset_check_emits_complete_status_protocol (test_worker.WorkerTests.test_asset_check_emits_complete_status_protocol) ... ERROR
+test_blank_cache_preflight_reports_every_selected_model_asset (test_worker.WorkerTests.test_blank_cache_preflight_reports_every_selected_model_asset) ... ERROR
+test_cached_wide_resnet_is_imported_and_revision_is_locked (test_worker.WorkerTests.test_cached_wide_resnet_is_imported_and_revision_is_locked) ... ERROR
+test_corrupt_download_never_replaces_valid_asset (test_worker.WorkerTests.test_corrupt_download_never_replaces_valid_asset) ... ERROR
+test_create_model_configures_patchcore_pooling_and_sigma (test_worker.WorkerTests.test_create_model_configures_patchcore_pooling_and_sigma) ... W1013 18:07:56.940000 1612 .venv\Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\torch\jit\_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\timm\models\layers\__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\anomalib\models\image\dinomaly\components\layers.py:22: FutureWarning: The anomalib.models.components.dinov2 package is deprecated and will be removed in a future release. Please use the timm-based feature extractor instead: anomalib.models.components.feature_extractors.TimmFeatureExtractor
+  from anomalib.models.components.dinov2.layers import Attention, DropPath, LayerScale, MemEffAttention
+ok
+test_create_model_configures_rectangular_preprocessor (test_worker.WorkerTests.test_create_model_configures_rectangular_preprocessor) ... ok
+test_create_model_forwards_normalized_constructor_arguments (test_worker.WorkerTests.test_create_model_forwards_normalized_constructor_arguments) ... ok
+test_create_model_rejects_unsupported_constructor_fields (test_worker.WorkerTests.test_create_model_rejects_unsupported_constructor_fields) ... ok
+test_demo_export_writes_manifest (test_worker.WorkerTests.test_demo_export_writes_manifest) ... ERROR
+test_demo_inference_emits_score_and_visual_artifacts (test_worker.WorkerTests.test_demo_inference_emits_score_and_visual_artifacts) ... ERROR
+test_demo_training_emits_results_and_winner (test_worker.WorkerTests.test_demo_training_emits_results_and_winner) ... ERROR
+test_demo_training_honors_requested_epoch_count (test_worker.WorkerTests.test_demo_training_honors_requested_epoch_count) ... ERROR
+test_demo_training_preserves_custom_model_parameters (test_worker.WorkerTests.test_demo_training_preserves_custom_model_parameters) ... ERROR
+test_demo_training_references_selected_dataset_sample (test_worker.WorkerTests.test_demo_training_references_selected_dataset_sample) ... ERROR
+test_efficientad_preflight_distinguishes_data_and_teacher_files (test_worker.WorkerTests.test_efficientad_preflight_distinguishes_data_and_teacher_files) ... ERROR
+test_export_backends_resize_inputs_to_saved_dimensions (test_worker.WorkerTests.test_export_backends_resize_inputs_to_saved_dimensions) ... ERROR
+test_inspect_checkpoint_detects_patchcore_without_pickle_execution (test_worker.WorkerTests.test_inspect_checkpoint_detects_patchcore_without_pickle_execution) ... ERROR
+test_inspect_torch_export_requires_fingerprint_trust (test_worker.WorkerTests.test_inspect_torch_export_requires_fingerprint_trust) ... ERROR
+test_inspection_artifacts_are_generated_from_prediction (test_worker.WorkerTests.test_inspection_artifacts_are_generated_from_prediction) ... ERROR
+test_interrupted_download_removes_partial_and_keeps_valid_asset (test_worker.WorkerTests.test_interrupted_download_removes_partial_and_keeps_valid_asset) ... ERROR
+test_invalid_managed_safetensors_is_reported_as_corrupt (test_worker.WorkerTests.test_invalid_managed_safetensors_is_reported_as_corrupt) ... ERROR
+test_large_demo_epoch_count_uses_bounded_progress_events (test_worker.WorkerTests.test_large_demo_epoch_count_uses_bounded_progress_events) ... ERROR
+test_legacy_demo_job_receives_default_parameter_snapshot (test_worker.WorkerTests.test_legacy_demo_job_receives_default_parameter_snapshot) ... ERROR
+test_manifest_resolves_relative_openvino_pair (test_worker.WorkerTests.test_manifest_resolves_relative_openvino_pair) ... ERROR
+test_model_parameter_validation_rejects_unknown_and_invalid_values (test_worker.WorkerTests.test_model_parameter_validation_rejects_unknown_and_invalid_values) ... ok
+test_offline_socket_guard_reports_explicit_resource_error (test_worker.WorkerTests.test_offline_socket_guard_reports_explicit_resource_error) ... ok
+test_patchcore_onnx_raw_map_capability_and_external_sigma (test_worker.WorkerTests.test_patchcore_onnx_raw_map_capability_and_external_sigma) ... ERROR
+test_persistent_session_requires_exact_pt_fingerprint (test_worker.WorkerTests.test_persistent_session_requires_exact_pt_fingerprint) ... ERROR
+test_persistent_session_reuses_loaded_backend_for_predictions (test_worker.WorkerTests.test_persistent_session_reuses_loaded_backend_for_predictions) ... ERROR
+test_persistent_worker_protocol_echoes_request_ids (test_worker.WorkerTests.test_persistent_worker_protocol_echoes_request_ids) ... ERROR
+test_pretrained_false_removes_backbone_preflight_requirement (test_worker.WorkerTests.test_pretrained_false_removes_backbone_preflight_requirement) ... ERROR
+test_pth_is_not_treated_as_a_complete_model_export (test_worker.WorkerTests.test_pth_is_not_treated_as_a_complete_model_export) ... ERROR
+test_real_check_reports_missing_or_ready_environment (test_worker.WorkerTests.test_real_check_reports_missing_or_ready_environment) ... ERROR
+test_staged_zip_supports_part_suffix_and_rejects_traversal (test_worker.WorkerTests.test_staged_zip_supports_part_suffix_and_rejects_traversal) ... ERROR
+test_training_parameter_validation_rejects_ranges_and_unknown_keys (test_worker.WorkerTests.test_training_parameter_validation_rejects_ranges_and_unknown_keys) ... ok
+test_unknown_asset_is_rejected_before_network_access (test_worker.WorkerTests.test_unknown_asset_is_rejected_before_network_access) ... ERROR
+
+======================================================================
+ERROR: test_asset_check_emits_complete_status_protocol (test_worker.WorkerTests.test_asset_check_emits_complete_status_protocol)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp2hknsg30\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp2hknsg30'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 895, in test_asset_check_emits_complete_status_protocol
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp2hknsg30'
+
+======================================================================
+ERROR: test_blank_cache_preflight_reports_every_selected_model_asset (test_worker.WorkerTests.test_blank_cache_preflight_reports_every_selected_model_asset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpmkxgueli\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpmkxgueli'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 945, in test_blank_cache_preflight_reports_every_selected_model_asset
+    process, events = run_job_process(
+                      ^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpmkxgueli'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpyz09ccmi'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 943, in test_blank_cache_preflight_reports_every_selected_model_asset
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpyz09ccmi'
+
+======================================================================
+ERROR: test_cached_wide_resnet_is_imported_and_revision_is_locked (test_worker.WorkerTests.test_cached_wide_resnet_is_imported_and_revision_is_locked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpf_mzjae1\\shared-hub\\models--timm--wide_resnet50_2.racm_in1k\\refs'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpf_mzjae1\\shared-hub\\models--timm--wide_resnet50_2.racm_in1k'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1031, in test_cached_wide_resnet_is_imported_and_revision_is_locked
+    (repository / "refs").mkdir(parents=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpf_mzjae1\\shared-hub'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpf_mzjae1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1019, in test_cached_wide_resnet_is_imported_and_revision_is_locked
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpf_mzjae1'
+
+======================================================================
+ERROR: test_corrupt_download_never_replaces_valid_asset (test_worker.WorkerTests.test_corrupt_download_never_replaces_valid_asset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp0mztxeuz\\assets\\managed\\teacher'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp0mztxeuz\\assets\\managed'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1123, in test_corrupt_download_never_replaces_valid_asset
+    destination.mkdir(parents=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp0mztxeuz\\assets'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp0mztxeuz'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1119, in test_corrupt_download_never_replaces_valid_asset
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp0mztxeuz'
+
+======================================================================
+ERROR: test_demo_export_writes_manifest (test_worker.WorkerTests.test_demo_export_writes_manifest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpl1qhmqzg\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpl1qhmqzg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 719, in test_demo_export_writes_manifest
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpl1qhmqzg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp5kbhnsii'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 718, in test_demo_export_writes_manifest
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp5kbhnsii'
+
+======================================================================
+ERROR: test_demo_inference_emits_score_and_visual_artifacts (test_worker.WorkerTests.test_demo_inference_emits_score_and_visual_artifacts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 773, in test_demo_inference_emits_score_and_visual_artifacts
+    Image.fromarray(image, mode="RGB").save(image_path)
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\PIL\Image.py", line 2706, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpuah4046l\\part.png'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpuah4046l'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 767, in test_demo_inference_emits_score_and_visual_artifacts
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpuah4046l'
+
+======================================================================
+ERROR: test_demo_training_emits_results_and_winner (test_worker.WorkerTests.test_demo_training_emits_results_and_winner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp48ftr38m\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp48ftr38m'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 422, in test_demo_training_emits_results_and_winner
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp48ftr38m'
+
+======================================================================
+ERROR: test_demo_training_honors_requested_epoch_count (test_worker.WorkerTests.test_demo_training_honors_requested_epoch_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpefrzyvu_\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpefrzyvu_'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 437, in test_demo_training_honors_requested_epoch_count
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpefrzyvu_'
+
+======================================================================
+ERROR: test_demo_training_preserves_custom_model_parameters (test_worker.WorkerTests.test_demo_training_preserves_custom_model_parameters)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpjdy9ko22\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpjdy9ko22'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 452, in test_demo_training_preserves_custom_model_parameters
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpjdy9ko22'
+
+======================================================================
+ERROR: test_demo_training_references_selected_dataset_sample (test_worker.WorkerTests.test_demo_training_references_selected_dataset_sample)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 818, in test_demo_training_references_selected_dataset_sample
+    abnormal.mkdir()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp9zjh6qha\\abnormal'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp9zjh6qha'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 814, in test_demo_training_references_selected_dataset_sample
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp9zjh6qha'
+
+======================================================================
+ERROR: test_efficientad_preflight_distinguishes_data_and_teacher_files (test_worker.WorkerTests.test_efficientad_preflight_distinguishes_data_and_teacher_files)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf\\assets\\anomalib\\pre_trained\\efficientad_pretrained_weights'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf\\assets\\anomalib\\pre_trained'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf\\assets\\anomalib'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 977, in test_efficientad_preflight_distinguishes_data_and_teacher_files
+    teacher_root.mkdir(parents=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf\\assets'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 968, in test_efficientad_preflight_distinguishes_data_and_teacher_files
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpfs5p52jf'
+
+======================================================================
+ERROR: test_export_backends_resize_inputs_to_saved_dimensions (test_worker.WorkerTests.test_export_backends_resize_inputs_to_saved_dimensions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 282, in test_export_backends_resize_inputs_to_saved_dimensions
+    Image.new("RGB", (80, 60), (20, 40, 60)).save(image_path)
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\PIL\Image.py", line 2706, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp5lk3axfm\\source.png'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp5lk3axfm'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 280, in test_export_backends_resize_inputs_to_saved_dimensions
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp5lk3axfm'
+
+======================================================================
+ERROR: test_inspect_checkpoint_detects_patchcore_without_pickle_execution (test_worker.WorkerTests.test_inspect_checkpoint_detects_patchcore_without_pickle_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 78, in test_inspect_checkpoint_detects_patchcore_without_pickle_execution
+    torch.save(
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\torch\serialization.py", line 1002, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\torch\serialization.py", line 864, in _open_zipfile_writer
+    return container(name_or_buffer)  # type: ignore[arg-type]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\torch\serialization.py", line 828, in __init__
+    torch._C.PyTorchFileWriter(
+RuntimeError: [enforce fail at inline_container.cc:745] . open file failed with error code: 5
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp4udz6bp0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 76, in test_inspect_checkpoint_detects_patchcore_without_pickle_execution
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp4udz6bp0'
+
+======================================================================
+ERROR: test_inspect_torch_export_requires_fingerprint_trust (test_worker.WorkerTests.test_inspect_torch_export_requires_fingerprint_trust)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 121, in test_inspect_torch_export_requires_fingerprint_trust
+    path.write_bytes(b"untrusted pickle payload")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1036, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8rptvaeu\\model.pt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8rptvaeu'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 119, in test_inspect_torch_export_requires_fingerprint_trust
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8rptvaeu'
+
+======================================================================
+ERROR: test_inspection_artifacts_are_generated_from_prediction (test_worker.WorkerTests.test_inspection_artifacts_are_generated_from_prediction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 855, in test_inspection_artifacts_are_generated_from_prediction
+    abnormal.mkdir()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpxz2moa1o\\abnormal'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpxz2moa1o'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 850, in test_inspection_artifacts_are_generated_from_prediction
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpxz2moa1o'
+
+======================================================================
+ERROR: test_interrupted_download_removes_partial_and_keeps_valid_asset (test_worker.WorkerTests.test_interrupted_download_removes_partial_and_keeps_valid_asset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpochlgfkh\\assets\\managed\\teacher'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpochlgfkh\\assets\\managed'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1176, in test_interrupted_download_removes_partial_and_keeps_valid_asset
+    destination.mkdir(parents=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpochlgfkh\\assets'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpochlgfkh'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1172, in test_interrupted_download_removes_partial_and_keeps_valid_asset
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpochlgfkh'
+
+======================================================================
+ERROR: test_invalid_managed_safetensors_is_reported_as_corrupt (test_worker.WorkerTests.test_invalid_managed_safetensors_is_reported_as_corrupt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh\\managed\\huggingface\\hub\\models--timm--wide_resnet50_2.racm_in1k\\refs'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh\\managed\\huggingface\\hub\\models--timm--wide_resnet50_2.racm_in1k'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh\\managed\\huggingface\\hub'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh\\managed\\huggingface'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1089, in test_invalid_managed_safetensors_is_reported_as_corrupt
+    (repository / "refs").mkdir(parents=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1315, in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+  [Previous line repeated 1 more time]
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh\\managed'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1078, in test_invalid_managed_safetensors_is_reported_as_corrupt
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp8ve24hkh'
+
+======================================================================
+ERROR: test_large_demo_epoch_count_uses_bounded_progress_events (test_worker.WorkerTests.test_large_demo_epoch_count_uses_bounded_progress_events)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpokivavca\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpokivavca'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 613, in test_large_demo_epoch_count_uses_bounded_progress_events
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpokivavca'
+
+======================================================================
+ERROR: test_legacy_demo_job_receives_default_parameter_snapshot (test_worker.WorkerTests.test_legacy_demo_job_receives_default_parameter_snapshot)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpqtzudf2g\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpqtzudf2g'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 519, in test_legacy_demo_job_receives_default_parameter_snapshot
+    events = run_job(
+             ^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpqtzudf2g'
+
+======================================================================
+ERROR: test_manifest_resolves_relative_openvino_pair (test_worker.WorkerTests.test_manifest_resolves_relative_openvino_pair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 130, in test_manifest_resolves_relative_openvino_pair
+    (root / "model.xml").write_text(
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpw5w60c46\\model.xml'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpw5w60c46'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 128, in test_manifest_resolves_relative_openvino_pair
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpw5w60c46'
+
+======================================================================
+ERROR: test_patchcore_onnx_raw_map_capability_and_external_sigma (test_worker.WorkerTests.test_patchcore_onnx_raw_map_capability_and_external_sigma)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 218, in test_patchcore_onnx_raw_map_capability_and_external_sigma
+    onnx.save(model, path)
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\onnx\__init__.py", line 349, in save_model
+    _save_bytes(serialized, f)
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\onnx\__init__.py", line 178, in _save_bytes
+    with open(f, "wb") as writable:
+         ^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpeu_6tkwg\\patchcore.onnx'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpeu_6tkwg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 179, in test_patchcore_onnx_raw_map_capability_and_external_sigma
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpeu_6tkwg'
+
+======================================================================
+ERROR: test_persistent_session_requires_exact_pt_fingerprint (test_worker.WorkerTests.test_persistent_session_requires_exact_pt_fingerprint)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpb_wo3feg'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 266, in test_persistent_session_requires_exact_pt_fingerprint
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpb_wo3feg'
+
+======================================================================
+ERROR: test_persistent_session_reuses_loaded_backend_for_predictions (test_worker.WorkerTests.test_persistent_session_reuses_loaded_backend_for_predictions)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 340, in test_persistent_session_reuses_loaded_backend_for_predictions
+    Image.fromarray(np.zeros((8, 8, 3), dtype=np.uint8), mode="RGB").save(
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\PIL\Image.py", line 2706, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp10zloafk\\image.png'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp10zloafk'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 337, in test_persistent_session_reuses_loaded_backend_for_predictions
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp10zloafk'
+
+======================================================================
+ERROR: test_persistent_worker_protocol_echoes_request_ids (test_worker.WorkerTests.test_persistent_worker_protocol_echoes_request_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 378, in test_persistent_worker_protocol_echoes_request_ids
+    model_path.write_bytes(b"untrusted export")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1036, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp28muuzuw\\model.pt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp28muuzuw'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 375, in test_persistent_worker_protocol_echoes_request_ids
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmp28muuzuw'
+
+======================================================================
+ERROR: test_pretrained_false_removes_backbone_preflight_requirement (test_worker.WorkerTests.test_pretrained_false_removes_backbone_preflight_requirement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpdik9y3l2'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 924, in test_pretrained_false_removes_backbone_preflight_requirement
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpdik9y3l2'
+
+======================================================================
+ERROR: test_pth_is_not_treated_as_a_complete_model_export (test_worker.WorkerTests.test_pth_is_not_treated_as_a_complete_model_export)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 370, in test_pth_is_not_treated_as_a_complete_model_export
+    path.write_bytes(b"weights")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1036, in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpizxpxl8j\\teacher.pth'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpizxpxl8j'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 368, in test_pth_is_not_treated_as_a_complete_model_export
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpizxpxl8j'
+
+======================================================================
+ERROR: test_real_check_reports_missing_or_ready_environment (test_worker.WorkerTests.test_real_check_reports_missing_or_ready_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 49, in run_job_process
+    job_path.write_text(json.dumps(prepared), encoding="utf-8")
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1047, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpklut2s39\\job.json'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpklut2s39'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 889, in test_real_check_reports_missing_or_ready_environment
+    events = run_job({"mode": "check", "demo": False})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 66, in run_job
+    process, events = run_job_process(job)
+                      ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 43, in run_job_process
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpklut2s39'
+
+======================================================================
+ERROR: test_staged_zip_supports_part_suffix_and_rejects_traversal (test_worker.WorkerTests.test_staged_zip_supports_part_suffix_and_rejects_traversal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1228, in test_staged_zip_supports_part_suffix_and_rejects_traversal
+    with zipfile.ZipFile(valid_archive, "w") as archive:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\zipfile\__init__.py", line 1353, in __init__
+    self.fp = io.open(file, filemode)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpj37f2n3e\\asset.zip.part'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpj37f2n3e'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1225, in test_staged_zip_supports_part_suffix_and_rejects_traversal
+    with tempfile.TemporaryDirectory() as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmpj37f2n3e'
+
+======================================================================
+ERROR: test_unknown_asset_is_rejected_before_network_access (test_worker.WorkerTests.test_unknown_asset_is_rejected_before_network_access)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 637, in _rmtree_unsafe
+    os.rmdir(path)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmphpru1x_v'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\tests\test_worker.py", line 1208, in test_unknown_asset_is_rejected_before_network_access
+    with tempfile.TemporaryDirectory() as directory, mock.patch.object(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 950, in __exit__
+    self.cleanup()
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\shutil.py", line 639, in _rmtree_unsafe
+    onexc(os.rmdir, path, err)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 906, in onexc
+    _resetperms(path)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 286, in _resetperms
+    _dont_follow_symlinks(_os.chmod, path, 0o700)
+  File "C:\Users\kivanc.ekici\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\tempfile.py", line 277, in _dont_follow_symlinks
+    func(path, *args)
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\kivanc.ekici\\AppData\\Local\\Packages\\sandbox.{e5af097d-1f52-4ee1-a123-73b02af8082f}\\AC\\Temp\\tmphpru1x_v'
+
+----------------------------------------------------------------------
+Ran 37 tests in 41.064s
+
+FAILED (errors=29)
