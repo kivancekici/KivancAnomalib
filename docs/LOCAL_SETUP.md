@@ -84,8 +84,13 @@ JSON'ları tarihsel kayıtlardır; dış veri kümesi yollarını otomatik tekra
 içeriği değildir ve kopyalanmadı.
 
 Eksik ImageNette indirmesi (imagenette2.tgz.part) ve aktarım logları kaynakta
-kaldı. EfficientAD için tamamlanmış ImageNette verisi bu kaynakta yoktur;
-gerekiyorsa mevcut uygulama akışından açıkça hazırlanmalıdır.
+kaldı. ImageNette, 14 Ekim 2026'da uygulamanın indirme akışıyla yeni depoda
+hazırlandı: .data/model-assets/datasets/imagenette altında 10 sınıf ve 9.469
+eğitim görüntüsü bulunur. Arşiv checksum kontrolü, görüntü metadata kontrolü,
+30 örneğin tam açılması, ImageFolder yüklemesi ve EfficientAD small/medium
+çevrimdışı varlık kontrolleri geçti. Yerel kontrol kaydı
+.data/verification/imagenette-2026-10-14.json dosyasındadır. Bu veri Git dışında
+kalır; yeni bir clone için uygulamanın indirme akışından ayrıca hazırlanmalıdır.
 
 Yeni uygulamanın job ve inference çıktıları yürütülebilir dosyanın yanındaki
 .data/ klasörüne yazılır. Model varlıkları proje kökündeki .data/model-assets
