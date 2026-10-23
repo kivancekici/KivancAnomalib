@@ -9,6 +9,7 @@ import hashlib
 import inspect
 import json
 import logging
+import math
 import os
 from pathlib import Path
 import re
@@ -34,6 +35,7 @@ PATCHCORE_RUNTIME_PARAMETER_KEYS = {"sigma", "patch_size", "patch_stride"}
 PATCHCORE_RAW_ANOMALY_MAP_OUTPUT = "raw_anomaly_map"
 ONNX_METADATA_MODEL_PARAMETERS = "inspection_workbench.model_parameters"
 ONNX_METADATA_RAW_MAP_OUTPUT = "inspection_workbench.raw_anomaly_map_output"
+ONNX_METADATA_PIXEL_CALIBRATION = "inspection_workbench.pixel_calibration"
 TRAINING_PARAMETER_KEYS = {
     "max_epochs",
     "train_batch_size",
@@ -225,6 +227,24 @@ def image_size_tuple(parameters: dict[str, Any]) -> tuple[int, int]:
     return int(image_size["height"]), int(image_size["width"])
 
 
+def validate_patchcore_sigma(sigma: Any, image_size: tuple[int, int]) -> int:
+    """Keep Gaussian reflection padding smaller than both input dimensions."""
+    sigma = _require_int(sigma, "PatchCore.sigma", 1, 32)
+    if 4 * sigma >= min(image_size):
+        maximum = min(32, (min(image_size) - 1) // 4)
+        raise ValueError(
+            f"PatchCore.sigma must be at most {maximum} for image size "
+            f"{image_size[1]} x {image_size[0]}; Gaussian reflection padding "
+            "must be smaller than both image dimensions."
+        )
+    return sigma
+
+
+def split_seed_from_job(job: dict[str, Any]) -> int:
+    # Anomalib treats zero as an absent seed, so use a strictly positive value.
+    return _require_int(job.get("split_seed", 42), "split_seed", 1, 2_147_483_647)
+
+
 def normalize_training_parameters(
     job: dict[str, Any], model_name: str
 ) -> dict[str, Any]:
@@ -316,8 +336,8 @@ def normalize_model_parameters(
         )
         if values["precision"] not in ("float32", "float16"):
             raise ValueError("PatchCore.precision must be float32 or float16.")
-        values["sigma"] = _require_int(
-            values["sigma"], "PatchCore.sigma", 1, 32
+        values["sigma"] = validate_patchcore_sigma(
+            values["sigma"], image_size_tuple(values)
         )
         values["patch_size"] = _require_int(
             values["patch_size"], "PatchCore.patch_size", 1, 31
@@ -331,11 +351,28 @@ def normalize_model_parameters(
             values["patch_size"],
         )
     elif model_name == "PaDiM":
+        layer_channels = {
+            "resnet18": {"layer1": 64, "layer2": 128, "layer3": 256, "layer4": 512},
+            "wide_resnet50_2": {
+                "layer1": 256, "layer2": 512, "layer3": 1024, "layer4": 2048
+            },
+        }
+        maximum_features = sum(
+            layer_channels[values["backbone"]][layer] for layer in values["layers"]
+        )
         n_features = values["n_features"]
         if n_features is not None:
             values["n_features"] = _require_int(
-                n_features, "PaDiM.n_features", 1, 65_536
+                n_features, "PaDiM.n_features", 1, maximum_features
             )
+        else:
+            automatic_features = 100 if values["backbone"] == "resnet18" else 550
+            if automatic_features > maximum_features:
+                raise ValueError(
+                    f"PaDiM automatic n_features ({automatic_features}) exceeds "
+                    f"the {maximum_features} channels in the selected layers. "
+                    "Select more layers or set an explicit retained feature count."
+                )
     else:
         imagenet_dir = values["imagenet_dir"]
         if not isinstance(imagenet_dir, str) or not imagenet_dir.strip():
@@ -344,8 +381,8 @@ def normalize_model_parameters(
         values["teacher_out_channels"] = _require_int(
             values["teacher_out_channels"],
             "EfficientAD.teacher_out_channels",
-            1,
-            65_536,
+            384,
+            384,
         )
         if values["model_size"] not in ("s", "m"):
             raise ValueError("EfficientAD.model_size must be s or m.")
@@ -399,8 +436,26 @@ def parameter_snapshot(model_name: str, parameters: dict[str, Any]) -> dict[str,
     return {model_name: deepcopy(parameters)}
 
 
+def _json_safe_values(value: Any) -> Any:
+    """Represent unavailable numeric values as null in the JSON-lines protocol."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, dict):
+        return {key: _json_safe_values(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe_values(item) for item in value]
+    return value
+
+
 def emit(event: str, **payload: Any) -> None:
-    print(json.dumps({"event": event, **payload}, ensure_ascii=False), flush=True)
+    print(
+        json.dumps(
+            _json_safe_values({"event": event, **payload}),
+            ensure_ascii=False,
+            allow_nan=False,
+        ),
+        flush=True,
+    )
 
 
 def load_job(path: str) -> dict[str, Any]:
@@ -525,6 +580,45 @@ def _manifest_sigma_capability(manifest: dict[str, Any]) -> str:
     return str(raw_output) if isinstance(raw_output, str) else ""
 
 
+def validated_pixel_calibration(value: Any) -> dict[str, Any]:
+    """Accept only an explicit, reproducible calibration for raw-map overrides."""
+    import math
+
+    if not isinstance(value, dict):
+        return {}
+    if value.get("mode") == "identity":
+        return {"mode": "identity"}
+    if value.get("mode") != "min_max":
+        return {}
+    try:
+        parameters = {key: float(value[key]) for key in ("minimum", "maximum", "threshold")}
+    except (KeyError, TypeError, ValueError):
+        return {}
+    if not all(math.isfinite(item) for item in parameters.values()):
+        return {}
+    if parameters["maximum"] <= parameters["minimum"]:
+        return {}
+    return {"mode": "min_max", **parameters}
+
+
+def calibrate_override_map(value: Any, calibration: dict[str, Any]):
+    import numpy as np
+
+    calibration = validated_pixel_calibration(calibration)
+    if not calibration:
+        raise ValueError("Sigma override requires saved pixel calibration; re-export this model.")
+    array = np.asarray(value, dtype=np.float32)
+    if calibration["mode"] == "identity":
+        return array
+    return np.clip(
+        (array - calibration["threshold"])
+        / (calibration["maximum"] - calibration["minimum"])
+        + 0.5,
+        0.0,
+        1.0,
+    )
+
+
 def _resolve_manifest(path: Path) -> dict[str, Any]:
     try:
         manifest = json.loads(path.read_text(encoding="utf-8"))
@@ -589,6 +683,91 @@ def _canonical_artifact_path(path: Path) -> Path:
     return resolved.with_suffix(".xml") if resolved.suffix.lower() == ".bin" else resolved
 
 
+def _onnx_external_files(path: Path, model: Any) -> list[Path]:
+    """Validate all external tensor references before trusting an ONNX package."""
+    import onnx
+
+    def tensors(message: Any):
+        if isinstance(message, onnx.TensorProto):
+            yield message
+            return
+        for field, value in message.ListFields():
+            if field.type == field.TYPE_MESSAGE:
+                for child in value if field.is_repeated else (value,):
+                    yield from tensors(child)
+
+    root = path.parent.resolve()
+    files: set[Path] = set()
+    for tensor in tensors(model):
+        if tensor.data_location != onnx.TensorProto.EXTERNAL:
+            continue
+        info = {entry.key: entry.value for entry in tensor.external_data}
+        location = info.get("location", "")
+        relative = Path(location)
+        if not location or relative.is_absolute() or relative.drive:
+            raise ValueError("ONNX external data must use a relative path inside its artifact folder.")
+        external = (root / relative).resolve()
+        if not external.is_relative_to(root):
+            raise ValueError("ONNX external data escapes its artifact folder.")
+        if not external.is_file():
+            raise FileNotFoundError(f"ONNX external tensor file does not exist: {external}")
+        size = external.stat().st_size
+        try:
+            offset = int(info.get("offset", "0"))
+            length = int(info["length"]) if "length" in info else size - offset
+        except ValueError as exc:
+            raise ValueError("ONNX external tensor offset/length is invalid.") from exc
+        if offset < 0 or length < 0 or offset + length > size:
+            raise ValueError(f"ONNX external tensor exceeds its data file: {external}")
+        # Byte bounds also detect truncated files whose reference omits length.
+        if tensor.data_type != onnx.TensorProto.STRING:
+            try:
+                import numpy as np
+
+                dtype = np.dtype(onnx.helper.tensor_dtype_to_np_dtype(tensor.data_type))
+                count = 1
+                for dimension in tensor.dims:
+                    count *= dimension
+                type_name = onnx.TensorProto.DataType.Name(tensor.data_type)
+                bits = 4 if type_name in {"UINT4", "INT4", "FLOAT4E2M1"} else 2 if type_name in {"UINT2", "INT2"} else dtype.itemsize * 8
+                required_bytes = (count * bits + 7) // 8
+                if length < required_bytes:
+                    raise ValueError(f"ONNX external tensor data is truncated: {external}")
+            except (KeyError, TypeError):
+                pass
+        files.add(external)
+    return sorted(files, key=lambda item: item.relative_to(root).as_posix())
+
+
+def model_artifact_fingerprint(path: Path, onnx_model: Any = None) -> tuple[str, list[dict[str, Any]]]:
+    """Hash every file carrying model data, preserving legacy single-file hashes."""
+    path = _canonical_artifact_path(path)
+    files = [path]
+    if path.suffix.lower() == ".xml":
+        files.append(path.with_suffix(".bin"))
+    elif path.suffix.lower() == ".onnx":
+        if onnx_model is None:
+            import onnx
+
+            onnx_model = onnx.load(str(path), load_external_data=False)
+        files.extend(_onnx_external_files(path, onnx_model))
+    entries = [
+        {"path": file.relative_to(path.parent).as_posix(), "size_bytes": file.stat().st_size, "sha256": _sha256(file)}
+        for file in files
+    ]
+    if len(files) == 1:
+        return entries[0]["sha256"], entries
+    digest = hashlib.sha256()
+    if path.suffix.lower() == ".xml":
+        for entry in sorted(entries, key=lambda item: Path(item["path"]).suffix):
+            digest.update(Path(entry["path"]).suffix.lower().encode("ascii"))
+            digest.update(entry["sha256"].encode("ascii"))
+    else:
+        digest.update(b"inspection-workbench-onnx-package-v1\0")
+        digest.update(json.dumps(sorted(entries, key=lambda item: item["path"]), sort_keys=True, separators=(",", ":")).encode("utf-8"))
+    return digest.hexdigest(), entries
+
+
 def inspect_model_artifact(path_value: str) -> dict[str, Any]:
     """Validate an artifact and return safe metadata without executing pickle."""
     selected_path = Path(path_value).expanduser()
@@ -630,19 +809,12 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
             )
         artifact_path = xml_path.resolve()
 
-    fingerprint_paths = [artifact_path]
-    if artifact_format == "openvino":
-        fingerprint_paths.append(artifact_path.with_suffix(".bin"))
-    if len(fingerprint_paths) == 1:
-        fingerprint_value = _sha256(fingerprint_paths[0])
-    else:
-        fingerprint = hashlib.sha256()
-        for fingerprint_path in sorted(
-            fingerprint_paths, key=lambda item: item.suffix
-        ):
-            fingerprint.update(fingerprint_path.suffix.lower().encode("ascii"))
-            fingerprint.update(_sha256(fingerprint_path).encode("ascii"))
-        fingerprint_value = fingerprint.hexdigest()
+    onnx_model = None
+    if artifact_format == "onnx":
+        import onnx
+
+        onnx_model = onnx.load(str(artifact_path), load_external_data=False)
+    fingerprint_value, artifact_files = model_artifact_fingerprint(artifact_path, onnx_model)
     if manifest_info:
         artifact_spec = manifest_info["manifest"].get("artifact")
         expected_hash = (
@@ -657,6 +829,7 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
     model_name = manifest_info.get("model")
     model_parameters = manifest_info.get("model_parameters", {})
     raw_anomaly_map_output = manifest_info.get("raw_anomaly_map_output", "")
+    pixel_calibration: dict[str, Any] = {}
     checkpoint: dict[str, Any] | None = None
     if artifact_format == "checkpoint":
         import torch
@@ -684,7 +857,6 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
     elif artifact_format == "onnx":
         import onnx
 
-        onnx_model = onnx.load(str(artifact_path), load_external_data=False)
         graph = onnx_model.graph
         names = [node.name for node in graph.node]
         names += [value.name for value in graph.initializer]
@@ -709,6 +881,12 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
         embedded_raw_output = metadata.get(ONNX_METADATA_RAW_MAP_OUTPUT, "")
         if embedded_raw_output in {value.name for value in graph.output}:
             raw_anomaly_map_output = embedded_raw_output
+        try:
+            pixel_calibration = validated_pixel_calibration(
+                json.loads(metadata.get(ONNX_METADATA_PIXEL_CALIBRATION, "null"))
+            )
+        except (TypeError, json.JSONDecodeError):
+            pixel_calibration = {}
     elif artifact_format == "openvino" and not model_name:
         try:
             graph_text = artifact_path.read_text(encoding="utf-8")
@@ -731,6 +909,7 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
             or (
                 artifact_format == "onnx"
                 and raw_anomaly_map_output == PATCHCORE_RAW_ANOMALY_MAP_OUTPUT
+                and bool(pixel_calibration)
             )
         )
     )
@@ -748,12 +927,14 @@ def inspect_model_artifact(path_value: str) -> dict[str, Any]:
         ),
         "training_parameters": manifest_info.get("training_parameters", {}),
         "fingerprint": fingerprint_value,
+        "artifact_files": artifact_files,
         "requires_trust": requires_trust,
         "saved_sigma": (
             model_parameters.get("sigma", 4) if model_name == "PatchCore" else None
         ),
         "sigma_override_supported": sigma_override_supported,
         "raw_anomaly_map_output": raw_anomaly_map_output,
+        "pixel_calibration": pixel_calibration,
     }
 
 
@@ -1009,11 +1190,63 @@ def _record_ready_asset(
     _write_asset_lock(asset_root, lock)
 
 
-def _replace_directory(staging: Path, destination: Path) -> None:
+def _replace_directory(staging: Path, destination: Path, *, on_commit=None) -> None:
+    """Promote a validated directory, retaining the old one until metadata commits."""
+    staging = staging.resolve()
+    destination = destination.resolve()
+    if (staging == destination or staging in destination.parents
+            or destination in staging.parents):
+        raise ValueError("Staging and destination must be separate directories.")
     destination.parent.mkdir(parents=True, exist_ok=True)
-    if destination.exists():
-        shutil.rmtree(destination)
-    staging.replace(destination)
+    backup = destination.with_name(f".{destination.name}.{uuid.uuid4().hex}.backup")
+    had_destination = destination.exists()
+    promoted = False
+    if had_destination:
+        destination.replace(backup)
+    try:
+        staging.replace(destination)
+        promoted = True
+        if on_commit is not None:
+            on_commit()
+    except BaseException:
+        # Move the failed candidate aside before restoring. Never delete the
+        # backup on a rollback failure; its path remains available for recovery.
+        if promoted:
+            destination.replace(staging)
+        if had_destination:
+            backup.replace(destination)
+        raise
+    else:
+        if had_destination:
+            shutil.rmtree(backup, ignore_errors=True)
+
+
+def _promote_hf_repository(
+    asset_id: str,
+    definition: dict[str, Any],
+    asset_root: Path,
+    staged_repo: Path,
+    staged_file: Path,
+    revision: str,
+    source: str,
+) -> Path:
+    validation_error = _safetensors_validation_error(staged_file)
+    if validation_error:
+        raise RuntimeError(
+            f"Prepared {definition['display_name']} is corrupt: {validation_error}"
+        )
+    destination_repo = _hf_repo_directory(
+        _managed_hf_cache(asset_root), str(definition["repo_id"])
+    )
+    destination_file = destination_repo / staged_file.relative_to(staged_repo)
+    _replace_directory(
+        staged_repo, destination_repo,
+        on_commit=lambda: _record_ready_asset(
+            asset_id, asset_root, path=destination_file,
+            revision=revision, source=source,
+        ),
+    )
+    return destination_file
 
 
 def _import_hf_asset(
@@ -1039,24 +1272,20 @@ def _import_hf_asset(
         f".{destination_repo.name}.{uuid.uuid4().hex}.import"
     )
     temporary.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(source_repo, temporary, symlinks=False)
-    _replace_directory(temporary, destination_repo)
-    managed_file, managed_revision = _hf_cached_file(
-        _managed_hf_cache(asset_root),
-        definition,
-    )
-    if managed_file is None:
-        raise RuntimeError(f"Could not import {definition['display_name']}.")
-    validation_error = _safetensors_validation_error(managed_file)
-    if validation_error:
-        raise RuntimeError(
-            f"Imported {definition['display_name']} is corrupt: "
-            f"{validation_error}"
+    try:
+        shutil.copytree(source_repo, temporary, symlinks=False)
+        staged_file = temporary / source_file.relative_to(source_repo)
+        if _sha256(staged_file) != _sha256(source_file):
+            raise RuntimeError(
+                f"Imported {definition['display_name']} failed checksum validation."
+            )
+        managed_file = _promote_hf_repository(
+            asset_id, definition, asset_root, temporary, staged_file,
+            source_revision, "imported",
         )
-    if _sha256(managed_file) != _sha256(source_file):
-        raise RuntimeError(
-            f"Imported {definition['display_name']} failed checksum validation."
-        )
+    finally:
+        if temporary.exists():
+            shutil.rmtree(temporary, ignore_errors=True)
     emit(
         "asset_progress",
         asset_id=asset_id,
@@ -1065,7 +1294,7 @@ def _import_hf_asset(
         total_bytes=managed_file.stat().st_size,
         message="Imported from the existing user cache.",
     )
-    return managed_file, managed_revision or source_revision
+    return managed_file, source_revision
 
 
 def _download_hf_asset(
@@ -1090,29 +1319,31 @@ def _download_hf_asset(
         total_bytes=definition.get("estimated_bytes", 0),
         message=f"Downloading {definition['display_name']}.",
     )
-    downloaded = Path(
-        hf_hub_download(
-            repo_id=str(definition["repo_id"]),
-            filename=str(definition["filename"]),
-            cache_dir=str(_managed_hf_cache(asset_root)),
+    staging = asset_root / ".staging" / f"{asset_id}-{uuid.uuid4().hex}"
+    try:
+        downloaded = Path(
+            hf_hub_download(
+                repo_id=str(definition["repo_id"]),
+                filename=str(definition["filename"]),
+                cache_dir=str(staging),
+            )
         )
-    )
-    revision = downloaded.parent.name
-    emit(
-        "asset_progress",
-        asset_id=asset_id,
-        stage="validating",
-        downloaded_bytes=downloaded.stat().st_size,
-        total_bytes=downloaded.stat().st_size,
-        message="Validating downloaded backbone.",
-    )
-    validation_error = _safetensors_validation_error(downloaded)
-    if validation_error:
-        raise RuntimeError(
-            f"Downloaded {definition['display_name']} is corrupt: "
-            f"{validation_error}"
+        revision = downloaded.parent.name
+        emit(
+            "asset_progress", asset_id=asset_id, stage="validating",
+            downloaded_bytes=downloaded.stat().st_size,
+            total_bytes=downloaded.stat().st_size,
+            message="Validating downloaded backbone.",
         )
-    return downloaded, revision, "downloaded"
+        managed_file = _promote_hf_repository(
+            asset_id, definition, asset_root,
+            _hf_repo_directory(staging, str(definition["repo_id"])),
+            downloaded, revision, "downloaded",
+        )
+        return managed_file, revision, "downloaded"
+    finally:
+        if staging.exists():
+            shutil.rmtree(staging, ignore_errors=True)
 
 
 def _download_file(
@@ -1246,15 +1477,70 @@ def _download_archive_asset(
                 staging,
                 [str(name) for name in definition["required_files"]],
             )
+            if any((extracted / str(name)).stat().st_size == 0
+                   for name in definition["required_files"]):
+                raise RuntimeError("Prepared teacher weights contain an empty file.")
         else:
             extracted = _find_imagenette_directory(staging)
         destination = asset_root / str(definition["destination"])
-        _replace_directory(extracted, destination)
+        _replace_directory(
+            extracted, destination,
+            on_commit=lambda: _record_ready_asset(
+                asset_id, asset_root, path=destination, source="downloaded"
+            ),
+        )
         return destination
     finally:
         partial.unlink(missing_ok=True)
         if staging.exists():
             shutil.rmtree(staging, ignore_errors=True)
+
+
+class _AssetPreparationLock:
+    """An OS-held lock releases automatically if the preparing worker exits."""
+
+    def __init__(self, asset_root: Path) -> None:
+        self.path = asset_root / ".prepare.lock"
+        self.stream = None
+
+    def __enter__(self):
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.stream = self.path.open("a+b")
+        if self.stream.seek(0, os.SEEK_END) == 0:
+            self.stream.write(b"\0")
+            self.stream.flush()
+        self.stream.seek(0)
+        try:
+            if os.name == "nt":
+                import msvcrt
+
+                msvcrt.locking(self.stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            self.stream.close()
+            self.stream = None
+            raise RuntimeError(
+                "Another model asset preparation is running. Wait for it to finish."
+            ) from exc
+        return self
+
+    def __exit__(self, *_args):
+        if self.stream is not None:
+            try:
+                self.stream.seek(0)
+                if os.name == "nt":
+                    import msvcrt
+
+                    msvcrt.locking(self.stream.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+
+                    fcntl.flock(self.stream.fileno(), fcntl.LOCK_UN)
+            finally:
+                self.stream.close()
 
 
 def run_assets(job: dict[str, Any]) -> None:
@@ -1286,6 +1572,13 @@ def run_assets(job: dict[str, Any]) -> None:
     if unknown:
         raise ValueError(f"Unknown asset identifier(s): {', '.join(unknown)}.")
 
+    with _AssetPreparationLock(asset_root):
+        _prepare_requested_assets(job, asset_root, requested)
+
+
+def _prepare_requested_assets(
+    job: dict[str, Any], asset_root: Path, requested: list[Any]
+) -> None:
     os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
     os.environ["HF_HUB_DISABLE_IMPLICIT_TOKEN"] = "1"
     for raw_id in requested:
@@ -1308,24 +1601,11 @@ def run_assets(job: dict[str, Any]) -> None:
                     definition,
                     asset_root,
                 )
-                _record_ready_asset(
-                    asset_id,
-                    asset_root,
-                    path=path,
-                    revision=revision,
-                    source=result,
-                )
             else:
                 path = _download_archive_asset(
                     asset_id,
                     definition,
                     asset_root,
-                )
-                _record_ready_asset(
-                    asset_id,
-                    asset_root,
-                    path=path,
-                    source="downloaded",
                 )
                 result = "downloaded"
             status = _asset_state(asset_id, asset_root, job)
@@ -1575,6 +1855,8 @@ def demo_result(
     )
     result = {
         "model": model,
+        "demo": True,
+        "completed": True,
         "image_auroc": image_auroc,
         "pixel_auroc": pixel_auroc,
         "image_f1": image_f1,
@@ -1713,8 +1995,10 @@ def metric_value(metrics: dict[str, Any], names: list[str]) -> float | None:
         try:
             if hasattr(value, "item"):
                 value = value.item()
-            return float(value)
-        except (TypeError, ValueError):
+            converted = float(value)
+            if math.isfinite(converted):
+                return converted
+        except (TypeError, ValueError, OverflowError):
             pass
     return None
 
@@ -1799,21 +2083,37 @@ def tensor_to_numpy(value: Any):
 
 
 def normalized_map(value: Any):
+    """Validate a calibrated map without changing its decision scale."""
     import numpy as np
 
     array = tensor_to_numpy(value)
     if array is None or array.ndim != 2 or not array.size:
         raise ValueError("Prediction did not contain a two-dimensional anomaly map.")
-    finite = np.isfinite(array)
-    if not finite.any():
-        raise ValueError("Prediction anomaly map did not contain finite values.")
-    minimum = float(array[finite].min())
-    maximum = float(array[finite].max())
-    if maximum <= minimum:
-        return np.zeros(array.shape, dtype=np.float32)
-    result = (array - minimum) / (maximum - minimum)
-    result[~finite] = 0.0
-    return np.clip(result, 0.0, 1.0)
+    if not np.isfinite(array).all():
+        raise ValueError("Prediction anomaly map must contain only finite values.")
+    return array
+
+
+def finite_prediction_score(prediction: Any) -> float:
+    """Require one finite image score before writing or labeling a prediction."""
+    import numpy as np
+
+    value = prediction_field(prediction, "pred_score")
+    if value is None:
+        raise ValueError("Prediction must contain a finite scalar pred_score.")
+    if hasattr(value, "detach"):
+        value = value.detach()
+    if hasattr(value, "cpu"):
+        value = value.cpu()
+    if hasattr(value, "numpy"):
+        value = value.numpy()
+    try:
+        array = np.asarray(value, dtype=np.float64)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("Prediction must contain a finite scalar pred_score.") from exc
+    if array.size != 1 or not np.isfinite(array).all():
+        raise ValueError("Prediction must contain a finite scalar pred_score.")
+    return float(array.reshape(-1)[0])
 
 
 def gaussian_blur_anomaly_map(value: Any, sigma: int):
@@ -1822,10 +2122,10 @@ def gaussian_blur_anomaly_map(value: Any, sigma: int):
     import torch
     from anomalib.models.image.patchcore.anomaly_map import AnomalyMapGenerator
 
-    sigma = _require_int(sigma, "sigma_override", 1, 32)
     array = tensor_to_numpy(value)
-    if array is None:
+    if array is None or array.ndim != 2:
         raise ValueError("Raw anomaly map is unavailable for sigma override.")
+    sigma = validate_patchcore_sigma(sigma, array.shape)
     tensor = torch.as_tensor(np.asarray(array), dtype=torch.float32)
     while tensor.ndim < 4:
         tensor = tensor.unsqueeze(0)
@@ -1873,18 +2173,22 @@ def write_prediction_artifacts(
     import numpy as np
     from PIL import Image
 
+    score = finite_prediction_score(prediction)
     anomaly_map = normalized_map(prediction_field(prediction, "anomaly_map"))
+    display_map = np.clip(anomaly_map, 0.0, 1.0)
     artifact_root.mkdir(parents=True, exist_ok=True)
     anomaly_path = artifact_root / "anomaly-map.png"
     heatmap_path = artifact_root / "heatmap.png"
     predicted_mask_path = artifact_root / "predicted-mask.png"
+    float_map_path = artifact_root / "anomaly-map.f32"
+    float_map_path.write_bytes(np.asarray(anomaly_map, dtype="<f4").tobytes(order="C"))
 
-    Image.fromarray((anomaly_map * 255.0).astype(np.uint8), mode="L").save(
+    Image.fromarray((display_map * 255.0).astype(np.uint8), mode="L").save(
         anomaly_path
     )
     with Image.open(image_path) as source_file:
         source = source_file.convert("RGB")
-    heatmap = Image.fromarray(colorize_anomaly_map(anomaly_map), mode="RGB")
+    heatmap = Image.fromarray(colorize_anomaly_map(display_map), mode="RGB")
     heatmap = heatmap.resize(source.size, Image.Resampling.BILINEAR)
     Image.blend(source, heatmap, 0.55).save(heatmap_path)
 
@@ -1896,15 +2200,15 @@ def write_prediction_artifacts(
         predicted_mask_path
     )
 
-    score = scalar_value(prediction_field(prediction, "pred_score"))
-    if score is None:
-        score = float(anomaly_map.max())
     return {
         "image_path": str(image_path.resolve()),
         "anomaly_score": score,
         "label": "anomalous" if score >= threshold else "normal",
         "threshold": threshold,
         "anomaly_map_path": str(anomaly_path.resolve()),
+        "anomaly_map_float_path": str(float_map_path.resolve()),
+        "anomaly_map_width": int(anomaly_map.shape[1]),
+        "anomaly_map_height": int(anomaly_map.shape[0]),
         "heatmap_path": str(heatmap_path.resolve()),
         "predicted_mask_path": str(predicted_mask_path.resolve()),
     }
@@ -1936,29 +2240,28 @@ def create_inspection_artifacts(
     prediction = first_prediction(predictions)
     if prediction is None:
         raise ValueError("Anomalib did not return an inspection prediction.")
+    finite_prediction_score(prediction)
     anomaly_map = normalized_map(prediction_field(prediction, "anomaly_map"))
+    display_map = np.clip(anomaly_map, 0.0, 1.0)
 
     artifact_root = model_root / "inspection"
     artifact_root.mkdir(parents=True, exist_ok=True)
     anomaly_path = artifact_root / "anomaly-map.png"
     heatmap_path = artifact_root / "heatmap.png"
     predicted_mask_path = artifact_root / "predicted-mask.png"
+    float_map_path = artifact_root / "anomaly-map.f32"
+    float_map_path.write_bytes(np.asarray(anomaly_map, dtype="<f4").tobytes(order="C"))
 
-    Image.fromarray((anomaly_map * 255.0).astype(np.uint8), mode="L").save(
+    Image.fromarray((display_map * 255.0).astype(np.uint8), mode="L").save(
         anomaly_path
     )
     with Image.open(image_path) as source_file:
         source = source_file.convert("RGB")
-    heatmap = Image.fromarray(colorize_anomaly_map(anomaly_map), mode="RGB")
+    heatmap = Image.fromarray(colorize_anomaly_map(display_map), mode="RGB")
     heatmap = heatmap.resize(source.size, Image.Resampling.BILINEAR)
     Image.blend(source, heatmap, 0.55).save(heatmap_path)
 
-    predicted_mask = prediction_field(prediction, "pred_mask")
-    predicted_mask_array = tensor_to_numpy(predicted_mask)
-    if predicted_mask_array is None or predicted_mask_array.ndim != 2:
-        predicted_mask_array = anomaly_map >= 0.60
-    else:
-        predicted_mask_array = predicted_mask_array > 0
+    predicted_mask_array = anomaly_map >= 0.60
     mask_rgb = np.zeros((*predicted_mask_array.shape, 3), dtype=np.uint8)
     mask_rgb[predicted_mask_array] = (239, 55, 52)
     mask_image = Image.fromarray(mask_rgb, mode="RGB")
@@ -1970,6 +2273,9 @@ def create_inspection_artifacts(
         {
             "model": model_name,
             "anomaly_map_path": str(anomaly_path.resolve()),
+            "anomaly_map_float_path": str(float_map_path.resolve()),
+            "anomaly_map_width": int(anomaly_map.shape[1]),
+            "anomaly_map_height": int(anomaly_map.shape[0]),
             "heatmap_path": str(heatmap_path.resolve()),
             "predicted_mask_path": str(predicted_mask_path.resolve()),
         }
@@ -1984,6 +2290,11 @@ def run_demo_inference(job: dict[str, Any]) -> None:
     model_name = str(job.get("model", "PatchCore"))
     model_parameters = model_parameters_from_job(job, model_name)
     training_parameters = training_parameters_from_job(job, model_name)
+    sigma_override = sigma_override_from_command(job)
+    if sigma_override is not None:
+        if model_name != "PatchCore":
+            raise ValueError("Sigma override is only supported for PatchCore.")
+        validate_patchcore_sigma(sigma_override, image_size_tuple(model_parameters))
     image_path = Path(job["image_path"])
     if not image_path.is_file():
         raise FileNotFoundError(f"Test image does not exist: {image_path}")
@@ -1996,7 +2307,6 @@ def run_demo_inference(job: dict[str, Any]) -> None:
     if deviation.max() > 0:
         deviation /= float(deviation.max())
     score = float(np.quantile(deviation, 0.99)) if deviation.size else 0.0
-    sigma_override = sigma_override_from_command(job)
     saved_sigma = model_parameters["sigma"] if model_name == "PatchCore" else None
     if model_name == "PatchCore":
         effective_sigma = sigma_override if sigma_override is not None else saved_sigma
@@ -2054,6 +2364,7 @@ def create_datamodule(
         "train_batch_size": training_parameters["train_batch_size"],
         "eval_batch_size": training_parameters["eval_batch_size"],
         "num_workers": training_parameters["num_workers"],
+        "seed": split_seed_from_job(job),
     }
     if job.get("abnormal_dir"):
         kwargs["abnormal_dir"] = job["abnormal_dir"]
@@ -2237,6 +2548,13 @@ def create_model(
 
 
 def run_real_train(job: dict[str, Any]) -> None:
+    # Freeze provenance once; all model-specific datamodules receive this seed.
+    job = deepcopy(job)
+    job["split_seed"] = split_seed_from_job(job)
+    run_id = job.get("run_id")
+    if run_id is not None and (not isinstance(run_id, str) or not run_id.strip()):
+        raise ValueError("run_id must be a non-empty string.")
+    job["run_id"] = run_id.strip() if run_id is not None else uuid.uuid4().hex
     asset_root = asset_root_from_job(job)
     models = job.get("models") or ["PatchCore"]
     if not isinstance(models, list) or not models:
@@ -2245,6 +2563,7 @@ def run_real_train(job: dict[str, Any]) -> None:
         raise ValueError("Every selected model name must be a string.")
     model_names = [str(model_name) for model_name in models]
     prepared_parameters = preflight_selected_models(job, model_names)
+    job["dataset_root"] = str(Path(job["dataset_root"]).expanduser().resolve())
 
     import anomalib
     from anomalib.engine import Engine
@@ -2255,6 +2574,10 @@ def run_real_train(job: dict[str, Any]) -> None:
     emit("hello", demo=False, anomalib_version=anomalib_version)
     output_root = Path(job["output_root"])
     output_root.mkdir(parents=True, exist_ok=True)
+    (output_root / "training-job.json").write_text(
+        json.dumps(_json_safe_values(job), indent=2, allow_nan=False),
+        encoding="utf-8",
+    )
     results: list[dict[str, Any]] = []
 
     for model_name in model_names:
@@ -2278,6 +2601,16 @@ def run_real_train(job: dict[str, Any]) -> None:
         raw_results = engine.test(model=model, datamodule=datamodule)
         metrics = raw_results[0] if isinstance(raw_results, list) and raw_results else {}
         checkpoint = str(engine.best_model_path or "")
+        checkpoint_sha256 = ""
+        if checkpoint:
+            try:
+                checkpoint_sha256 = _sha256(Path(checkpoint))
+            except OSError as exc:
+                emit(
+                    "warning",
+                    model=model_name,
+                    message=f"Checkpoint is unavailable for production promotion: {exc}",
+                )
         duration = time.perf_counter() - started
         inspection = dataset_inspection(job)
         try:
@@ -2297,6 +2630,11 @@ def run_real_train(job: dict[str, Any]) -> None:
             )
         result = {
             "model": model_name,
+            "demo": False,
+            "completed": True,
+            "run_id": job["run_id"],
+            "dataset_root": job["dataset_root"],
+            "split_seed": job["split_seed"],
             "image_auroc": metric_value(
                 metrics, ["image_AUROC", "image_auroc", "test_image_AUROC"]
             ),
@@ -2309,6 +2647,7 @@ def run_real_train(job: dict[str, Any]) -> None:
             "latency_ms": None,
             "model_size_mb": directory_size_mb(Path(checkpoint)) if checkpoint else 0.0,
             "checkpoint": checkpoint,
+            "checkpoint_sha256": checkpoint_sha256,
             "duration_seconds": round(duration, 2),
             "metrics": {str(key): str(value) for key, value in metrics.items()},
             "inspection": inspection,
@@ -2322,13 +2661,29 @@ def run_real_train(job: dict[str, Any]) -> None:
 
     if not results:
         raise RuntimeError("No models were selected.")
-    scored = [item for item in results if item.get("image_auroc") is not None]
+    scored = [
+        item for item in results
+        if item.get("image_auroc") is not None and math.isfinite(item["image_auroc"])
+    ]
     winner = (
         max(scored, key=lambda item: item["image_auroc"])["model"]
         if scored
-        else results[0]["model"]
+        else ""
     )
-    emit("finished", winner=winner, result_count=len(results), demo=False)
+    if not scored:
+        emit(
+            "warning",
+            message="Training completed, but no finite image AUROC is available to select a winner.",
+        )
+    emit(
+        "finished",
+        winner=winner,
+        comparison_available=bool(scored),
+        result_count=len(results),
+        demo=False,
+        run_id=job["run_id"],
+        split_seed=job["split_seed"],
+    )
 
 
 def _sigma_override_capabilities(
@@ -2463,6 +2818,28 @@ def embed_onnx_model_parameters(
     onnx.save(model, str(path))
 
 
+def embed_onnx_pixel_calibration(path: Path, model: Any) -> dict[str, Any]:
+    """Record how the exported post-processor calibrates an overridden raw map."""
+    import onnx
+
+    processor = getattr(model, "post_processor", None)
+    if processor is None or not getattr(processor, "enable_normalization", True):
+        calibration = {"mode": "identity"}
+    else:
+        calibration = validated_pixel_calibration(
+            {
+                "mode": "min_max",
+                "minimum": scalar_value(getattr(processor, "pixel_min", None)),
+                "maximum": scalar_value(getattr(processor, "pixel_max", None)),
+                "threshold": scalar_value(getattr(processor, "pixel_threshold", None)),
+            }
+        )
+    graph = onnx.load(str(path), load_external_data=True)
+    _set_onnx_metadata(graph, ONNX_METADATA_PIXEL_CALIBRATION, json.dumps(calibration, sort_keys=True))
+    onnx.save(graph, str(path))
+    return calibration
+
+
 def package_onnx_as_single_file(path: Path) -> None:
     """Embed manageable external tensors so the delivered ONNX is self-contained."""
     import onnx
@@ -2483,21 +2860,24 @@ def _onnx_export_postprocessor_forward(self: Any, predictions: Any) -> Any:
     """Trace-friendly equivalent of Anomalib's trained post-processor."""
     from anomalib.data import InferenceBatch
 
-    pred_score = (
-        (predictions.pred_score - self._image_threshold)
-        / (self.image_max - self.image_min)
-        + 0.5
-    ).clamp(min=0, max=1)
-    anomaly_map = (
-        (predictions.anomaly_map - self._pixel_threshold)
-        / (self.pixel_max - self.pixel_min)
-        + 0.5
-    ).clamp(min=0, max=1)
+    pred_score = predictions.pred_score
+    anomaly_map = predictions.anomaly_map
+    if self.enable_normalization:
+        pred_score = (
+            (pred_score - self._image_threshold)
+            / (self.image_max - self.image_min)
+            + 0.5
+        ).clamp(min=0, max=1)
+        anomaly_map = (
+            (anomaly_map - self._pixel_threshold)
+            / (self.pixel_max - self.pixel_min)
+            + 0.5
+        ).clamp(min=0, max=1)
     return InferenceBatch(
         pred_score=pred_score,
-        pred_label=pred_score > (1.0 - self.image_sensitivity),
+        pred_label=pred_score > (1.0 - self.image_sensitivity) if self.enable_thresholding else None,
         anomaly_map=anomaly_map,
-        pred_mask=anomaly_map > (1.0 - self.pixel_sensitivity),
+        pred_mask=anomaly_map > (1.0 - self.pixel_sensitivity) if self.enable_thresholding else None,
     )
 
 
@@ -2510,20 +2890,28 @@ def make_postprocessor_onnx_export_friendly(model: Any) -> None:
     post_processor = model.post_processor
     if post_processor is None:
         return
-    image_threshold = post_processor.image_threshold.detach().clone()
-    pixel_threshold = post_processor.pixel_threshold.detach().clone()
-    required = (
-        image_threshold,
-        pixel_threshold,
-        post_processor.image_min,
-        post_processor.image_max,
-        post_processor.pixel_min,
-        post_processor.pixel_max,
-    )
-    if not all(bool(torch.isfinite(value).all().item()) for value in required):
-        raise ValueError("Trained post-processing values are incomplete; refusing an uncalibrated ONNX export.")
-    post_processor._image_threshold.copy_(image_threshold)
-    post_processor._pixel_threshold.copy_(pixel_threshold)
+    if post_processor.enable_normalization:
+        required = (
+            post_processor.image_min,
+            post_processor.image_max,
+            post_processor.pixel_min,
+            post_processor.pixel_max,
+        )
+        if not all(bool(torch.isfinite(value).all().item()) for value in required):
+            raise ValueError("Trained post-processing values are incomplete; refusing an uncalibrated ONNX export.")
+        if post_processor.image_max <= post_processor.image_min or post_processor.pixel_max <= post_processor.pixel_min:
+            raise ValueError("Trained post-processing calibration ranges must have maximum greater than minimum.")
+        # Match PostProcessor's property fallback and then its midpoint fallback.
+        image_threshold = post_processor.image_threshold.detach().clone()
+        pixel_threshold = post_processor.pixel_threshold.detach().clone()
+        if bool(torch.isnan(image_threshold).item()):
+            image_threshold = (post_processor.image_max + post_processor.image_min) / 2
+        if bool(torch.isnan(pixel_threshold).item()):
+            pixel_threshold = (post_processor.pixel_max + post_processor.pixel_min) / 2
+        if not bool(torch.isfinite(image_threshold).item()) or not bool(torch.isfinite(pixel_threshold).item()):
+            raise ValueError("Trained post-processing thresholds must be finite.")
+        post_processor._image_threshold.copy_(image_threshold)
+        post_processor._pixel_threshold.copy_(pixel_threshold)
     post_processor.forward = types.MethodType(
         _onnx_export_postprocessor_forward,
         post_processor,
@@ -2531,6 +2919,26 @@ def make_postprocessor_onnx_export_friendly(model: Any) -> None:
 
 
 def run_real_export(job: dict[str, Any]) -> None:
+    """Publish each successful export as a separate, complete artifact directory."""
+    model_name = str(job["model"])
+    if model_name not in SUPPORTED_MODELS:
+        raise ValueError(f"Unsupported model: {model_name}")
+    output_root = Path(job["output_root"]).expanduser().resolve()
+    output_root.mkdir(parents=True, exist_ok=True)
+    token = uuid.uuid4().hex
+    staging = output_root / f".export-{token}.staging"
+    destination = output_root / f"{model_name.lower()}-{token}"
+    staging.mkdir()
+    try:
+        _run_real_export_staged(
+            {**job, "output_root": str(staging), "_publish_export_root": str(destination)}
+        )
+    finally:
+        if staging.exists():
+            shutil.rmtree(staging)
+
+
+def _run_real_export_staged(job: dict[str, Any]) -> None:
     asset_root = asset_root_from_job(job)
     model_name = str(job["model"])
     model_parameters = preflight_selected_models(job, [model_name])[model_name]
@@ -2589,20 +2997,12 @@ def run_real_export(job: dict[str, Any]) -> None:
     exported = Path(exported).resolve()
     if model_name == "PatchCore" and export_format == "ONNX":
         add_patchcore_raw_map_output(exported, model_parameters)
+    pixel_calibration: dict[str, Any] = {}
     if export_format == "ONNX":
         embed_onnx_model_parameters(exported, model_name, model_parameters)
+        pixel_calibration = embed_onnx_pixel_calibration(exported, model)
         package_onnx_as_single_file(exported)
-    artifact_hash_value = _sha256(exported)
-    if exported.suffix.lower() in {".xml", ".bin"}:
-        companion = exported.with_suffix(
-            ".bin" if exported.suffix.lower() == ".xml" else ".xml"
-        )
-        if companion.is_file():
-            combined_hash = hashlib.sha256()
-            for artifact in sorted((exported, companion), key=lambda item: item.suffix):
-                combined_hash.update(artifact.suffix.lower().encode("ascii"))
-                combined_hash.update(_sha256(artifact).encode("ascii"))
-            artifact_hash_value = combined_hash.hexdigest()
+    artifact_hash_value, artifact_files = model_artifact_fingerprint(exported)
     manifest_path = exported.with_name(f"{exported.stem}.manifest.json")
     manifest = {
         "schema_version": 2,
@@ -2612,6 +3012,7 @@ def run_real_export(job: dict[str, Any]) -> None:
             "format": export_format.lower(),
             "path": exported.name,
             "sha256": artifact_hash_value,
+            "files": artifact_files,
         },
         "source_checkpoint": str(Path(job["checkpoint"]).resolve()),
         "model_parameters": parameter_snapshot(model_name, model_parameters),
@@ -2619,9 +3020,17 @@ def run_real_export(job: dict[str, Any]) -> None:
         "metrics": job.get("metrics", {}),
         "capabilities": _sigma_override_capabilities(model_name, export_format),
     }
+    if model_name == "PatchCore" and export_format == "ONNX" and not pixel_calibration:
+        manifest["capabilities"] = {"sigma_override": {"supported": False}}
     manifest_path.write_text(
         json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8"
     )
+    destination = Path(job["_publish_export_root"])
+    artifact_relative_path = exported.relative_to(output_root.resolve())
+    manifest_relative_path = manifest_path.relative_to(output_root.resolve())
+    output_root.rename(destination)
+    exported = destination / artifact_relative_path
+    manifest_path = destination / manifest_relative_path
     emit(
         "exported",
         model=model_name,
@@ -2645,6 +3054,11 @@ def run_real_inference(job: dict[str, Any]) -> None:
 
     model_name = str(job["model"])
     model_parameters = preflight_selected_models(job, [model_name])[model_name]
+    sigma_override = sigma_override_from_command(job)
+    if sigma_override is not None:
+        if model_name != "PatchCore":
+            raise ValueError("Sigma override is only supported for PatchCore.")
+        validate_patchcore_sigma(sigma_override, image_size_tuple(model_parameters))
 
     import anomalib
     from anomalib.engine import Engine
@@ -2670,12 +3084,17 @@ def run_real_inference(job: dict[str, Any]) -> None:
         message=f"Testing {image_path.name} with {model_name}",
     )
     model = create_model(model_name, model_parameters)
+    prediction_checkpoint = str(checkpoint)
+    if sigma_override is not None:
+        restore_checkpoint_state(model, checkpoint)
+        configure_patchcore_sigma(model, sigma_override)
+        prediction_checkpoint = None
     engine = Engine(default_root_dir=str(model_root), enable_progress_bar=False)
     started = time.perf_counter()
     predictions = engine.predict(
         model=model,
         data_path=str(image_path),
-        ckpt_path=str(checkpoint),
+        ckpt_path=prediction_checkpoint,
         return_predictions=True,
     )
     latency_ms = (time.perf_counter() - started) * 1000.0
@@ -2699,6 +3118,10 @@ def run_real_inference(job: dict[str, Any]) -> None:
                 model_name, model_parameters
             ),
             "training_parameters": training_parameters,
+            "saved_sigma": model_parameters.get("sigma") if model_name == "PatchCore" else None,
+            "effective_sigma": sigma_override if sigma_override is not None else model_parameters.get("sigma"),
+            "sigma_overridden": sigma_override is not None,
+            "sigma_override_supported": model_name == "PatchCore",
         }
     )
     emit("inference", **result)
@@ -2772,7 +3195,10 @@ class _CheckpointInferenceBackend:
         if self.model_name == "PatchCore":
             configure_patchcore_sigma(
                 self.model,
-                sigma_override if sigma_override is not None else self.saved_sigma,
+                validate_patchcore_sigma(
+                    sigma_override if sigma_override is not None else self.saved_sigma,
+                    self.input_size,
+                ),
             )
         if self.device.startswith("cuda"):
             self.torch.cuda.synchronize()
@@ -2932,15 +3358,18 @@ class _OnnxInferenceBackend:
         self.raw_anomaly_map_output = str(
             metadata.get("raw_anomaly_map_output", "")
         )
+        self.pixel_calibration = validated_pixel_calibration(metadata.get("pixel_calibration"))
         self.sigma_override_supported = bool(
             metadata.get("sigma_override_supported")
             and self.raw_anomaly_map_output in self.output_names
+            and self.pixel_calibration
         )
         self._run_array(np.zeros((*self.input_size, 3), dtype=np.uint8))
 
     def _run_array(self, image: Any) -> dict[str, Any]:
-        value = self.np.asarray(image, dtype=self.np.float32)
-        if value.max(initial=0.0) > 1.0:
+        source = self.np.asarray(image)
+        value = source.astype(self.np.float32)
+        if source.dtype == self.np.uint8:
             value /= 255.0
         if value.ndim == 3:
             value = value[None, ...]
@@ -2964,10 +3393,10 @@ class _OnnxInferenceBackend:
         prediction = self._run_array(image)
         if sigma_override is not None and not self.sigma_override_supported:
             raise ValueError("Sigma override is not supported by this ONNX model.")
-        if self.sigma_override_supported:
-            sigma = sigma_override if sigma_override is not None else self.saved_sigma
-            prediction["anomaly_map"] = gaussian_blur_anomaly_map(
-                prediction[self.raw_anomaly_map_output], sigma
+        if sigma_override is not None:
+            prediction["anomaly_map"] = calibrate_override_map(
+                gaussian_blur_anomaly_map(prediction[self.raw_anomaly_map_output], sigma_override),
+                self.pixel_calibration,
             )
         return prediction, (time.perf_counter() - started) * 1000.0
 
@@ -2992,7 +3421,8 @@ class _OpenVinoOnnxInferenceBackend:
         self.input_size = image_size_tuple(self.model_parameters)
         self.saved_sigma = self.model_parameters["sigma"]
         self.raw_anomaly_map_output = str(metadata["raw_anomaly_map_output"])
-        self.sigma_override_supported = True
+        self.pixel_calibration = validated_pixel_calibration(metadata.get("pixel_calibration"))
+        self.sigma_override_supported = bool(self.pixel_calibration)
         core = ov.Core()
         source_model = core.read_model(metadata["path"])
         device_names = {
@@ -3052,8 +3482,9 @@ class _OpenVinoOnnxInferenceBackend:
         self._run_array(np.zeros((*self.input_size, 3), dtype=np.uint8))
 
     def _run_array(self, image: Any) -> dict[str, Any]:
-        value = self.np.asarray(image, dtype=self.np.float32)
-        if value.max(initial=0.0) > 1.0:
+        source = self.np.asarray(image)
+        value = source.astype(self.np.float32)
+        if source.dtype == self.np.uint8:
             value /= 255.0
         if value.ndim == 3:
             value = value[None, ...]
@@ -3078,10 +3509,13 @@ class _OpenVinoOnnxInferenceBackend:
             image = self.np.asarray(resized)
         started = time.perf_counter()
         prediction = self._run_array(image)
-        sigma = sigma_override if sigma_override is not None else self.saved_sigma
-        prediction["anomaly_map"] = gaussian_blur_anomaly_map(
-            prediction[self.raw_anomaly_map_output], sigma
-        )
+        if sigma_override is not None:
+            if not self.sigma_override_supported:
+                raise ValueError("Sigma override requires saved pixel calibration; re-export this model.")
+            prediction["anomaly_map"] = calibrate_override_map(
+                gaussian_blur_anomaly_map(prediction[self.raw_anomaly_map_output], sigma_override),
+                self.pixel_calibration,
+            )
         return prediction, (time.perf_counter() - started) * 1000.0
 
 
@@ -3164,8 +3598,9 @@ class _OpenVINOInferenceBackend:
             image = self.np.asarray(
                 source.convert("RGB").resize(
                     (width, height), Image.Resampling.BILINEAR
-                )
-            )
+                ),
+                dtype=self.np.float32,
+            ) / 255.0
         started = time.perf_counter()
         prediction = self.inferencer.predict(image)
         return prediction, (time.perf_counter() - started) * 1000.0
@@ -3204,7 +3639,7 @@ class PersistentInferenceSession:
             try:
                 candidate = _OnnxInferenceBackend(metadata)
             except Exception as onnx_error:
-                if metadata.get("sigma_override_supported"):
+                if metadata.get("raw_anomaly_map_output") == PATCHCORE_RAW_ANOMALY_MAP_OUTPUT:
                     candidate = _OpenVinoOnnxInferenceBackend(
                         metadata, self.device_cache
                     )
@@ -3253,6 +3688,11 @@ class PersistentInferenceSession:
         if sigma_override is not None and not sigma_override_supported:
             raise ValueError(
                 "The loaded model does not support a runtime sigma override."
+            )
+        if sigma_override is not None:
+            validate_patchcore_sigma(
+                sigma_override,
+                getattr(self.backend, "input_size", image_size_tuple(self.backend.model_parameters)),
             )
         output_root = Path(str(command.get("output_root", ""))).expanduser()
         if not str(output_root):

@@ -5,6 +5,8 @@
 #include <QMainWindow>
 #include <QMap>
 #include <QProcess>
+#include <QSize>
+#include <QVector>
 
 #include "cameraservice.h"
 
@@ -13,6 +15,7 @@ class QCheckBox;
 class QComboBox;
 class QDoubleSpinBox;
 class QFrame;
+class QImage;
 class QLabel;
 class QLineEdit;
 class QPlainTextEdit;
@@ -66,6 +69,8 @@ private slots:
     void handleInferenceFailure(const QString &message);
 
 private:
+    friend class NativeRegressionTest;
+    enum class InferenceMode { None, Demonstration, Runtime };
     QWidget *createTrainPage();
     QWidget *createCapturePage();
     QWidget *createDatasetsPage();
@@ -96,6 +101,9 @@ private:
     void updateInspectionFromDataset();
     void updateInspectionFromResult(const QJsonObject &result);
     void updateInferenceResult(const QJsonObject &result);
+    void updatePromotionState();
+    bool loadAnomalyMap(const QJsonObject &inspection);
+    QImage thresholdedAnomalyMap(int thresholdPercent) const;
     bool startInferenceSession();
     void stopInferenceSession();
     void loadInferenceModel(const QString &path,
@@ -213,6 +221,8 @@ private:
 
     QString m_datasetRoot;
     QString m_anomalyMapPath;
+    QVector<float> m_anomalyMapValues;
+    QSize m_anomalyMapSize;
     QString m_winnerModel = QStringLiteral("PatchCore");
     QString m_activeJob;
     QString m_activeInferencePath;
@@ -228,9 +238,14 @@ private:
     QMap<QString, QJsonObject> m_assetStatuses;
     bool m_assetStatusRefreshRequested = false;
     bool m_inferenceModelReady = false;
+    InferenceMode m_inferenceMode = InferenceMode::None;
+    QSize m_activeInferenceImageSize {256, 256};
     bool m_inferenceHadReadyModelBeforeLoad = false;
     bool m_inferenceRestoreAttempted = false;
     quint64 m_inferenceRequestCounter = 0;
+#ifdef INSPECTION_TESTING
+    QString m_testDataDirectory;
+#endif
 };
 
 #endif // MAINWINDOW_H

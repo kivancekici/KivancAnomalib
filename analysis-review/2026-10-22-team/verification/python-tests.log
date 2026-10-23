@@ -1,0 +1,94 @@
+test_archive_lock_failure_preserves_previous_teacher_and_lock (test_asset_regressions.AssetRegressionTests.test_archive_lock_failure_preserves_previous_teacher_and_lock) ... ok
+test_asset_lock_rejects_second_writer_and_releases_after_exception (test_asset_regressions.AssetRegressionTests.test_asset_lock_rejects_second_writer_and_releases_after_exception) ... ok
+test_corrupt_shared_cache_is_rejected_before_managed_replacement (test_asset_regressions.AssetRegressionTests.test_corrupt_shared_cache_is_rejected_before_managed_replacement) ... ok
+test_failed_metadata_commit_restores_old_directory (test_asset_regressions.AssetRegressionTests.test_failed_metadata_commit_restores_old_directory) ... ok
+test_failed_promotion_restores_old_directory (test_asset_regressions.AssetRegressionTests.test_failed_promotion_restores_old_directory) ... ok
+test_import_lock_failure_restores_old_weights_and_lock (test_asset_regressions.AssetRegressionTests.test_import_lock_failure_restores_old_weights_and_lock) ... ok
+test_network_download_is_validated_in_staging (test_asset_regressions.AssetRegressionTests.test_network_download_is_validated_in_staging) ... ok
+test_successful_commit_replaces_contents_and_removes_backup (test_asset_regressions.AssetRegressionTests.test_successful_commit_replaces_contents_and_removes_backup) ... ok
+test_calibrated_masks_and_lossless_sidecars (test_inference_regressions.InferenceRegressionTests.test_calibrated_masks_and_lossless_sidecars) ... ok
+test_direct_checkpoint_sigma_bounds (test_inference_regressions.InferenceRegressionTests.test_direct_checkpoint_sigma_bounds) ... ok
+test_export_postprocessor_matches_threshold_fallback_and_calibration (test_inference_regressions.InferenceRegressionTests.test_export_postprocessor_matches_threshold_fallback_and_calibration) ... W1022 19:42:27.367000 54604 Lib\site-packages\torch\utils\flop_counter.py:29] triton not found; flop counting will not work for triton kernels
+C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\torch\jit\_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+ok
+test_export_postprocessor_preserves_disabled_normalization (test_inference_regressions.InferenceRegressionTests.test_export_postprocessor_preserves_disabled_normalization) ... ok
+test_export_rejects_degenerate_calibration_range (test_inference_regressions.InferenceRegressionTests.test_export_rejects_degenerate_calibration_range) ... ok
+test_exports_are_unique_and_failure_preserves_first_delivery (test_inference_regressions.InferenceRegressionTests.test_exports_are_unique_and_failure_preserves_first_delivery) ... C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\timm\models\layers\__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+C:\Users\kivanc.ekici\Documents\KivancAnomaLibTest\.venv\Lib\site-packages\anomalib\models\image\dinomaly\components\layers.py:22: FutureWarning: The anomalib.models.components.dinov2 package is deprecated and will be removed in a future release. Please use the timm-based feature extractor instead: anomalib.models.components.feature_extractors.TimmFeatureExtractor
+  from anomalib.models.components.dinov2.layers import Attention, DropPath, LayerScale, MemEffAttention
+ok
+test_external_weights_change_fingerprint_and_fail_saved_manifest (test_inference_regressions.InferenceRegressionTests.test_external_weights_change_fingerprint_and_fail_saved_manifest) ... ok
+test_generic_openvino_dark_inputs (test_inference_regressions.InferenceRegressionTests.test_generic_openvino_dark_inputs) ... ok
+test_invalid_scores_are_rejected_before_any_artifact (test_inference_regressions.InferenceRegressionTests.test_invalid_scores_are_rejected_before_any_artifact) ... ok
+test_legacy_raw_graph_keeps_outputs_in_openvino_fallback (test_inference_regressions.InferenceRegressionTests.test_legacy_raw_graph_keeps_outputs_in_openvino_fallback) ... ok
+test_legacy_raw_graph_without_calibration_rejects_override (test_inference_regressions.InferenceRegressionTests.test_legacy_raw_graph_without_calibration_rejects_override) ... ok
+test_missing_or_truncated_external_weights_fail_inspection (test_inference_regressions.InferenceRegressionTests.test_missing_or_truncated_external_weights_fail_inspection) ... ok
+test_nonfinite_map_is_rejected (test_inference_regressions.InferenceRegressionTests.test_nonfinite_map_is_rejected) ... ok
+test_onnx_no_override_and_saved_sigma_preserve_calibration (test_inference_regressions.InferenceRegressionTests.test_onnx_no_override_and_saved_sigma_preserve_calibration) ... ok
+test_runtime_sigma_rejects_kernel_larger_than_map (test_inference_regressions.InferenceRegressionTests.test_runtime_sigma_rejects_kernel_larger_than_map) ... ok
+test_single_shot_applies_sigma_after_restore (test_inference_regressions.InferenceRegressionTests.test_single_shot_applies_sigma_after_restore) ... ok
+test_single_shot_sigma_bounds_and_model_support (test_inference_regressions.InferenceRegressionTests.test_single_shot_sigma_bounds_and_model_support) ... ok
+test_training_preview_emits_same_calibrated_float_contract (test_inference_regressions.InferenceRegressionTests.test_training_preview_emits_same_calibrated_float_contract) ... ok
+test_uint8_dark_inputs_are_scaled_in_both_onnx_backends (test_inference_regressions.InferenceRegressionTests.test_uint8_dark_inputs_are_scaled_in_both_onnx_backends) ... ok
+test_models_use_identical_actual_folder_splits_and_bound_provenance (test_training_regressions.TrainingRegressionTests.test_models_use_identical_actual_folder_splits_and_bound_provenance) ... 20 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\normal. Please make sure this is intended.
+8 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\abnormal. Please make sure this is intended.
+20 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\normal. Please make sure this is intended.
+8 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\abnormal. Please make sure this is intended.
+20 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\normal. Please make sure this is intended.
+8 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\abnormal. Please make sure this is intended.
+20 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\normal. Please make sure this is intended.
+8 hidden files found in C:\Users\kivanc.ekici\Documents\GitHub\KivancAnomalib\.data\fix-validation\python-temp\tmp6c3ds09s\dataset\abnormal. Please make sure this is intended.
+ok
+test_nonfinite_scores_do_not_beat_a_scored_model_or_break_json (test_training_regressions.TrainingRegressionTests.test_nonfinite_scores_do_not_beat_a_scored_model_or_break_json) ... ok
+test_padim_layer_selection_accepts_only_constructible_feature_counts (test_training_regressions.TrainingRegressionTests.test_padim_layer_selection_accepts_only_constructible_feature_counts) ... ok
+test_protocol_sanitizes_nested_nonfinite_numbers (test_training_regressions.TrainingRegressionTests.test_protocol_sanitizes_nested_nonfinite_numbers) ... ok
+test_seed_zero_cannot_disable_anomalib_deterministic_split (test_training_regressions.TrainingRegressionTests.test_seed_zero_cannot_disable_anomalib_deterministic_split) ... ok
+test_sigma_dimension_boundary_matches_actual_gaussian_component (test_training_regressions.TrainingRegressionTests.test_sigma_dimension_boundary_matches_actual_gaussian_component) ... ok
+test_teacher_channels_fail_before_model_construction (test_training_regressions.TrainingRegressionTests.test_teacher_channels_fail_before_model_construction) ... ok
+test_unscored_run_has_no_winner_and_missing_checkpoint_has_no_hash (test_training_regressions.TrainingRegressionTests.test_unscored_run_has_no_winner_and_missing_checkpoint_has_no_hash) ... ok
+test_anomalib_version_guard_targets_2_5_and_newer_2_x (test_worker.WorkerTests.test_anomalib_version_guard_targets_2_5_and_newer_2_x) ... ok
+test_asset_check_emits_complete_status_protocol (test_worker.WorkerTests.test_asset_check_emits_complete_status_protocol) ... ok
+test_blank_cache_preflight_reports_every_selected_model_asset (test_worker.WorkerTests.test_blank_cache_preflight_reports_every_selected_model_asset) ... ok
+test_cached_wide_resnet_is_imported_and_revision_is_locked (test_worker.WorkerTests.test_cached_wide_resnet_is_imported_and_revision_is_locked) ... ok
+test_corrupt_download_never_replaces_valid_asset (test_worker.WorkerTests.test_corrupt_download_never_replaces_valid_asset) ... ok
+test_create_model_configures_patchcore_pooling_and_sigma (test_worker.WorkerTests.test_create_model_configures_patchcore_pooling_and_sigma) ... ok
+test_create_model_configures_rectangular_preprocessor (test_worker.WorkerTests.test_create_model_configures_rectangular_preprocessor) ... ok
+test_create_model_forwards_normalized_constructor_arguments (test_worker.WorkerTests.test_create_model_forwards_normalized_constructor_arguments) ... ok
+test_create_model_rejects_unsupported_constructor_fields (test_worker.WorkerTests.test_create_model_rejects_unsupported_constructor_fields) ... ok
+test_demo_export_writes_manifest (test_worker.WorkerTests.test_demo_export_writes_manifest) ... ok
+test_demo_inference_emits_score_and_visual_artifacts (test_worker.WorkerTests.test_demo_inference_emits_score_and_visual_artifacts) ... ok
+test_demo_training_emits_results_and_winner (test_worker.WorkerTests.test_demo_training_emits_results_and_winner) ... ok
+test_demo_training_honors_requested_epoch_count (test_worker.WorkerTests.test_demo_training_honors_requested_epoch_count) ... ok
+test_demo_training_preserves_custom_model_parameters (test_worker.WorkerTests.test_demo_training_preserves_custom_model_parameters) ... ok
+test_demo_training_references_selected_dataset_sample (test_worker.WorkerTests.test_demo_training_references_selected_dataset_sample) ... ok
+test_efficientad_preflight_distinguishes_data_and_teacher_files (test_worker.WorkerTests.test_efficientad_preflight_distinguishes_data_and_teacher_files) ... ok
+test_export_backends_resize_inputs_to_saved_dimensions (test_worker.WorkerTests.test_export_backends_resize_inputs_to_saved_dimensions) ... ok
+test_inspect_checkpoint_detects_patchcore_without_pickle_execution (test_worker.WorkerTests.test_inspect_checkpoint_detects_patchcore_without_pickle_execution) ... ok
+test_inspect_torch_export_requires_fingerprint_trust (test_worker.WorkerTests.test_inspect_torch_export_requires_fingerprint_trust) ... ok
+test_inspection_artifacts_are_generated_from_prediction (test_worker.WorkerTests.test_inspection_artifacts_are_generated_from_prediction) ... ok
+test_interrupted_download_removes_partial_and_keeps_valid_asset (test_worker.WorkerTests.test_interrupted_download_removes_partial_and_keeps_valid_asset) ... ok
+test_invalid_managed_safetensors_is_reported_as_corrupt (test_worker.WorkerTests.test_invalid_managed_safetensors_is_reported_as_corrupt) ... ok
+test_large_demo_epoch_count_uses_bounded_progress_events (test_worker.WorkerTests.test_large_demo_epoch_count_uses_bounded_progress_events) ... ok
+test_legacy_demo_job_receives_default_parameter_snapshot (test_worker.WorkerTests.test_legacy_demo_job_receives_default_parameter_snapshot) ... ok
+test_manifest_resolves_relative_openvino_pair (test_worker.WorkerTests.test_manifest_resolves_relative_openvino_pair) ... ok
+test_model_parameter_validation_rejects_unknown_and_invalid_values (test_worker.WorkerTests.test_model_parameter_validation_rejects_unknown_and_invalid_values) ... ok
+test_offline_socket_guard_reports_explicit_resource_error (test_worker.WorkerTests.test_offline_socket_guard_reports_explicit_resource_error) ... ok
+test_patchcore_onnx_raw_map_capability_and_external_sigma (test_worker.WorkerTests.test_patchcore_onnx_raw_map_capability_and_external_sigma) ... 2026-10-22 19:43:02.4060450 [W:onnxruntime:, graph.cc:5566 onnxruntime::Graph::CleanUnusedInitializersAndNodeArgs] Removing initializer 'memory_bank'. It is not used by any node and should be removed from the model.
+ok
+test_persistent_session_requires_exact_pt_fingerprint (test_worker.WorkerTests.test_persistent_session_requires_exact_pt_fingerprint) ... ok
+test_persistent_session_reuses_loaded_backend_for_predictions (test_worker.WorkerTests.test_persistent_session_reuses_loaded_backend_for_predictions) ... ok
+test_persistent_worker_protocol_echoes_request_ids (test_worker.WorkerTests.test_persistent_worker_protocol_echoes_request_ids) ... ok
+test_pretrained_false_removes_backbone_preflight_requirement (test_worker.WorkerTests.test_pretrained_false_removes_backbone_preflight_requirement) ... ok
+test_pth_is_not_treated_as_a_complete_model_export (test_worker.WorkerTests.test_pth_is_not_treated_as_a_complete_model_export) ... ok
+test_real_check_reports_missing_or_ready_environment (test_worker.WorkerTests.test_real_check_reports_missing_or_ready_environment) ... ok
+test_staged_zip_supports_part_suffix_and_rejects_traversal (test_worker.WorkerTests.test_staged_zip_supports_part_suffix_and_rejects_traversal) ... ok
+test_training_parameter_validation_rejects_ranges_and_unknown_keys (test_worker.WorkerTests.test_training_parameter_validation_rejects_ranges_and_unknown_keys) ... ok
+test_unknown_asset_is_rejected_before_network_access (test_worker.WorkerTests.test_unknown_asset_is_rejected_before_network_access) ... ok
+
+----------------------------------------------------------------------
+Ran 72 tests in 91.930s
+
+OK
+

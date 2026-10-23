@@ -1,0 +1,237 @@
+{
+  "versions": {
+    "anomalib": "2.6.0",
+    "torch": "2.13.0+cu130"
+  },
+  "independent_splits": {
+    "ok": true,
+    "value": {
+      "a": {
+        "train": [
+          "normal/000.png",
+          "normal/002.png",
+          "normal/003.png",
+          "normal/004.png",
+          "normal/005.png",
+          "normal/007.png",
+          "normal/008.png",
+          "normal/009.png",
+          "normal/010.png",
+          "normal/011.png",
+          "normal/013.png",
+          "normal/014.png",
+          "normal/015.png",
+          "normal/016.png",
+          "normal/018.png",
+          "normal/019.png",
+          "normal/020.png",
+          "normal/021.png",
+          "normal/022.png",
+          "normal/023.png",
+          "normal/025.png",
+          "normal/026.png",
+          "normal/027.png",
+          "normal/029.png",
+          "normal/031.png",
+          "normal/032.png",
+          "normal/033.png",
+          "normal/034.png",
+          "normal/035.png",
+          "normal/036.png",
+          "normal/038.png",
+          "normal/039.png"
+        ],
+        "val": [
+          "abnormal/002.png",
+          "abnormal/004.png",
+          "abnormal/006.png",
+          "abnormal/009.png",
+          "abnormal/011.png",
+          "abnormal/013.png",
+          "abnormal/014.png",
+          "abnormal/015.png",
+          "normal/006.png",
+          "normal/012.png",
+          "normal/030.png",
+          "normal/037.png"
+        ],
+        "test": [
+          "abnormal/000.png",
+          "abnormal/001.png",
+          "abnormal/003.png",
+          "abnormal/005.png",
+          "abnormal/007.png",
+          "abnormal/008.png",
+          "abnormal/010.png",
+          "abnormal/012.png",
+          "normal/001.png",
+          "normal/017.png",
+          "normal/024.png",
+          "normal/028.png"
+        ]
+      },
+      "b": {
+        "train": [
+          "normal/000.png",
+          "normal/001.png",
+          "normal/002.png",
+          "normal/004.png",
+          "normal/005.png",
+          "normal/006.png",
+          "normal/007.png",
+          "normal/008.png",
+          "normal/009.png",
+          "normal/010.png",
+          "normal/012.png",
+          "normal/013.png",
+          "normal/014.png",
+          "normal/015.png",
+          "normal/017.png",
+          "normal/019.png",
+          "normal/022.png",
+          "normal/023.png",
+          "normal/024.png",
+          "normal/025.png",
+          "normal/027.png",
+          "normal/028.png",
+          "normal/029.png",
+          "normal/030.png",
+          "normal/031.png",
+          "normal/032.png",
+          "normal/033.png",
+          "normal/034.png",
+          "normal/035.png",
+          "normal/036.png",
+          "normal/038.png",
+          "normal/039.png"
+        ],
+        "val": [
+          "abnormal/001.png",
+          "abnormal/004.png",
+          "abnormal/005.png",
+          "abnormal/006.png",
+          "abnormal/007.png",
+          "abnormal/009.png",
+          "abnormal/011.png",
+          "abnormal/012.png",
+          "normal/016.png",
+          "normal/018.png",
+          "normal/020.png",
+          "normal/037.png"
+        ],
+        "test": [
+          "abnormal/000.png",
+          "abnormal/002.png",
+          "abnormal/003.png",
+          "abnormal/008.png",
+          "abnormal/010.png",
+          "abnormal/013.png",
+          "abnormal/014.png",
+          "abnormal/015.png",
+          "normal/003.png",
+          "normal/011.png",
+          "normal/021.png",
+          "normal/026.png"
+        ]
+      },
+      "equal": false,
+      "seeded_equal": true,
+      "counts": {
+        "train": 32,
+        "val": 12,
+        "test": 12
+      },
+      "test_intersection_count": 4
+    }
+  },
+  "padim_accepted_parameters": {
+    "backbone": "resnet18",
+    "layers": [
+      "layer1"
+    ],
+    "pre_trained": false,
+    "n_features": null,
+    "image_size": {
+      "width": 256,
+      "height": 256
+    }
+  },
+  "padim_model_constructor": {
+    "ok": false,
+    "error": "ValueError: For backbone resnet18, 0 < n_features <= 64, found 100"
+  },
+  "patchcore_accepted_parameters": {
+    "backbone": "wide_resnet50_2",
+    "layers": [
+      "layer2",
+      "layer3"
+    ],
+    "pre_trained": true,
+    "coreset_sampling_ratio": 0.1,
+    "num_neighbors": 9,
+    "precision": "float32",
+    "sigma": 8,
+    "patch_size": 3,
+    "patch_stride": 1,
+    "image_size": {
+      "width": 32,
+      "height": 32
+    }
+  },
+  "patchcore_sigma_8_size_32": {
+    "ok": false,
+    "error": "RuntimeError: Argument #4: Padding size should be less than the corresponding input dimension, but got: padding (32, 32) at dimension 3 of input [1, 1, 32, 32]"
+  },
+  "patchcore_sigma_7_size_32": {
+    "ok": true,
+    "value": [
+      1,
+      1,
+      32,
+      32
+    ]
+  },
+  "efficientad_accepted_parameters": {
+    "imagenet_dir": "./datasets/imagenette",
+    "teacher_out_channels": 383,
+    "model_size": "s",
+    "lr": 0.0001,
+    "weight_decay": 1e-05,
+    "padding": false,
+    "pad_maps": true,
+    "image_size": {
+      "width": 256,
+      "height": 256
+    }
+  },
+  "teacher_checkpoint_conv4_shape": [
+    384,
+    256,
+    4,
+    4
+  ],
+  "efficientad_teacher_shape": {
+    "ok": false,
+    "error": "RuntimeError: Error(s) in loading state_dict for SmallPatchDescriptionNetwork:\n\tsize mismatch for conv4.weight: copying a param with shape torch.Size([384, 256, 4, 4]) from checkpoint, the shape in current model is torch.Size([383, 256, 4, 4]).\n\tsize mismatch for conv4.bias: copying a param with shape torch.Size([384]) from checkpoint, the shape in current model is torch.Size([383])."
+  },
+  "requested_training_parameters": {
+    "max_epochs": 5,
+    "train_batch_size": 8,
+    "eval_batch_size": 8,
+    "num_workers": 2,
+    "accelerator": "auto",
+    "devices": 2
+  },
+  "patchcore_trainer_arguments": {
+    "gradient_clip_val": 0,
+    "max_epochs": 1,
+    "num_sanity_val_steps": 0,
+    "devices": 1
+  },
+  "padim_trainer_arguments": {
+    "max_epochs": 1,
+    "val_check_interval": 1.0,
+    "num_sanity_val_steps": 0,
+    "devices": 1
+  }
+}

@@ -1,0 +1,17 @@
+********* Start testing of NativeRegressionTest *********
+Config: Using QtTest library 6.11.1, Qt 6.11.1 (x86_64-little_endian-llp64 shared (dynamic) debug build; by MSVC 2022), windows 11
+PASS   : NativeRegressionTest::initTestCase()
+QWARN  : NativeRegressionTest::realLoadedModelIgnoresGlobalDemoToggle() QFontDatabase: Cannot find font directory C:/Qt/6.11.1/msvc2022_64/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+PASS   : NativeRegressionTest::realLoadedModelIgnoresGlobalDemoToggle()
+PASS   : NativeRegressionTest::demonstrationResultsAreLabelled()
+PASS   : NativeRegressionTest::promotionRejectsInvalidArtifactsWithoutTouchingManifest()
+PASS   : NativeRegressionTest::promotionUsesImmutableResultProvenance()
+PASS   : NativeRegressionTest::concurrentJobsPreserveOwnershipAndStopControl()
+PASS   : NativeRegressionTest::capturePreservesExistingClassAliasesEvenWhenCameraFails()
+PASS   : NativeRegressionTest::cameraSelectionSurvivesReorderingAndRejectsDisappearance()
+PASS   : NativeRegressionTest::thresholdUsesCalibratedFloatValuesWithoutQuantization()
+PASS   : NativeRegressionTest::modelConstraintsMatchSupportedRuntimeConfigurations()
+PASS   : NativeRegressionTest::cleanupTestCase()
+Totals: 11 passed, 0 failed, 0 skipped, 0 blacklisted, 5803ms
+********* Finished testing of NativeRegressionTest *********

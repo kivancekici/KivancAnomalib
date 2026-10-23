@@ -224,6 +224,11 @@ class WorkerTests(unittest.TestCase):
                 "PatchCore", {"sigma": sigma, "patch_size": 5, "patch_stride": 2}
             )
             anomalib_worker.add_patchcore_raw_map_output(path, parameters)
+            # This synthetic graph has no postprocessor; its raw blur is
+            # already on the output scale. Real exports save their calibration.
+            anomalib_worker.embed_onnx_pixel_calibration(
+                path, mock.Mock(post_processor=None)
+            )
             inspected = anomalib_worker.inspect_model_artifact(str(path))
             self.assertTrue(inspected["sigma_override_supported"])
             self.assertEqual(
@@ -845,7 +850,10 @@ class WorkerTests(unittest.TestCase):
             def predict(self, **kwargs):
                 self.kwargs = kwargs
                 anomaly_map = np.linspace(0.0, 1.0, 6 * 8, dtype=np.float32)
-                return [{"anomaly_map": anomaly_map.reshape(1, 6, 8)}]
+                return [{
+                    "pred_score": np.asarray([0.8], dtype=np.float32),
+                    "anomaly_map": anomaly_map.reshape(1, 6, 8),
+                }]
 
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

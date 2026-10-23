@@ -37,9 +37,14 @@ QString CameraService::availabilityText() const
 #endif
 }
 
-QStringList CameraService::discover(QString *errorMessage) const
+QList<CameraService::Device> CameraService::discover(QString *errorMessage) const
 {
-    QStringList devices;
+    QList<Device> devices;
+#ifdef INSPECTION_TESTING
+    if (m_testDiscover) {
+        return m_testDiscover();
+    }
+#endif
 #ifdef HAVE_PYLON_OPENCV
     try {
         Pylon::DeviceInfoList_t info;
@@ -47,7 +52,8 @@ QStringList CameraService::discover(QString *errorMessage) const
         for (size_t index = 0; index < info.size(); ++index) {
             const QString model = QString::fromUtf8(info[index].GetModelName().c_str());
             const QString serial = QString::fromUtf8(info[index].GetSerialNumber().c_str());
-            devices << QStringLiteral("%1  ·  %2").arg(model, serial);
+            devices.append({QString::fromUtf8(info[index].GetFullName().c_str()),
+                            QStringLiteral("%1  ·  %2").arg(model, serial)});
         }
     } catch (const Pylon::GenericException &exception) {
         if (errorMessage) {
@@ -62,14 +68,35 @@ QStringList CameraService::discover(QString *errorMessage) const
     return devices;
 }
 
-bool CameraService::capture(int deviceIndex, const QString &outputPath,
+bool CameraService::capture(const QString &deviceId, const QString &outputPath,
                             QString *errorMessage) const
 {
+    const QList<Device> devices = discover(errorMessage);
+    bool found = false;
+    for (const Device &device : devices) {
+        found = found || (!deviceId.isEmpty() && device.id == deviceId);
+    }
+    if (!found) {
+        if (errorMessage) {
+            *errorMessage = QStringLiteral("The selected camera is unavailable. Discover cameras and select it again.");
+        }
+        return false;
+    }
+#ifdef INSPECTION_TESTING
+    if (m_testCapture) {
+        return m_testCapture(deviceId, outputPath, errorMessage);
+    }
+#endif
 #ifdef HAVE_PYLON_OPENCV
     try {
         Pylon::DeviceInfoList_t info;
         Pylon::CTlFactory::GetInstance().EnumerateDevices(info);
-        if (deviceIndex < 0 || static_cast<size_t>(deviceIndex) >= info.size()) {
+        size_t deviceIndex = 0;
+        while (deviceIndex < info.size()
+               && QString::fromUtf8(info[deviceIndex].GetFullName().c_str()) != deviceId) {
+            ++deviceIndex;
+        }
+        if (deviceIndex == info.size()) {
             if (errorMessage) {
                 *errorMessage = QStringLiteral("Select an available Basler camera.");
             }
@@ -121,7 +148,7 @@ bool CameraService::capture(int deviceIndex, const QString &outputPath,
         return false;
     }
 #else
-    Q_UNUSED(deviceIndex)
+    Q_UNUSED(deviceId)
     Q_UNUSED(outputPath)
     if (errorMessage) {
         *errorMessage = availabilityText();

@@ -1,0 +1,24 @@
+{
+  "asset_promotion_failure": {
+    "error": "synthetic promotion failure",
+    "previous_asset_preserved": false,
+    "staged_candidate_preserved": true
+  },
+  "invalid_prediction_scores": {
+    "missing": {
+      "anomaly_score": "1.0",
+      "label": "anomalous",
+      "standards_compliant_json": true
+    },
+    "nan": {
+      "anomaly_score": "nan",
+      "label": "normal",
+      "standards_compliant_json": false
+    },
+    "infinity": {
+      "anomaly_score": "inf",
+      "label": "anomalous",
+      "standards_compliant_json": false
+    }
+  }
+}

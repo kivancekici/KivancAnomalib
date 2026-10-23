@@ -97,6 +97,12 @@ or an app-generated `.json` model manifest. **Use trained winner** selects the
 latest winning checkpoint from the training page. The last valid artifact is
 remembered and loaded only when Inspect is opened.
 
+Loading a real artifact selects real inference independently of the demonstration
+setting used by training. Simulated Inspect results are explicitly labeled
+**DEMONSTRATION**. Production promotion requires a completed real training result
+and an unchanged checkpoint fingerprint; reference/demo results cannot replace
+the production manifest.
+
 Torch `.pt` exports use Python pickle. The app asks for confirmation before
 loading a new file and remembers its SHA-256 fingerprint; a modified file must
 be approved again. Lightning `.ckpt` detection/restoration uses weights-only
@@ -106,9 +112,18 @@ separately from total image/artifact latency.
 For PatchCore checkpoints, **Inspect** can temporarily override sigma without
 changing the checkpoint or its remembered settings. New app-generated ONNX
 exports retain their normal smoothed outputs and also expose a
-`raw_anomaly_map` output, allowing the same override in the workbench. Legacy
-or third-party ONNX files and Torch/OpenVINO exports keep their saved,
-graph-baked sigma and show the value as read-only.
+`raw_anomaly_map` output with saved pixel calibration, allowing the same override
+in the workbench. ONNX files without this calibration, including older app
+exports, retain their saved sigma and must be re-exported to enable overrides.
+Torch/OpenVINO exports keep their saved, graph-baked sigma as read-only. With no
+override selected, Inspect preserves the graph's calibrated anomaly map.
+
+Each successful real export is published to its own model directory under
+`.data/exports`. A failed or later export preserves earlier artifacts and
+manifests. ONNX fingerprints cover both the graph and any external tensor files;
+keep these files together when moving an export.
+Older external-data ONNX manifests that fingerprinted only the graph must be
+regenerated from the complete package or replaced by a fresh export.
 
 ## Prepare local model assets
 
@@ -149,7 +164,7 @@ Each model card has a **Configure…** dialog with typed controls:
   nearest neighbors, precision, Gaussian-map sigma, patch size, and patch
   stride;
 - PaDiM: backbone, feature layers, pretrained weights, and retained features;
-- EfficientAD: ImageNette directory, teacher channels, model size, learning
+- EfficientAD: ImageNette directory, fixed 384-channel teacher, model size, learning
   rate, weight decay, and padding behavior.
 
 EfficientAD requires a training batch size of one. The worker applies that
@@ -159,12 +174,21 @@ parameters and the effective training parameters. Inspect, export, and
 production promotion reuse that checkpoint-bound snapshot, so later settings
 changes affect only future training runs.
 
+Every model in a comparison uses the same dataset split seed (42 by default).
+The seed, dataset root and run ID are saved in `training-job.json` and completed
+results. Missing or non-finite comparison metrics do not qualify a model as the
+winner; if no comparable metric exists, the app reports no winner.
+
 PatchCore defaults to sigma `4`, patch size `3`, and patch stride `1`. Sigma is
-an integer from `1–32`. Patch size is an odd integer from `1–31`, and stride is
+an integer from `1–32`, additionally limited so that `4 × sigma` is smaller
+than both input dimensions (a 32-pixel dimension permits sigma at most 7).
+This constraint also applies to Inspect overrides. Patch size is an odd integer from `1–31`, and stride is
 between `1` and the selected patch size. Patch size and stride are measured in
 backbone feature-map positions rather than input-image pixels; both affect the
 memory bank and therefore require retraining. Sigma controls Gaussian smoothing
 of the pixel anomaly map and is used for validation, testing, and inference.
+PaDiM retained feature counts must fit the channels supplied by the selected
+backbone/layers; unsupported automatic combinations are rejected before training.
 
 The worker expects a Folder-style dataset:
 
@@ -176,14 +200,16 @@ dataset/
 ```
 
 `good`, `anomalous`, `defect`, `bad`, `mask`, and `ground_truth` folder names
-are also detected.
+are also detected. Capture reuses existing normal/anomalous class folders,
+including these aliases, and identifies cameras by stable device ID.
 
 Selecting or rescanning a dataset immediately updates the Train page's
 inspection panel with the first anomalous image (or the first normal image when
 there is no anomalous folder) and its matching mask. Prediction surfaces remain
 empty until a real model run emits that model's anomaly map and heatmap. The
-threshold control then rebuilds the displayed predicted mask from the normalized
-anomaly map.
+threshold control then rebuilds the displayed predicted mask from the calibrated
+float anomaly map. The PNG preview is for display; its quantization does not
+affect threshold decisions.
 
 The **Inspect** page displays the input size stored with the loaded model and
 uses it automatically. It does not allow an inference-only size override,
@@ -205,9 +231,9 @@ anomaly score, end-to-end prediction latency, heatmap, and thresholded pixel
 mask. Camera frames are saved under `.data/inference-captures`; generated
 prediction artifacts are stored under `.data/inference`.
 
-When **Use demonstration results** is enabled, this flow produces synthetic
-preview results without importing Anomalib. Turn demonstration mode off to load
-the real checkpoint with `Engine.predict`.
+An explicitly loaded demonstration session produces labelled synthetic preview
+results without importing Anomalib. A loaded real model always uses its real
+runtime, even when **Use demonstration results** is subsequently enabled.
 
 ## Current model set
 
@@ -226,7 +252,10 @@ checks. Current checkout validation and its limits are recorded in the
 [migration report](docs/migration/2026-10-14.md).
 
 - Native debug build: passed with MSVC 2022.
-- Worker unit tests (37): `python -m unittest discover -s tests -v`.
+- Worker unit and regression tests: `python -m unittest discover -s tests -v`.
+- Native Qt regressions: build `tests/native/native_regression.pro` with the same
+  Qt/MSVC kit, then run its executable with `QT_QPA_PLATFORM=offscreen`. These
+  tests use isolated settings/data and fake camera/process fixtures.
 - Native release build: passed with MSVC 2022.
 - Basler discovery: one installed camera detected during the smoke test.
 - Basler/OpenCV capture: a real PNG frame was acquired and written.

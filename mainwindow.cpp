@@ -57,7 +57,11 @@
 #include <QVBoxLayout>
 
 #include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <QtEndian>
 #include <functional>
+#include <limits>
 #include <utility>
 
 namespace {
@@ -1108,7 +1112,8 @@ void MainWindow::showModelParameterDialog(const QString &modelName)
         });
 
         auto *teacherChannels = new QSpinBox;
-        teacherChannels->setRange(1, 65536);
+        teacherChannels->setRange(384, 384);
+        teacherChannels->setToolTip(tr("The supplied teacher weights require 384 channels."));
         form->addRow(tr("Teacher channels"), teacherChannels);
         auto *modelSize = new QComboBox;
         modelSize->addItem(tr("Small (S)"), QStringLiteral("s"));
@@ -1344,6 +1349,10 @@ bool MainWindow::validateModelParameters(const QString &modelName,
         if (sigma < 1 || sigma > 32) {
             return fail(tr("PatchCore sigma must be between 1 and 32."));
         }
+        if (4 * sigma >= qMin(width, height)) {
+            return fail(tr("PatchCore sigma must be at most %1 for this image size.")
+                            .arg(qMin(32, (qMin(width, height) - 1) / 4)));
+        }
         if (patchSize < 1 || patchSize > 31 || patchSize % 2 == 0) {
             return fail(tr("PatchCore patch size must be an odd value between 1 and 31."));
         }
@@ -1353,9 +1362,19 @@ bool MainWindow::validateModelParameters(const QString &modelName,
     } else if (modelName == QStringLiteral("PaDiM")) {
         const QJsonValue features =
             parameters.value(QStringLiteral("n_features"));
-        if (!features.isNull()
-            && (features.toInt(-1) < 1 || features.toInt(-1) > 65536)) {
-            return fail(tr("PaDiM retained features must be automatic or between 1 and 65,536."));
+        const bool wide = parameters.value(QStringLiteral("backbone")).toString()
+            == QStringLiteral("wide_resnet50_2");
+        int availableChannels = 0;
+        for (const QJsonValue &layer : parameters.value(QStringLiteral("layers")).toArray()) {
+            const int index = supportedLayers().indexOf(layer.toString());
+            availableChannels += (wide ? 256 : 64) << index;
+        }
+        const int retained = features.isNull() ? (wide ? 550 : 100) : features.toInt(-1);
+        if (retained < 1 || retained > availableChannels
+            || (!features.isNull() && features.toDouble(-1) != retained)) {
+            return fail(tr("PaDiM retained features (including the automatic default) "
+                           "must be between 1 and %1 for the selected layers.")
+                            .arg(availableChannels));
         }
     } else {
         const QString imagenetDir =
@@ -1375,8 +1394,8 @@ bool MainWindow::validateModelParameters(const QString &modelName,
             parameters.value(QStringLiteral("lr")).toDouble(-1.0);
         const double weightDecay =
             parameters.value(QStringLiteral("weight_decay")).toDouble(-1.0);
-        if (channels < 1 || channels > 65536) {
-            return fail(tr("EfficientAD teacher channels must be between 1 and 65,536."));
+        if (channels != 384) {
+            return fail(tr("The supplied EfficientAD teacher weights require 384 channels."));
         }
         if (size != QStringLiteral("s") && size != QStringLiteral("m")) {
             return fail(tr("EfficientAD model size must be S or M."));
@@ -1589,6 +1608,8 @@ void MainWindow::setInspectionImage(QLabel *label, const QString &path,
 void MainWindow::clearPredictionImages()
 {
     m_anomalyMapPath.clear();
+    m_anomalyMapValues.clear();
+    m_anomalyMapSize = {};
     setInspectionImage(m_heatmapImage, {},
                        tr("Run real training to generate a heatmap"));
     setInspectionImage(m_predictedMaskImage, {},
@@ -1666,9 +1687,7 @@ void MainWindow::updateInspectionFromResult(const QJsonObject &result)
         inspection.value(QStringLiteral("heatmap_path")).toString(),
         tr("No heatmap was produced"));
 
-    m_anomalyMapPath =
-        inspection.value(QStringLiteral("anomaly_map_path")).toString();
-    if (!m_anomalyMapPath.isEmpty() && QFileInfo::exists(m_anomalyMapPath)) {
+    if (loadAnomalyMap(inspection)) {
         m_thresholdSlider->setEnabled(true);
         m_thresholdSpin->setEnabled(true);
         updateThreshold(m_thresholdSlider->value());
@@ -2022,7 +2041,7 @@ QWidget *MainWindow::createSettingsPage()
     {
         QSettings settings;
         m_demoMode->setChecked(
-            settings.value(QStringLiteral("Environment/demoMode"), true).toBool());
+            settings.value(QStringLiteral("Environment/demoMode"), false).toBool());
     }
     connect(m_demoMode, &QCheckBox::toggled, this, [](bool enabled) {
         QSettings settings;
@@ -2352,6 +2371,18 @@ void MainWindow::applyTheme()
 
 void MainWindow::populateReferenceState()
 {
+    if (!m_demoMode || !m_demoMode->isChecked()) {
+        m_normalCount->setText(QStringLiteral("0"));
+        m_anomalousCount->setText(QStringLiteral("0"));
+        m_maskCount->setText(QStringLiteral("0"));
+        m_totalCount->setText(QStringLiteral("0"));
+        m_trainingState->setText(tr("No training completed"));
+        m_winnerLabel->setText(tr("No trained winner"));
+        m_datasetPathLabel->setText(tr("Choose a dataset"));
+        m_datasetDetails->setText(tr("No dataset loaded"));
+        updatePromotionState();
+        return;
+    }
     m_normalCount->setText(QStringLiteral("1,200"));
     m_anomalousCount->setText(QStringLiteral("300"));
     m_maskCount->setText(QStringLiteral("300"));
@@ -2380,10 +2411,13 @@ void MainWindow::populateReferenceState()
          {QStringLiteral("model_size_mb"), 298.0},
          {QStringLiteral("checkpoint"), QStringLiteral("demo/efficientad/model.ckpt")}},
     };
-    for (const QJsonObject &result : reference) {
+    for (QJsonObject result : reference) {
+        result.insert(QStringLiteral("demo"), true);
+        result.insert(QStringLiteral("completed"), false);
         updateResultRow(result);
     }
     updateWinner(QStringLiteral("PatchCore"));
+    m_trainingState->setText(tr("DEMONSTRATION · Sample results"));
 
     m_trainingLog->setPlainText(
         tr("10:21:33   PatchCore    Training completed · best image AUROC 0.978\n"
@@ -2581,6 +2615,10 @@ int MainWindow::countImages(const QString &path) const
 
 void MainWindow::startTraining()
 {
+    if (m_worker->isRunning()) {
+        showStatus(tr("Wait for the current job to finish."), true);
+        return;
+    }
     QStringList models;
     for (const QString &modelName : supportedModelNames()) {
         if (QCheckBox *check = m_modelChecks.value(modelName);
@@ -2644,6 +2682,7 @@ void MainWindow::startTraining()
     };
 
     m_results.clear();
+    updatePromotionState();
     m_resultsTable->clearContents();
     m_trainingLog->clear();
     if (models.contains(QStringLiteral("EfficientAD"))
@@ -2669,6 +2708,10 @@ void MainWindow::stopTraining()
 
 void MainWindow::runWorkerJob(const QJsonObject &job, const QString &prefix)
 {
+    if (m_worker->isRunning()) {
+        showStatus(tr("Wait for the current job to finish."), true);
+        return;
+    }
     const auto reportPreparationFailure =
         [this, &prefix](const QString &message, const QString &trainingSummary) {
             showStatus(message, true);
@@ -2784,8 +2827,11 @@ void MainWindow::handleWorkerEvent(const QJsonObject &event)
         updateWinner(event.value(QStringLiteral("winner")).toString());
         m_progress->setValue(100);
         m_progress->hide();
-        m_trainingState->setText(tr("Training completed"));
-        showStatus(tr("Experiment completed. Winner: %1").arg(m_winnerModel));
+        const bool compared = !m_winnerModel.isEmpty();
+        m_trainingState->setText(compared ? tr("Training completed")
+                                         : tr("Training completed · comparison unavailable"));
+        showStatus(compared ? tr("Experiment completed. Winner: %1").arg(m_winnerModel)
+                            : tr("No finite comparison score was produced; no winner selected."));
     } else if (kind == QStringLiteral("environment")) {
         const bool ok = event.value(QStringLiteral("ok")).toBool();
         const QString message = event.value(QStringLiteral("message")).toString();
@@ -2868,8 +2914,6 @@ void MainWindow::handleWorkerFinished(int exitCode, QProcess::ExitStatus status)
         showStatus(tr("The worker exited with code %1. See the activity log.")
                        .arg(exitCode),
                    true);
-    } else if (completedJob == QStringLiteral("train")) {
-        m_trainingState->setText(tr("Training completed"));
     }
     if (completedJob == QStringLiteral("assets-download")) {
         QTimer::singleShot(0, this, &MainWindow::refreshAssetStatus);
@@ -2878,9 +2922,16 @@ void MainWindow::handleWorkerFinished(int exitCode, QProcess::ExitStatus status)
 
 void MainWindow::handleWorkerFailure(const QString &message)
 {
+    if (m_worker->isRunning()) {
+        showStatus(message, true);
+        handleWorkerOutput(message);
+        return;
+    }
+    const QString failedJob = m_activeJob;
+    m_activeJob.clear();
     setJobRunning(false);
     m_trainingState->setText(tr("Worker unavailable"));
-    if (m_activeJob == QStringLiteral("inference") && m_inferenceStatus) {
+    if (failedJob == QStringLiteral("inference") && m_inferenceStatus) {
         m_inferenceStatus->setText(tr("Worker unavailable"));
         m_inferenceStatus->setProperty("role", "errorText");
         m_inferenceStatus->style()->unpolish(m_inferenceStatus);
@@ -2888,12 +2939,12 @@ void MainWindow::handleWorkerFailure(const QString &message)
     }
     showStatus(message, true);
     handleWorkerOutput(message);
-    m_activeJob.clear();
 }
 
 void MainWindow::setJobRunning(bool running)
 {
     m_trainButton->setEnabled(!running);
+    updatePromotionState();
     if (m_epochSpin) {
         m_epochSpin->setEnabled(!running);
     }
@@ -2995,16 +3046,23 @@ void MainWindow::updateResultRow(const QJsonObject &result)
     m_resultsTable->setItem(row, 5, tableItem(size > 0 ? sizeText : QStringLiteral("—")));
     if (model == m_winnerModel) {
         updateInspectionFromResult(result);
+        updatePromotionState();
     }
 }
 
 void MainWindow::updateWinner(const QString &modelName)
 {
     if (modelName.isEmpty()) {
+        m_winnerModel.clear();
+        m_winnerLabel->setText(tr("No scored winner"));
+        clearPredictionImages();
+        updatePromotionState();
         return;
     }
     m_winnerModel = modelName;
-    m_winnerLabel->setText(tr("Winner: %1").arg(modelName));
+    m_winnerLabel->setText(m_results.value(modelName).value(QStringLiteral("demo")).toBool()
+        ? tr("DEMONSTRATION · %1").arg(modelName) : tr("Winner: %1").arg(modelName));
+    updatePromotionState();
     if (m_heatmapTitle) {
         m_heatmapTitle->setText(tr("Predicted heatmap (%1)").arg(modelName));
     }
@@ -3033,6 +3091,10 @@ void MainWindow::updateWinner(const QString &modelName)
 
 void MainWindow::exportWinner(const QString &format)
 {
+    if (m_worker->isRunning()) {
+        showStatus(tr("Wait for the current job before exporting."), true);
+        return;
+    }
     const QString checkpoint = selectedWinnerCheckpoint();
     const bool demo = m_demoMode && m_demoMode->isChecked();
     if (!demo && checkpoint.isEmpty()) {
@@ -3063,6 +3125,20 @@ void MainWindow::promoteWinner()
 {
     const QJsonObject result = m_results.value(m_winnerModel);
     const QString checkpoint = selectedWinnerCheckpoint();
+    const QString expectedHash = result.value(QStringLiteral("checkpoint_sha256")).toString();
+    if (m_worker->isRunning() || !result.value(QStringLiteral("demo")).isBool()
+        || result.value(QStringLiteral("demo")).toBool()
+        || !result.value(QStringLiteral("completed")).toBool()
+        || expectedHash.isEmpty() || !QFileInfo(checkpoint).isFile()) {
+        showStatus(tr("Only a completed real training result with a verified checkpoint "
+                      "can become the production model."), true);
+        return;
+    }
+    const QString currentHash = sha256ForFile(checkpoint);
+    if (currentHash.isEmpty() || currentHash.compare(expectedHash, Qt::CaseInsensitive) != 0) {
+        showStatus(tr("The checkpoint changed since training. Production selection was not changed."), true);
+        return;
+    }
     const QString relativeCheckpoint = QDir(dataDirectory()).relativeFilePath(
         checkpoint);
     QJsonObject manifest {
@@ -3073,9 +3149,11 @@ void MainWindow::promoteWinner()
          QJsonObject {
              {QStringLiteral("format"), QStringLiteral("checkpoint")},
              {QStringLiteral("path"), relativeCheckpoint},
-             {QStringLiteral("sha256"), sha256ForFile(checkpoint)},
+              {QStringLiteral("sha256"), currentHash},
          }},
-        {QStringLiteral("dataset_root"), m_datasetRoot},
+        {QStringLiteral("dataset_root"), result.value(QStringLiteral("dataset_root"))},
+        {QStringLiteral("run_id"), result.value(QStringLiteral("run_id"))},
+        {QStringLiteral("split_seed"), result.value(QStringLiteral("split_seed"))},
         {QStringLiteral("promoted_at"), QDateTime::currentDateTimeUtc().toString(Qt::ISODate)},
         {QStringLiteral("model_parameters"),
          checkpointModelParameters(m_winnerModel)},
@@ -3095,8 +3173,9 @@ void MainWindow::promoteWinner()
     };
     const QString path = QDir(dataDirectory()).filePath(QStringLiteral("production_model.json"));
     QSaveFile file(path);
+    const QByteArray contents = QJsonDocument(manifest).toJson(QJsonDocument::Indented);
     if (!file.open(QIODevice::WriteOnly)
-        || file.write(QJsonDocument(manifest).toJson(QJsonDocument::Indented)) < 0
+        || file.write(contents) != contents.size()
         || !file.commit()) {
         showStatus(tr("Could not write the production model manifest."), true);
         return;
@@ -3104,6 +3183,22 @@ void MainWindow::promoteWinner()
     m_promoteButton->setText(tr("%1 is the production model").arg(m_winnerModel));
     m_promoteButton->setEnabled(false);
     showStatus(tr("Production model manifest saved to %1").arg(path));
+}
+
+void MainWindow::updatePromotionState()
+{
+    if (!m_promoteButton) {
+        return;
+    }
+    const QJsonObject result = m_results.value(m_winnerModel);
+    const bool eligible = result.value(QStringLiteral("demo")).isBool()
+        && !result.value(QStringLiteral("demo")).toBool()
+        && result.value(QStringLiteral("completed")).toBool()
+        && !result.value(QStringLiteral("checkpoint_sha256")).toString().isEmpty()
+        && QFileInfo(result.value(QStringLiteral("checkpoint")).toString()).isFile();
+    m_promoteButton->setText(tr("Set as production model"));
+    m_promoteButton->setEnabled(eligible && m_activeJob.isEmpty()
+                               && (!m_worker || !m_worker->isRunning()));
 }
 
 QString MainWindow::selectedWinnerCheckpoint() const
@@ -3197,6 +3292,7 @@ void MainWindow::stopInferenceSession()
         m_inferenceWorker->stop();
     }
     m_inferenceModelReady = false;
+    m_inferenceMode = InferenceMode::None;
     m_inferenceHadReadyModelBeforeLoad = false;
     if (m_inferenceModelDetails && !m_activeInferencePath.isEmpty()) {
         m_inferenceModelDetails->setText(
@@ -3257,12 +3353,15 @@ void MainWindow::useWinnerForInference()
 {
     const bool demo = m_demoMode && m_demoMode->isChecked();
     if (demo) {
+        stopInferenceSession();
+        m_inferenceMode = InferenceMode::Demonstration;
         m_activeInferenceModel = m_winnerModel;
         m_activeInferencePath = selectedWinnerCheckpoint();
         m_activeInferenceBackend = tr("Demonstration");
         m_activeInferenceDevice = tr("Simulated");
         const QJsonObject parameters = checkpointModelParameters(m_winnerModel)
             .value(m_winnerModel).toObject();
+        m_activeInferenceImageSize = configuredImageSize(parameters);
         const int savedSigma = parameters.value(QStringLiteral("sigma")).toInt(4);
         m_activeInferenceSavedSigma = savedSigma;
         m_activeInferenceSigmaOverrideSupported =
@@ -3354,11 +3453,13 @@ void MainWindow::handleInferenceEvent(const QJsonObject &event)
             loadInferenceModel(path, fingerprint);
         } else {
             setInferenceModelState(tr("Torch model loading was cancelled."),
-                                   !m_activeInferencePath.isEmpty());
+                                   m_inferenceHadReadyModelBeforeLoad);
+            m_inferenceHadReadyModelBeforeLoad = false;
         }
         return;
     }
     if (kind == QStringLiteral("model_loaded")) {
+        m_inferenceMode = InferenceMode::Runtime;
         m_activeInferencePath =
             event.value(QStringLiteral("selected_path")).toString();
         m_activeInferenceFingerprint =
@@ -3404,6 +3505,11 @@ void MainWindow::handleInferenceEvent(const QJsonObject &event)
             event.value(QStringLiteral("model_parameters")).toObject();
         const QJsonObject modelParameters =
             parameterMap.value(m_activeInferenceModel).toObject();
+        m_activeInferenceImageSize = configuredImageSize(modelParameters);
+        if (m_inferenceSigmaSpin) {
+            m_inferenceSigmaSpin->setMaximum(qMin(32,
+                (qMin(m_activeInferenceImageSize.width(), m_activeInferenceImageSize.height()) - 1) / 4));
+        }
         QStringList configurationDetails {
             tr("input %1").arg(imageSizeText(modelParameters)),
         };
@@ -3438,6 +3544,7 @@ void MainWindow::handleInferenceEvent(const QJsonObject &event)
         return;
     }
     if (kind == QStringLiteral("model_unloaded")) {
+        m_inferenceMode = InferenceMode::None;
         setInferenceModelState(tr("Model unloaded."), false);
         return;
     }
@@ -3468,6 +3575,7 @@ void MainWindow::handleInferenceFinished(int exitCode,
                                          QProcess::ExitStatus status)
 {
     m_inferenceModelReady = false;
+    m_inferenceMode = InferenceMode::None;
     if (status != QProcess::NormalExit || exitCode != 0) {
         setInferenceModelState(
             tr("Inference worker exited with code %1.").arg(exitCode), false, true);
@@ -3520,8 +3628,8 @@ void MainWindow::runInference()
         return;
     }
 
-    const bool demo = m_demoMode && m_demoMode->isChecked();
-    if (!m_inferenceModelReady) {
+    const bool demo = m_inferenceMode == InferenceMode::Demonstration;
+    if (!m_inferenceModelReady || m_inferenceMode == InferenceMode::None) {
         showStatus(tr("Load a model before testing an image."), true);
         return;
     }
@@ -3537,6 +3645,11 @@ void MainWindow::runInference()
         && m_inferenceSigmaOverrideCheck->isChecked();
     const int sigmaOverride = m_inferenceSigmaSpin
         ? m_inferenceSigmaSpin->value() : 4;
+    if (overrideSigma && 4 * sigmaOverride >= qMin(m_activeInferenceImageSize.width(),
+                                                 m_activeInferenceImageSize.height())) {
+        showStatus(tr("Map smoothing sigma is too large for the loaded model's image size."), true);
+        return;
+    }
     const QString runFolder = QStringLiteral("run-%1").arg(
         QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd-HHmmss-zzz")));
     setInspectionImage(m_inferenceInputImage, imagePath, tr("Image unavailable"));
@@ -3609,7 +3722,7 @@ void MainWindow::captureAndRunInference()
             QDateTime::currentDateTime().toString(
                 QStringLiteral("yyyyMMdd-HHmmss-zzz"))));
     QString error;
-    if (!m_cameraService.capture(m_cameraCombo->currentIndex(), imagePath, &error)) {
+    if (!m_cameraService.capture(m_cameraCombo->currentData().toString(), imagePath, &error)) {
         showStatus(error, true);
         return;
     }
@@ -3623,8 +3736,10 @@ void MainWindow::updateInferenceResult(const QJsonObject &result)
 {
     const QString label = result.value(QStringLiteral("label")).toString();
     const bool anomalous = label == QStringLiteral("anomalous");
+    const bool demo = result.value(QStringLiteral("demo")).toBool();
     m_inferenceStatus->setText(
-        anomalous ? tr("ANOMALY DETECTED") : tr("NORMAL"));
+        (demo ? tr("DEMONSTRATION · ") : QString())
+        + (anomalous ? tr("ANOMALY DETECTED") : tr("NORMAL")));
     m_inferenceStatus->setProperty(
         "role", anomalous ? "errorText" : "successText");
     m_inferenceStatus->style()->unpolish(m_inferenceStatus);
@@ -3653,7 +3768,8 @@ void MainWindow::updateInferenceResult(const QJsonObject &result)
         result.value(QStringLiteral("predicted_mask_path")).toString(),
         tr("No mask was produced"));
     showStatus(
-        tr("%1 classified the image as %2 with anomaly score %3.")
+        (demo ? tr("DEMONSTRATION · Simulated result. ") : QString())
+        + tr("%1 classified the image as %2 with anomaly score %3.")
             .arg(result.value(QStringLiteral("model")).toString(),
                  anomalous ? tr("anomalous") : tr("normal"),
                  metricText(result, QStringLiteral("anomaly_score"))));
@@ -3845,10 +3961,16 @@ void MainWindow::updateAssetRow(const QJsonObject &event)
 void MainWindow::discoverCameras()
 {
     QString error;
-    const QStringList devices = m_cameraService.discover(&error);
+    const QList<CameraService::Device> devices = m_cameraService.discover(&error);
     if (m_cameraCombo) {
+        const QString selectedId = m_cameraCombo->currentData().toString();
         m_cameraCombo->clear();
-        m_cameraCombo->addItems(devices);
+        for (const CameraService::Device &device : devices) {
+            m_cameraCombo->addItem(device.label, device.id);
+        }
+        if (!selectedId.isEmpty()) {
+            m_cameraCombo->setCurrentIndex(m_cameraCombo->findData(selectedId));
+        }
         if (devices.isEmpty()) {
             m_cameraCombo->addItem(tr("No Basler camera detected"));
         }
@@ -3871,7 +3993,7 @@ void MainWindow::captureNormal()
         return;
     }
     QString error;
-    if (!m_cameraService.capture(m_cameraCombo->currentIndex(), path, &error)) {
+    if (!m_cameraService.capture(m_cameraCombo->currentData().toString(), path, &error)) {
         showStatus(error, true);
         return;
     }
@@ -3892,7 +4014,7 @@ void MainWindow::captureAnomalous()
         return;
     }
     QString error;
-    if (!m_cameraService.capture(m_cameraCombo->currentIndex(), path, &error)) {
+    if (!m_cameraService.capture(m_cameraCombo->currentData().toString(), path, &error)) {
         showStatus(error, true);
         return;
     }
@@ -3919,14 +4041,69 @@ QString MainWindow::nextCapturePath(const QString &classFolder)
         m_datasetPathEdit->setText(m_datasetRoot);
     }
     QDir rootDir(root);
-    if (!rootDir.mkpath(classFolder)) {
+    QString targetFolder = classFolder == QStringLiteral("normal")
+        ? detectedNormalFolder(root) : detectedAbnormalFolder(root);
+    if (targetFolder.isEmpty()) {
+        targetFolder = classFolder;
+    }
+    if (!rootDir.mkpath(targetFolder)) {
         showStatus(tr("Could not create the dataset class folder."), true);
         return {};
     }
     const QString fileName = QStringLiteral("%1_%2.png")
         .arg(classFolder,
              QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd_HHmmss_zzz")));
-    return rootDir.filePath(classFolder + QLatin1Char('/') + fileName);
+    return rootDir.filePath(targetFolder + QLatin1Char('/') + fileName);
+}
+
+bool MainWindow::loadAnomalyMap(const QJsonObject &inspection)
+{
+    m_anomalyMapValues.clear();
+    m_anomalyMapSize = {};
+    m_anomalyMapPath = inspection.value(QStringLiteral("anomaly_map_float_path")).toString();
+    const int width = inspection.value(QStringLiteral("anomaly_map_width")).toInt();
+    const int height = inspection.value(QStringLiteral("anomaly_map_height")).toInt();
+    const qint64 count = qint64(width) * height;
+    QFile file(m_anomalyMapPath);
+    if (width <= 0 || height <= 0 || count > std::numeric_limits<int>::max() / 4
+        || !file.open(QIODevice::ReadOnly) || file.size() != count * 4) {
+        return false;
+    }
+    const QByteArray bytes = file.readAll();
+    if (bytes.size() != count * 4) {
+        return false;
+    }
+    m_anomalyMapValues.resize(count);
+    for (qint64 index = 0; index < count; ++index) {
+        const quint32 bits = qFromLittleEndian<quint32>(bytes.constData() + index * 4);
+        float value;
+        static_assert(sizeof(value) == sizeof(bits));
+        std::memcpy(&value, &bits, sizeof(value));
+        if (!std::isfinite(value)) {
+            m_anomalyMapValues.clear();
+            return false;
+        }
+        m_anomalyMapValues[index] = value;
+    }
+    m_anomalyMapSize = QSize(width, height);
+    return true;
+}
+
+QImage MainWindow::thresholdedAnomalyMap(int thresholdPercent) const
+{
+    if (m_anomalyMapValues.isEmpty() || m_anomalyMapSize.isEmpty()) {
+        return {};
+    }
+    QImage image(m_anomalyMapSize, QImage::Format_RGB32);
+    const float cutoff = thresholdPercent / 100.0f;
+    for (int y = 0; y < image.height(); ++y) {
+        auto *target = reinterpret_cast<QRgb *>(image.scanLine(y));
+        for (int x = 0; x < image.width(); ++x) {
+            target[x] = m_anomalyMapValues[y * image.width() + x] >= cutoff
+                ? qRgb(239, 55, 52) : qRgb(0, 0, 0);
+        }
+    }
+    return image;
 }
 
 void MainWindow::updateThreshold(int value)
@@ -3934,21 +4111,9 @@ void MainWindow::updateThreshold(int value)
     if (m_thresholdSpin && m_thresholdSpin->value() != value) {
         m_thresholdSpin->setValue(value);
     }
-    if (!m_anomalyMapPath.isEmpty() && m_predictedMaskImage) {
-        QImage anomalyMap(m_anomalyMapPath);
-        if (!anomalyMap.isNull()) {
-            anomalyMap = anomalyMap.convertToFormat(QImage::Format_Grayscale8);
-            QImage thresholded(anomalyMap.size(), QImage::Format_RGB32);
-            const int cutoff = qRound(255.0 * value / 100.0);
-            for (int y = 0; y < anomalyMap.height(); ++y) {
-                const uchar *source = anomalyMap.constScanLine(y);
-                auto *target = reinterpret_cast<QRgb *>(thresholded.scanLine(y));
-                for (int x = 0; x < anomalyMap.width(); ++x) {
-                    target[x] = source[x] >= cutoff
-                        ? qRgb(239, 55, 52)
-                        : qRgb(0, 0, 0);
-                }
-            }
+    if (m_predictedMaskImage) {
+        const QImage thresholded = thresholdedAnomalyMap(value);
+        if (!thresholded.isNull()) {
             m_predictedMaskImage->setText({});
             m_predictedMaskImage->setPixmap(QPixmap::fromImage(thresholded).scaled(
                 QSize(m_predictedMaskImage->minimumWidth(),
@@ -3965,6 +4130,12 @@ void MainWindow::updateThreshold(int value)
 
 QString MainWindow::dataDirectory() const
 {
+#ifdef INSPECTION_TESTING
+    if (!m_testDataDirectory.isEmpty()) {
+        QDir().mkpath(m_testDataDirectory);
+        return m_testDataDirectory;
+    }
+#endif
     const QString path = QDir(QCoreApplication::applicationDirPath())
         .filePath(QStringLiteral(".data"));
     QDir().mkpath(path);
@@ -4013,6 +4184,11 @@ QString MainWindow::workspaceDirectory() const
 
 QString MainWindow::modelAssetsDirectory() const
 {
+#ifdef INSPECTION_TESTING
+    if (!m_testDataDirectory.isEmpty()) {
+        return QDir(m_testDataDirectory).filePath(QStringLiteral("model-assets"));
+    }
+#endif
     return QDir(workspaceDirectory())
         .filePath(QStringLiteral(".data/model-assets"));
 }

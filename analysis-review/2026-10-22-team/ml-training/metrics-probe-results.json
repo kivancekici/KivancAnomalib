@@ -1,0 +1,36 @@
+{
+  "absent": {
+    "winner": "PatchCore",
+    "result_scores": {
+      "PatchCore": null,
+      "PaDiM": null
+    },
+    "invalid_json_lines": []
+  },
+  "nan_first": {
+    "winner": "PatchCore",
+    "result_scores": {
+      "PatchCore": NaN,
+      "PaDiM": 0.99
+    },
+    "invalid_json_lines": [
+      {
+        "line": 4,
+        "invalid_constant": "NaN"
+      }
+    ]
+  },
+  "nan_second": {
+    "winner": "PatchCore",
+    "result_scores": {
+      "PatchCore": 0.99,
+      "PaDiM": NaN
+    },
+    "invalid_json_lines": [
+      {
+        "line": 7,
+        "invalid_constant": "NaN"
+      }
+    ]
+  }
+}

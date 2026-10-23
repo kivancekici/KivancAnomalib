@@ -30,7 +30,7 @@ void AnomalibProcess::startJob(const QString &pythonExecutable,
                                const QString &assetRoot)
 {
     if (isRunning()) {
-        emit jobFailed(tr("An Anomalib job is already running."));
+        emit outputReceived(tr("An Anomalib job is already running."));
         return;
     }
 

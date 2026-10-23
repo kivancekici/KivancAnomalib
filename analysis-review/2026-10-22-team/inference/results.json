@@ -1,0 +1,94 @@
+{
+  "mask_threshold": [
+    {
+      "case": "normal",
+      "input_range": [
+        0.10000000149011612,
+        0.20000000298023224
+      ],
+      "threshold": 0.6,
+      "expected_fraction": 0.0,
+      "actual_fraction": 0.5,
+      "image_label": "normal"
+    },
+    {
+      "case": "all_anomalous",
+      "input_range": [
+        0.8999999761581421,
+        0.8999999761581421
+      ],
+      "threshold": 0.6,
+      "expected_fraction": 1.0,
+      "actual_fraction": 0.0,
+      "image_label": "anomalous"
+    }
+  ],
+  "dark_input_scaling": {
+    "_OnnxInferenceBackend": {
+      "uint8_input_max": [
+        1,
+        2,
+        255
+      ],
+      "float_input_max": [
+        1.0,
+        0.007843137718737125,
+        1.0
+      ],
+      "expected": [
+        0.00392156862745098,
+        0.00784313725490196,
+        1
+      ]
+    },
+    "_OpenVinoOnnxInferenceBackend": {
+      "uint8_input_max": [
+        1,
+        2,
+        255
+      ],
+      "float_input_max": [
+        1.0,
+        0.007843137718737125,
+        1.0
+      ],
+      "expected": [
+        0.00392156862745098,
+        0.00784313725490196,
+        1
+      ]
+    }
+  },
+  "raw_map_replacement": {
+    "sigma_override": null,
+    "saved_sigma": 1,
+    "direct_calibrated_mean": 0.06274508684873581,
+    "backend_mean": 0.2509803771972656,
+    "pred_score_unchanged": true
+  },
+  "external_weight_integrity": {
+    "before_output": 1.0,
+    "after_output": 2.0,
+    "same_fingerprint": true,
+    "manifest_passes_after_mutation": true
+  },
+  "export_collision": {
+    "probe": "Fake Engine, real worker orchestration and installed create_export_root/default filename",
+    "exports": [
+      {
+        "model": "PatchCore",
+        "path": "C:\\Users\\kivanc.ekici\\Documents\\GitHub\\KivancAnomalib\\.data\\review-2026-10-22\\inference\\exports\\weights\\torch\\model.pt",
+        "sha256": "82c9182d436a9effb2b825e2cc0e48525f20a438b339a5d2e3d11271dd0599a9"
+      },
+      {
+        "model": "PaDiM",
+        "path": "C:\\Users\\kivanc.ekici\\Documents\\GitHub\\KivancAnomalib\\.data\\review-2026-10-22\\inference\\exports\\weights\\torch\\model.pt",
+        "sha256": "d5b6829fff7142b96b92eafa2d48205d23253b6d9b80c868127c488bc2e12e94"
+      }
+    ],
+    "same_path": true,
+    "first_artifact_replaced": true,
+    "final_model": "PaDiM",
+    "manifest_model": "PaDiM"
+  }
+}
