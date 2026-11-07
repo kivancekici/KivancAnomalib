@@ -39,17 +39,20 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QSaveFile>
+#include <QResizeEvent>
 #include <QScreen>
 #include <QScrollArea>
 #include <QSettings>
 #include <QSignalBlocker>
 #include <QSlider>
 #include <QSpinBox>
+#include <QSplitter>
 #include <QStackedWidget>
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QStyle>
 #include <QTableWidget>
+#include <QTabWidget>
 #include <QTime>
 #include <QTimer>
 #include <QToolButton>
@@ -65,6 +68,74 @@
 #include <utility>
 
 namespace {
+
+// Keep the full source image so resizing and zooming never resample a thumbnail.
+class InspectionPreview final : public QLabel
+{
+public:
+    explicit InspectionPreview(QWidget *parent = nullptr) : QLabel(parent)
+    {
+        setAlignment(Qt::AlignCenter);
+        setWordWrap(true);
+        setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
+
+    void setSource(const QPixmap &source, const QString &emptyText)
+    {
+        m_source = source;
+        setPixmap({});
+        setText(source.isNull() ? emptyText : QString());
+        fit();
+    }
+
+    void attachScrollArea(QScrollArea *area) { m_scrollArea = area; }
+
+    void fit()
+    {
+        m_scale = 0.0;
+        if (m_scrollArea) {
+            setMinimumSize(1, 1);
+            setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+            m_scrollArea->setWidgetResizable(true);
+        }
+        refresh();
+    }
+
+    void zoom(double factor, bool actualSize = false)
+    {
+        if (!m_scrollArea || m_source.isNull()) {
+            return;
+        }
+        const double fitted = qMin(double(contentsRect().width()) / m_source.width(),
+                                   double(contentsRect().height()) / m_source.height());
+        m_scale = actualSize ? 1.0 : qBound(0.05, (m_scale > 0.0 ? m_scale : fitted) * factor, 8.0);
+        const QSize frameSize = size() - contentsRect().size();
+        m_scrollArea->setWidgetResizable(false);
+        setFixedSize(qMax(1, qRound(m_source.width() * m_scale)) + frameSize.width(),
+                     qMax(1, qRound(m_source.height() * m_scale)) + frameSize.height());
+        refresh();
+    }
+
+protected:
+    void resizeEvent(QResizeEvent *event) override
+    {
+        QLabel::resizeEvent(event);
+        refresh();
+    }
+
+private:
+    void refresh()
+    {
+        if (!m_source.isNull()) {
+            setPixmap(m_source.scaled(contentsRect().size(), Qt::KeepAspectRatio,
+                                      Qt::SmoothTransformation));
+        }
+    }
+
+    QPixmap m_source;
+    double m_scale = 0.0;
+    QScrollArea *m_scrollArea = nullptr;
+};
 
 QLabel *makeLabel(const QString &text, const char *role = nullptr)
 {
@@ -416,7 +487,7 @@ QWidget *MainWindow::createTrainPage()
     auto *centerScroll = new QScrollArea;
     centerScroll->setWidgetResizable(true);
     centerScroll->setFrameShape(QFrame::NoFrame);
-    centerScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    centerScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     auto *center = new QWidget;
     center->setObjectName(QStringLiteral("trainCenter"));
     auto *content = new QVBoxLayout(center);
@@ -664,14 +735,14 @@ QWidget *MainWindow::createTrainPage()
 
     auto *inspection = new QFrame;
     inspection->setObjectName(QStringLiteral("inspectionPanel"));
-    inspection->setMinimumWidth(360);
-    inspection->setMaximumWidth(410);
+    inspection->setMinimumWidth(320);
     auto *right = new QVBoxLayout(inspection);
     right->setContentsMargins(22, 18, 22, 18);
     right->setSpacing(9);
 
     auto *winnerRow = new QHBoxLayout;
-    m_winnerLabel = makeLabel(tr("Winner: PatchCore"), "winner");
+    m_winnerLabel = makeLabel(tr("No scored winner"), "winner");
+    m_winnerLabel->setWordWrap(true);
     winnerRow->addWidget(m_winnerLabel);
     winnerRow->addStretch();
     QLabel *winnerIcon = new QLabel;
@@ -679,6 +750,9 @@ QWidget *MainWindow::createTrainPage()
                               .pixmap(QSize(20, 20)));
     winnerRow->addWidget(winnerIcon);
     right->addLayout(winnerRow);
+    m_winnerReason = makeLabel(tr("Run an experiment to compare models."), "muted");
+    m_winnerReason->setWordWrap(true);
+    right->addWidget(m_winnerReason);
     m_testImageLabel = makeLabel(tr("No dataset sample selected"), "muted");
     m_testImageLabel->setWordWrap(true);
     right->addWidget(m_testImageLabel);
@@ -697,7 +771,7 @@ QWidget *MainWindow::createTrainPage()
     right->addWidget(m_heatmapImage);
 
     auto *thresholdRow = new QHBoxLayout;
-    thresholdRow->addWidget(makeLabel(tr("Threshold"), "muted"));
+    thresholdRow->addWidget(makeLabel(tr("Pixel mask threshold"), "muted"));
     m_thresholdSlider = new QSlider(Qt::Horizontal);
     m_thresholdSlider->setRange(0, 100);
     m_thresholdSlider->setValue(60);
@@ -706,6 +780,10 @@ QWidget *MainWindow::createTrainPage()
     m_thresholdSpin->setRange(0, 100);
     m_thresholdSpin->setSuffix(QStringLiteral("%"));
     m_thresholdSpin->setValue(60);
+    m_thresholdSpin->setAccessibleName(tr("Pixel mask threshold"));
+    m_thresholdSpin->setToolTip(tr("Changes the displayed pixel mask only; the image score and model ranking stay unchanged."));
+    m_thresholdSlider->setAccessibleName(tr("Pixel mask threshold"));
+    m_thresholdSlider->setToolTip(m_thresholdSpin->toolTip());
     thresholdRow->addWidget(m_thresholdSpin);
     connect(m_thresholdSlider, &QSlider::valueChanged,
             this, &MainWindow::updateThreshold);
@@ -729,7 +807,7 @@ QWidget *MainWindow::createTrainPage()
     right->addWidget(m_promoteButton);
 
     auto *more = new QToolButton;
-    more->setText(tr("Export winner"));
+    more->setText(tr("Export selected model"));
     more->setPopupMode(QToolButton::InstantPopup);
     more->setProperty("secondary", true);
     QMenu *exportMenu = new QMenu(more);
@@ -751,8 +829,20 @@ QWidget *MainWindow::createTrainPage()
     more->setMenu(exportMenu);
     right->addWidget(more);
 
-    pageLayout->addWidget(centerScroll, 1);
-    pageLayout->addWidget(inspection);
+    auto *inspectionScroll = new QScrollArea;
+    inspectionScroll->setWidgetResizable(true);
+    inspectionScroll->setFrameShape(QFrame::NoFrame);
+    inspectionScroll->setMinimumWidth(340);
+    inspectionScroll->setWidget(inspection);
+    auto *splitter = new QSplitter(Qt::Horizontal);
+    splitter->setObjectName(QStringLiteral("trainingSplitter"));
+    splitter->setChildrenCollapsible(false);
+    centerScroll->setMinimumWidth(500);
+    splitter->addWidget(centerScroll);
+    splitter->addWidget(inspectionScroll);
+    splitter->setStretchFactor(0, 1);
+    splitter->setSizes({850, 380});
+    pageLayout->addWidget(splitter);
     return page;
 }
 
@@ -794,9 +884,11 @@ QWidget *MainWindow::createModelCard(const QString &title, const QString &subtit
     layout->addWidget(check, 0, 0, 1, 2);
 
     auto *description = makeLabel(subtitle, "muted");
+    description->setWordWrap(true);
     layout->addWidget(description, 1, 0, 1, 2);
 
     auto *configuration = makeLabel(tr("Default settings"), "muted");
+    configuration->setWordWrap(true);
     layout->addWidget(configuration, 2, 0);
     auto *configure = new QPushButton(tr("Configure…"));
     configure->setProperty("secondary", true);
@@ -1573,7 +1665,7 @@ void MainWindow::updateSharedSettingsSummary()
 
 QLabel *MainWindow::createImageLabel(const QString &resourcePath, const QSize &minimumSize)
 {
-    auto *label = new QLabel;
+    auto *label = new InspectionPreview;
     label->setObjectName(QStringLiteral("inspectionImage"));
     label->setMinimumWidth(minimumSize.width());
     label->setFixedHeight(minimumSize.height());
@@ -1591,6 +1683,11 @@ void MainWindow::setInspectionImage(QLabel *label, const QString &path,
     }
 
     const QPixmap source(path);
+    if (auto *preview = dynamic_cast<InspectionPreview *>(label)) {
+        preview->setSource(source, emptyText);
+        preview->setToolTip(QDir::toNativeSeparators(path));
+        return;
+    }
     if (path.isEmpty() || source.isNull()) {
         label->setPixmap(QPixmap());
         label->setText(emptyText);
@@ -1601,7 +1698,7 @@ void MainWindow::setInspectionImage(QLabel *label, const QString &path,
     label->setText({});
     label->setPixmap(source.scaled(
         QSize(label->minimumWidth(), label->height()),
-        Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+        Qt::KeepAspectRatio, Qt::SmoothTransformation));
     label->setToolTip(QDir::toNativeSeparators(path));
 }
 
@@ -1864,140 +1961,208 @@ QWidget *MainWindow::createInspectPage()
 {
     auto *page = new QWidget;
     auto *layout = new QVBoxLayout(page);
-    layout->setContentsMargins(34, 28, 34, 28);
-    layout->setSpacing(14);
-    layout->addWidget(makeLabel(tr("Test a trained model"), "pageTitle"));
-    layout->addWidget(makeLabel(
-        tr("Choose an image or acquire one from the selected Basler camera. "
-           "The workbench loads the chosen training checkpoint and returns an "
-           "anomaly decision, score, heatmap, and mask."),
-        "pageLead"));
+    layout->setContentsMargins(24, 18, 24, 20);
+    layout->setSpacing(12);
+    layout->addWidget(makeLabel(tr("Inspect"), "pageTitle"));
+    layout->addWidget(makeLabel(tr("Review the image, locate defects, and check the model's decision."), "pageLead"));
+
+    auto *splitter = new QSplitter(Qt::Horizontal);
+    splitter->setObjectName(QStringLiteral("inspectSplitter"));
+    splitter->setChildrenCollapsible(false);
+    auto *workspace = new QWidget;
+    workspace->setMinimumWidth(440);
+    auto *workspaceLayout = new QVBoxLayout(workspace);
+    workspaceLayout->setContentsMargins(0, 0, 12, 0);
+    workspaceLayout->setSpacing(12);
+
+    auto *resultPanel = new QFrame;
+    resultPanel->setObjectName(QStringLiteral("panel"));
+    auto *result = new QGridLayout(resultPanel);
+    result->setContentsMargins(16, 12, 16, 12);
+    m_inferenceStatus = makeLabel(tr("Ready for an image"), "winner");
+    m_inferenceStatus->setWordWrap(true);
+    result->addWidget(m_inferenceStatus, 0, 0, 1, 2);
+    result->addWidget(makeLabel(tr("Anomaly score"), "muted"), 1, 0);
+    m_inferenceScore = makeLabel(QStringLiteral("—"), "summaryValue");
+    result->addWidget(m_inferenceScore, 2, 0);
+    result->addWidget(makeLabel(tr("Latency"), "muted"), 1, 1);
+    m_inferenceLatency = makeLabel(QStringLiteral("—"), "summaryValue");
+    m_inferenceLatency->setWordWrap(true);
+    result->addWidget(m_inferenceLatency, 2, 1);
+    result->setColumnStretch(0, 1);
+    result->setColumnStretch(1, 2);
+    workspaceLayout->addWidget(resultPanel);
+
+    auto *viewerTools = new QHBoxLayout;
+    viewerTools->addWidget(makeLabel(tr("Image viewer"), "sectionTitle"));
+    viewerTools->addStretch();
+    auto *zoomOut = new QPushButton(tr("Zoom out"));
+    auto *zoomIn = new QPushButton(tr("Zoom in"));
+    auto *actualSize = new QPushButton(tr("100%"));
+    auto *fit = new QPushButton(tr("Fit"));
+    actualSize->setToolTip(tr("Show the image at its original pixel size. Scroll to pan."));
+    fit->setToolTip(tr("Fit the entire image without cropping."));
+    for (auto *button : {zoomOut, zoomIn, actualSize, fit}) {
+        button->setProperty("secondary", true);
+        viewerTools->addWidget(button);
+    }
+    workspaceLayout->addLayout(viewerTools);
+
+    auto *views = new QTabWidget;
+    views->setObjectName(QStringLiteral("inspectionViews"));
+    views->setDocumentMode(true);
+    const QList<QPair<QString, QLabel **>> imageViews = {
+        {tr("Input image"), &m_inferenceInputImage},
+        {tr("Heatmap overlay"), &m_inferenceHeatmapImage},
+        {tr("Pixel mask"), &m_inferenceMaskImage},
+    };
+    QList<InspectionPreview *> previews;
+    for (const auto &view : imageViews) {
+        auto *scroll = new QScrollArea;
+        scroll->setObjectName(QStringLiteral("imageViewport"));
+        scroll->setWidgetResizable(true);
+        scroll->setAlignment(Qt::AlignCenter);
+        scroll->setFrameShape(QFrame::NoFrame);
+        auto *preview = new InspectionPreview;
+        preview->setObjectName(QStringLiteral("inspectionImage"));
+        preview->setAccessibleName(view.first);
+        preview->setMinimumSize(1, 1);
+        scroll->setWidget(preview);
+        preview->attachScrollArea(scroll);
+        preview->setSource({}, view.second == &m_inferenceInputImage
+            ? tr("Choose an image or capture a camera frame to begin.")
+            : tr("Run an inspection to see this view."));
+        *view.second = preview;
+        previews.append(preview);
+        views->addTab(scroll, view.first);
+    }
+    connect(zoomOut, &QPushButton::clicked, page, [views, previews] {
+        previews.at(views->currentIndex())->zoom(0.8);
+    });
+    connect(zoomIn, &QPushButton::clicked, page, [views, previews] {
+        previews.at(views->currentIndex())->zoom(1.25);
+    });
+    connect(actualSize, &QPushButton::clicked, page, [views, previews] {
+        previews.at(views->currentIndex())->zoom(1.0, true);
+    });
+    connect(fit, &QPushButton::clicked, page, [views, previews] {
+        previews.at(views->currentIndex())->fit();
+    });
+    workspaceLayout->addWidget(views, 1);
+    workspaceLayout->addWidget(makeLabel(tr("Fit shows the complete image. At higher zoom, use the scrollbars to pan."), "muted"));
 
     auto *controlsPanel = new QFrame;
     controlsPanel->setObjectName(QStringLiteral("panel"));
-    auto *controls = new QGridLayout(controlsPanel);
-    controls->setContentsMargins(20, 18, 20, 18);
-    controls->setHorizontalSpacing(10);
-    controls->setVerticalSpacing(10);
-
-    controls->addWidget(makeLabel(tr("Active model"), "fieldLabel"), 0, 0);
+    auto *controls = new QVBoxLayout(controlsPanel);
+    controls->setContentsMargins(16, 16, 16, 16);
+    controls->setSpacing(10);
+    controls->addWidget(makeLabel(tr("1. Model"), "sectionTitle"));
     m_inferenceModelName = makeLabel(tr("No model loaded"), "summaryValue");
-    controls->addWidget(m_inferenceModelName, 0, 1);
+    m_inferenceModelName->setWordWrap(true);
+    m_inferenceModelName->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    controls->addWidget(m_inferenceModelName);
+    m_inferenceModelDetails = makeLabel(tr("Load a trained checkpoint or exported model."), "muted");
+    m_inferenceModelDetails->setWordWrap(true);
+    m_inferenceModelDetails->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    controls->addWidget(m_inferenceModelDetails);
+    m_inferenceLoadModelButton = new QPushButton(tr("Load model…"));
+    m_inferenceLoadModelButton->setProperty("secondary", true);
+    connect(m_inferenceLoadModelButton, &QPushButton::clicked, this, &MainWindow::chooseInferenceModel);
+    controls->addWidget(m_inferenceLoadModelButton);
+    m_inferenceUseWinnerButton = new QPushButton(tr("Use selected training model"));
+    m_inferenceUseWinnerButton->setProperty("secondary", true);
+    m_inferenceUseWinnerButton->setToolTip(tr("Load the model selected in Train. The highest image-AUROC model is selected automatically after training."));
+    connect(m_inferenceUseWinnerButton, &QPushButton::clicked, this, &MainWindow::useWinnerForInference);
+    controls->addWidget(m_inferenceUseWinnerButton);
+    controls->addWidget(divider(Qt::Horizontal));
 
-    controls->addWidget(makeLabel(tr("Decision threshold"), "fieldLabel"), 0, 2);
+    controls->addWidget(makeLabel(tr("2. Image source"), "sectionTitle"));
+    m_inferenceImageEdit = new QLineEdit;
+    m_inferenceImageEdit->setAccessibleName(tr("Test image path"));
+    m_inferenceImageEdit->setPlaceholderText(tr("PNG, JPEG, BMP, or TIFF…"));
+    controls->addWidget(m_inferenceImageEdit);
+    auto *browse = new QPushButton(tr("Choose image…"));
+    browse->setProperty("secondary", true);
+    connect(browse, &QPushButton::clicked, this, &MainWindow::chooseInferenceImage);
+    controls->addWidget(browse);
+
+    auto *thresholdRow = new QHBoxLayout;
+    auto *thresholdLabel = makeLabel(tr("Image && mask threshold"), "fieldLabel");
+    thresholdLabel->setWordWrap(true);
+    thresholdRow->addWidget(thresholdLabel, 1);
     m_inferenceThresholdSpin = new QSpinBox;
     m_inferenceThresholdSpin->setRange(1, 99);
     m_inferenceThresholdSpin->setValue(60);
     m_inferenceThresholdSpin->setSuffix(QStringLiteral("%"));
-    controls->addWidget(m_inferenceThresholdSpin, 0, 3);
+    m_inferenceThresholdSpin->setAccessibleName(tr("Image and pixel mask threshold"));
+    thresholdLabel->setBuddy(m_inferenceThresholdSpin);
+    thresholdRow->addWidget(m_inferenceThresholdSpin);
+    controls->addLayout(thresholdRow);
+    auto *thresholdHelp = makeLabel(
+        tr("The same cutoff is applied to the image anomaly score and each pixel's score. "
+           "It is not a confidence percentage. Changes apply on the next inspection."), "muted");
+    thresholdHelp->setWordWrap(true);
+    controls->addWidget(thresholdHelp);
+    m_inferenceThresholdSpin->setToolTip(thresholdHelp->text());
+    m_inferenceRunButton = new QPushButton(tr("Inspect image"));
+    m_inferenceRunButton->setProperty("primary", true);
+    m_inferenceRunButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+    connect(m_inferenceRunButton, &QPushButton::clicked, this, &MainWindow::runInference);
+    controls->addWidget(m_inferenceRunButton);
+    m_inferenceCaptureButton = new QPushButton(tr("Capture && inspect"));
+    m_inferenceCaptureButton->setProperty("secondary", true);
+    connect(m_inferenceCaptureButton, &QPushButton::clicked, this, &MainWindow::captureAndRunInference);
+    controls->addWidget(m_inferenceCaptureButton);
+    auto *cameraHelp = makeLabel(tr("Uses the camera selected on the Capture page."), "muted");
+    cameraHelp->setWordWrap(true);
+    controls->addWidget(cameraHelp);
+    m_inferenceRunButton->setEnabled(false);
+    m_inferenceCaptureButton->setEnabled(false);
 
-    controls->addWidget(makeLabel(tr("Map smoothing"), "fieldLabel"), 1, 0);
-    auto *sigmaControl = new QWidget;
-    auto *sigmaLayout = new QHBoxLayout(sigmaControl);
-    sigmaLayout->setContentsMargins(0, 0, 0, 0);
-    sigmaLayout->setSpacing(8);
+    auto *advancedToggle = new QToolButton;
+    advancedToggle->setObjectName(QStringLiteral("inspectAdvancedToggle"));
+    advancedToggle->setText(tr("Advanced · map smoothing"));
+    advancedToggle->setProperty("secondary", true);
+    advancedToggle->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    advancedToggle->setArrowType(Qt::RightArrow);
+    advancedToggle->setCheckable(true);
+    controls->addWidget(advancedToggle);
+    auto *advanced = new QWidget;
+    auto *advancedLayout = new QVBoxLayout(advanced);
+    advancedLayout->setContentsMargins(0, 0, 0, 0);
     m_inferenceSigmaOverrideCheck = new QCheckBox(tr("Override model sigma"));
-    m_inferenceSigmaOverrideCheck->setToolTip(tr(
-        "Temporarily changes PatchCore heatmap smoothing for this loaded model. "
-        "Image-level scoring is unchanged."));
+    m_inferenceSigmaOverrideCheck->setToolTip(tr("Temporarily changes PatchCore heatmap smoothing. The image score is unchanged."));
+    advancedLayout->addWidget(m_inferenceSigmaOverrideCheck);
     m_inferenceSigmaSpin = new QSpinBox;
     m_inferenceSigmaSpin->setRange(1, 32);
     m_inferenceSigmaSpin->setValue(4);
     m_inferenceSigmaSpin->setPrefix(tr("σ "));
+    m_inferenceSigmaSpin->setAccessibleName(tr("Map smoothing sigma"));
     m_inferenceSigmaSpin->setEnabled(false);
-    connect(m_inferenceSigmaOverrideCheck, &QCheckBox::toggled,
-            m_inferenceSigmaSpin, [this](bool checked) {
-                m_inferenceSigmaSpin->setEnabled(
-                    checked && m_inferenceSigmaOverrideCheck->isEnabled());
-            });
-    sigmaLayout->addWidget(m_inferenceSigmaOverrideCheck);
-    sigmaLayout->addWidget(m_inferenceSigmaSpin);
-    sigmaLayout->addStretch();
-    controls->addWidget(sigmaControl, 1, 1, 1, 3);
-
-    m_inferenceModelDetails = makeLabel(
-        tr("Load an Anomalib checkpoint or exported model to begin."), "muted");
-    m_inferenceModelDetails->setWordWrap(true);
-    controls->addWidget(m_inferenceModelDetails, 2, 1, 1, 3);
-
-    auto *modelActions = new QHBoxLayout;
-    m_inferenceLoadModelButton = new QPushButton(tr("Load model…"));
-    m_inferenceLoadModelButton->setProperty("secondary", true);
-    connect(m_inferenceLoadModelButton, &QPushButton::clicked,
-            this, &MainWindow::chooseInferenceModel);
-    modelActions->addWidget(m_inferenceLoadModelButton);
-    m_inferenceUseWinnerButton = new QPushButton(tr("Use trained winner"));
-    m_inferenceUseWinnerButton->setProperty("secondary", true);
-    connect(m_inferenceUseWinnerButton, &QPushButton::clicked,
-            this, &MainWindow::useWinnerForInference);
-    modelActions->addWidget(m_inferenceUseWinnerButton);
-    modelActions->addStretch();
-    controls->addLayout(modelActions, 3, 1, 1, 3);
-
-    controls->addWidget(makeLabel(tr("Test image"), "fieldLabel"), 4, 0);
-    m_inferenceImageEdit = new QLineEdit;
-    m_inferenceImageEdit->setPlaceholderText(
-        tr("Choose a PNG, JPEG, BMP, or TIFF image…"));
-    controls->addWidget(m_inferenceImageEdit, 4, 1, 1, 2);
-    auto *browse = new QPushButton(tr("Browse…"));
-    browse->setProperty("secondary", true);
-    connect(browse, &QPushButton::clicked, this, &MainWindow::chooseInferenceImage);
-    controls->addWidget(browse, 4, 3);
-
-    auto *actions = new QHBoxLayout;
-    m_inferenceRunButton = new QPushButton(tr("Test selected image"));
-    m_inferenceRunButton->setProperty("primary", true);
-    m_inferenceRunButton->setIcon(
-        style()->standardIcon(QStyle::SP_MediaPlay));
-    connect(m_inferenceRunButton, &QPushButton::clicked,
-            this, &MainWindow::runInference);
-    actions->addWidget(m_inferenceRunButton);
-    m_inferenceCaptureButton = new QPushButton(tr("Capture && test"));
-    m_inferenceCaptureButton->setProperty("secondary", true);
-    m_inferenceCaptureButton->setIcon(
-        style()->standardIcon(QStyle::SP_DialogSaveButton));
-    connect(m_inferenceCaptureButton, &QPushButton::clicked,
-            this, &MainWindow::captureAndRunInference);
-    actions->addWidget(m_inferenceCaptureButton);
-    actions->addWidget(makeLabel(
-        tr("Camera selection is shared with the Capture page."), "muted"));
-    actions->addStretch();
-    controls->addLayout(actions, 5, 1, 1, 3);
-    m_inferenceRunButton->setEnabled(false);
-    m_inferenceCaptureButton->setEnabled(false);
-    layout->addWidget(controlsPanel);
-
-    auto *resultPanel = new QFrame;
-    resultPanel->setObjectName(QStringLiteral("panel"));
-    auto *result = new QHBoxLayout(resultPanel);
-    result->setContentsMargins(20, 12, 20, 12);
-    m_inferenceStatus = makeLabel(tr("Ready for an image"), "winner");
-    result->addWidget(m_inferenceStatus, 1);
-    result->addWidget(makeLabel(tr("Anomaly score"), "muted"));
-    m_inferenceScore = makeLabel(QStringLiteral("—"), "summaryValue");
-    result->addWidget(m_inferenceScore);
-    result->addSpacing(20);
-    result->addWidget(makeLabel(tr("Latency"), "muted"));
-    m_inferenceLatency = makeLabel(QStringLiteral("—"), "summaryValue");
-    result->addWidget(m_inferenceLatency);
-    layout->addWidget(resultPanel);
-
-    auto *images = new QHBoxLayout;
-    images->setSpacing(12);
-    const QList<QPair<QString, QLabel **>> imageColumns = {
-        {tr("Input image"), &m_inferenceInputImage},
-        {tr("Anomaly heatmap"), &m_inferenceHeatmapImage},
-        {tr("Predicted mask"), &m_inferenceMaskImage},
-    };
-    for (const auto &column : imageColumns) {
-        auto *container = new QVBoxLayout;
-        container->setSpacing(6);
-        container->addWidget(makeLabel(column.first, "imageTitle"));
-        *column.second = createImageLabel({}, QSize(230, 230));
-        container->addWidget(*column.second);
-        images->addLayout(container, 1);
-    }
-    layout->addLayout(images, 1);
+    advancedLayout->addWidget(m_inferenceSigmaSpin);
+    auto *sigmaHelp = makeLabel(tr("Available for supported PatchCore models. Applies on the next inspection; does not change the saved model."), "muted");
+    sigmaHelp->setWordWrap(true);
+    advancedLayout->addWidget(sigmaHelp);
+    connect(m_inferenceSigmaOverrideCheck, &QCheckBox::toggled, m_inferenceSigmaSpin, [this](bool checked) {
+        m_inferenceSigmaSpin->setEnabled(checked && m_inferenceSigmaOverrideCheck->isEnabled());
+    });
+    advanced->setVisible(false);
+    connect(advancedToggle, &QToolButton::toggled, advanced, [advanced, advancedToggle](bool expanded) {
+        advanced->setVisible(expanded);
+        advancedToggle->setArrowType(expanded ? Qt::DownArrow : Qt::RightArrow);
+    });
+    controls->addWidget(advanced);
+    controls->addStretch();
+    auto *controlsScroll = new QScrollArea;
+    controlsScroll->setWidgetResizable(true);
+    controlsScroll->setFrameShape(QFrame::NoFrame);
+    controlsScroll->setMinimumWidth(320);
+    controlsScroll->setWidget(controlsPanel);
+    splitter->addWidget(workspace);
+    splitter->addWidget(controlsScroll);
+    splitter->setStretchFactor(0, 1);
+    splitter->setSizes({850, 340});
+    layout->addWidget(splitter, 1);
     return page;
 }
 
@@ -2244,7 +2409,7 @@ void MainWindow::applyTheme()
         }
         QLabel[role="winner"] { font-size: 16px; }
         QLabel[role="muted"], QLabel[role="statusDetail"] {
-            color: #65717d;
+            color: #53606d;
             font-size: 13px;
         }
         QLabel[role="fieldLabel"], QLabel[role="imageTitle"] {
@@ -2294,8 +2459,25 @@ void MainWindow::applyTheme()
         QFrame#divider { color: #e0e4e8; background: #e0e4e8; }
         QLabel#inspectionImage {
             background: #111417;
+            color: #dce3eb;
             border: 1px solid #cfd5dc;
         }
+        QScrollArea#imageViewport, QScrollArea#imageViewport > QWidget > QWidget {
+            background: #111417;
+        }
+        QTabWidget#inspectionViews::pane { border: 1px solid #d8dde3; }
+        QTabBar::tab {
+            padding: 10px 16px;
+            background: #eef2f6;
+            color: #44515f;
+        }
+        QTabBar::tab:selected {
+            background: #ffffff;
+            color: #1267d5;
+            border-bottom: 3px solid #1267d5;
+        }
+        QSplitter::handle { background: #d8dde3; width: 5px; }
+        QSplitter::handle:hover { background: #1267d5; }
         QPushButton, QToolButton[secondary="true"], QComboBox, QLineEdit,
         QSpinBox, QDoubleSpinBox {
             min-height: 34px;
@@ -3055,13 +3237,35 @@ void MainWindow::updateWinner(const QString &modelName)
     if (modelName.isEmpty()) {
         m_winnerModel.clear();
         m_winnerLabel->setText(tr("No scored winner"));
+        m_winnerReason->setText(tr("No finite image AUROC is available for comparison."));
         clearPredictionImages();
         updatePromotionState();
         return;
     }
     m_winnerModel = modelName;
-    m_winnerLabel->setText(m_results.value(modelName).value(QStringLiteral("demo")).toBool()
-        ? tr("DEMONSTRATION · %1").arg(modelName) : tr("Winner: %1").arg(modelName));
+    const QJsonObject selected = m_results.value(modelName);
+    const QJsonValue selectedMetric = selected.value(QStringLiteral("image_auroc"));
+    double bestScore = -std::numeric_limits<double>::infinity();
+    QString bestModel;
+    for (auto it = m_results.cbegin(); it != m_results.cend(); ++it) {
+        const QJsonValue metric = it.value().value(QStringLiteral("image_auroc"));
+        if (metric.isDouble() && std::isfinite(metric.toDouble()) && metric.toDouble() > bestScore) {
+            bestScore = metric.toDouble();
+            bestModel = it.key();
+        }
+    }
+    const bool best = selectedMetric.isDouble() && std::isfinite(selectedMetric.toDouble())
+        && selectedMetric.toDouble() == bestScore;
+    const QString prefix = selected.value(QStringLiteral("demo")).toBool()
+        ? tr("DEMONSTRATION · ") : QString();
+    m_winnerLabel->setText(prefix + (best ? tr("Best image AUROC: %1") : tr("Selected: %1")).arg(modelName));
+    m_winnerReason->setText(best
+        ? tr("Highest test-set image AUROC (%1). Review latency and defect masks before production use.")
+              .arg(metricText(selected, QStringLiteral("image_auroc")))
+        : (bestModel.isEmpty()
+               ? tr("Manual selection. No finite image AUROC is available for comparison.")
+               : tr("Manual selection. %1 has the highest image AUROC (%2).")
+                     .arg(bestModel, QString::number(bestScore, 'f', 3))));
     updatePromotionState();
     if (m_heatmapTitle) {
         m_heatmapTitle->setText(tr("Predicted heatmap (%1)").arg(modelName));
@@ -3219,6 +3423,7 @@ void MainWindow::setInferenceModelState(const QString &status, bool ready,
     m_inferenceModelReady = ready;
     if (m_inferenceModelDetails) {
         m_inferenceModelDetails->setText(status);
+        m_inferenceModelDetails->setToolTip(status);
     }
     if (m_inferenceModelName) {
         m_inferenceModelName->setText(
@@ -4000,8 +4205,7 @@ void MainWindow::captureNormal()
     showStatus(tr("Normal sample saved: %1").arg(path));
     const QPixmap captured(path);
     if (!captured.isNull()) {
-        m_capturePreview->setPixmap(captured.scaled(
-            m_capturePreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        static_cast<InspectionPreview *>(m_capturePreview)->setSource(captured, {});
     }
     updateDatasetCounts(m_datasetRoot);
     updateInspectionFromDataset();
@@ -4021,8 +4225,7 @@ void MainWindow::captureAnomalous()
     showStatus(tr("Anomalous sample saved: %1").arg(path));
     const QPixmap captured(path);
     if (!captured.isNull()) {
-        m_capturePreview->setPixmap(captured.scaled(
-            m_capturePreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        static_cast<InspectionPreview *>(m_capturePreview)->setSource(captured, {});
     }
     updateDatasetCounts(m_datasetRoot);
     updateInspectionFromDataset();
@@ -4115,17 +4318,16 @@ void MainWindow::updateThreshold(int value)
         const QImage thresholded = thresholdedAnomalyMap(value);
         if (!thresholded.isNull()) {
             m_predictedMaskImage->setText({});
-            m_predictedMaskImage->setPixmap(QPixmap::fromImage(thresholded).scaled(
-                QSize(m_predictedMaskImage->minimumWidth(),
-                      m_predictedMaskImage->height()),
-                Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+            static_cast<InspectionPreview *>(m_predictedMaskImage)->setSource(
+                QPixmap::fromImage(thresholded), {});
             m_predictedMaskImage->setToolTip(
                 tr("Generated from %1 at threshold %2")
                     .arg(QDir::toNativeSeparators(m_anomalyMapPath))
                     .arg(value / 100.0, 0, 'f', 2));
         }
     }
-    showStatus(tr("Display threshold set to %1.").arg(value / 100.0, 0, 'f', 2));
+    showStatus(tr("Pixel mask threshold set to %1. Image score and ranking are unchanged.")
+                   .arg(value / 100.0, 0, 'f', 2));
 }
 
 QString MainWindow::dataDirectory() const

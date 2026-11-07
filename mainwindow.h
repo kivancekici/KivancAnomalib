@@ -182,6 +182,7 @@ private:
     QPlainTextEdit *m_trainingLog = nullptr;
 
     QLabel *m_winnerLabel = nullptr;
+    QLabel *m_winnerReason = nullptr;
     QLabel *m_testImageLabel = nullptr;
     QLabel *m_inputImage = nullptr;
     QLabel *m_maskImage = nullptr;

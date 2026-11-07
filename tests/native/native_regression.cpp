@@ -16,6 +16,10 @@
 #include <QPushButton>
 #include <QSettings>
 #include <QSignalSpy>
+#include <QSpinBox>
+#include <QStackedWidget>
+#include <QTabWidget>
+#include <QToolButton>
 #include <QTemporaryDir>
 #include <QTest>
 #include <QUuid>
@@ -345,6 +349,109 @@ private slots:
         efficient.insert("teacher_out_channels", 384);
         QVERIFY(window.validateModelParameters("EfficientAD", efficient));
     }
+
+    void inspectionViewerFitsZoomsAndClearsOldImages()
+    {
+        MainWindow window;
+        configure(window, "image-viewer");
+        window.navigateTo(4);
+        window.resize(1440, 820);
+        window.show();
+        QTest::qWait(50);
+        const QString imagePath = QDir(window.dataDirectory()).filePath("wide.png");
+        QImage source(1600, 400, QImage::Format_RGB32);
+        source.fill(Qt::green);
+        QVERIFY(source.save(imagePath));
+        window.setInspectionImage(window.m_inferenceInputImage, imagePath, "Missing");
+        QCoreApplication::processEvents();
+        const QPixmap fitted = window.m_inferenceInputImage->pixmap();
+        QVERIFY(!fitted.isNull());
+        QVERIFY(qAbs(double(fitted.width()) / fitted.height() - 4.0) < 0.03);
+        QVERIFY(fitted.width() <= window.m_inferenceInputImage->width());
+        QVERIFY(fitted.height() <= window.m_inferenceInputImage->height());
+        auto clickButton = [&window](const QString &text) {
+            for (auto *button : window.m_pages->widget(4)->findChildren<QPushButton *>()) {
+                if (button->text() == text) {
+                    button->click();
+                    QCoreApplication::processEvents();
+                    return true;
+                }
+            }
+            return false;
+        };
+        QVERIFY(clickButton("100%"));
+        QCOMPARE(window.m_inferenceInputImage->pixmap().size(), source.size());
+        QVERIFY(clickButton("Zoom in"));
+        QCOMPARE(window.m_inferenceInputImage->pixmap().size(), QSize(2000, 500));
+        QVERIFY(clickButton("Fit"));
+        QVERIFY(window.m_inferenceInputImage->width() < source.width());
+        window.resize(1180, 760);
+        QCoreApplication::processEvents();
+        QVERIFY(window.m_inferenceInputImage->height() > 250);
+        QVERIFY(window.m_inferenceInputImage->pixmap().width() <= window.m_inferenceInputImage->width());
+        window.setInferenceModelState("Remembered model unavailable: C:/" + QString(300, 'x') + "/model.ckpt", false, true);
+        QCoreApplication::processEvents();
+        QVERIFY(window.m_inferenceModelDetails->width() < 400);
+        QVERIFY(window.m_inferenceRunButton->width() < 400);
+        auto *advanced = window.findChild<QToolButton *>("inspectAdvancedToggle");
+        QVERIFY(advanced);
+        QVERIFY(!window.m_inferenceSigmaSpin->isVisible());
+        advanced->click();
+        QVERIFY(window.m_inferenceSigmaSpin->isVisible());
+        advanced->click();
+
+        // Optional, deterministic layout evidence using the bundled reference images.
+        const QString captureDir = qEnvironmentVariable("INSPECTION_QA_CAPTURE_DIR");
+        if (!captureDir.isEmpty()) {
+            QVERIFY(QDir().mkpath(captureDir));
+            window.m_activeInferenceModel = "PatchCore";
+            window.setInferenceModelState("DEMONSTRATION · Bundled reference images", true);
+            window.updateInferenceResult({{"demo", true}, {"label", "anomalous"},
+                {"model", "PatchCore"}, {"anomaly_score", 0.82}, {"threshold", 0.6},
+                {"latency_ms", 38.2}, {"image_path", ":/assets/housing-seal-input.png"},
+                {"heatmap_path", ":/assets/housing-seal-heatmap.png"},
+                {"predicted_mask_path", ":/assets/housing-seal-predicted-mask.png"}});
+            auto *tabs = window.findChild<QTabWidget *>("inspectionViews");
+            QVERIFY(tabs);
+            tabs->setCurrentIndex(1);
+            QCoreApplication::processEvents();
+            QVERIFY(window.grab().save(QDir(captureDir).filePath("inspect-compact.png")));
+            window.resize(1440, 820);
+            QCoreApplication::processEvents();
+            QVERIFY(window.grab().save(QDir(captureDir).filePath("inspect-large.png")));
+            advanced->click();
+            QCoreApplication::processEvents();
+            QVERIFY(window.grab().save(QDir(captureDir).filePath("inspect-advanced.png")));
+            advanced->click();
+            window.m_demoMode->setChecked(true);
+            window.populateReferenceState();
+            window.navigateTo(2);
+            QCoreApplication::processEvents();
+            QVERIFY(window.grab().save(QDir(captureDir).filePath("train-selection.png")));
+        }
+        window.setInspectionImage(window.m_inferenceInputImage, {}, "Choose an image");
+        window.resize(1280, 800);
+        QCoreApplication::processEvents();
+        QVERIFY(window.m_inferenceInputImage->pixmap().isNull());
+        QCOMPARE(window.m_inferenceInputImage->text(), QString("Choose an image"));
+    }
+
+    void manualSelectionDoesNotClaimHighestAuroc()
+    {
+        MainWindow window;
+        configure(window, "selection-label");
+        window.m_results.clear();
+        window.updateResultRow({{"model", "PatchCore"}, {"image_auroc", 0.98}});
+        window.updateResultRow({{"model", "PaDiM"}, {"image_auroc", 0.91}});
+        window.updateWinner("PatchCore");
+        QVERIFY(window.m_winnerLabel->text().contains("Best image AUROC"));
+        window.updateWinner("PaDiM");
+        QCOMPARE(window.m_winnerLabel->text(), QString("Selected: PaDiM"));
+        QVERIFY(window.m_winnerReason->text().contains("PatchCore"));
+        QVERIFY(window.m_winnerReason->text().contains("0.980"));
+        window.updateWinner({});
+        QVERIFY(!window.m_winnerReason->text().contains("Manual selection"));
+    }
 };
 
 int main(int argc, char **argv)
@@ -352,7 +459,9 @@ int main(int argc, char **argv)
     if (argc > 1 && QByteArray(argv[1]) == "-u") {
         return fakeWorker(argc, argv);
     }
-    qputenv("QT_QPA_PLATFORM", "offscreen");
+    if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM")) {
+        qputenv("QT_QPA_PLATFORM", "offscreen");
+    }
     QApplication application(argc, argv);
     NativeRegressionTest test;
     return QTest::qExec(&test, argc, argv);

@@ -93,9 +93,22 @@ models fall back to a compatible OpenVINO or CPU runtime.
 
 The **Inspect** page keeps one model loaded in a dedicated Python process. Use
 **Load model…** for an Anomalib `.ckpt`, `.pt`, `.onnx`, OpenVINO `.xml/.bin`,
-or an app-generated `.json` model manifest. **Use trained winner** selects the
-latest winning checkpoint from the training page. The last valid artifact is
+or an app-generated `.json` model manifest. **Use selected training model** loads
+the checkpoint selected on the training page. The last valid artifact is
 remembered and loaded only when Inspect is opened.
+
+Inspect gives the image most of the workspace, with **Input image**, **Heatmap
+overlay**, and **Pixel mask** tabs. **Fit** preserves the entire image; **100%**
+shows the original pixel size, and zoom controls plus scrollbars let you examine
+details. Drag the divider to resize the viewer and controls. Map smoothing is
+under the collapsed **Advanced** section.
+
+The Inspect **Image & mask threshold** applies the same cutoff to the image
+anomaly score and to each pixel score on the next inspection; it is not a
+confidence percentage. The Train **Pixel mask threshold** only updates the
+displayed mask and does not change the image score or model ranking. Training
+automatically selects the highest test-set image AUROC. Selecting another result
+row is labeled as a manual selection, with the best-scoring model identified.
 
 Loading a real artifact selects real inference independently of the demonstration
 setting used by training. Simulated Inspect results are explicitly labeled
@@ -222,9 +235,10 @@ After a training run completes, open **Inspect**:
 
 1. Select one of the trained models. The workbench uses the exact checkpoint
    recorded for that model's result.
-2. Either choose an image with **Browse…** or select a Basler device on
-   **Capture** and click **Capture & test**.
-3. Adjust the decision threshold if needed and run the test.
+2. Either use **Choose image…** or select a Basler device on
+   **Capture** and use **Capture & inspect**.
+3. For an image file, adjust **Image & mask threshold** if needed and click
+   **Inspect image**. For a camera frame, set the threshold before capturing.
 
 Inference runs in the isolated Python worker and returns the anomaly decision,
 anomaly score, end-to-end prediction latency, heatmap, and thresholded pixel
